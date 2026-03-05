@@ -1,5 +1,5 @@
 ---
-// FeaturedResearch.astro — Horizontal scrolling featured paper cards
+// FeaturedResearch.astro — Auto-scrolling featured paper cards
 const papers = [
   {
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
@@ -26,20 +26,24 @@ const papers = [
     link: 'https://www.brookings.edu/articles/the-fiscal-frontier-projecting-ais-long-term-impact-on-the-us-fiscal-outlook/',
   },
 ];
+// Duplicate for seamless loop
+const allPapers = [...papers, ...papers];
 ---
 
 <section class="section" data-theme="dark" id="featured-research">
   <div class="section-inner">
     <span class="section-label">Featured Research</span>
     <h2 class="section-title">Selected Work</h2>
+  </div>
 
-    <div class="scroll-track">
-      {papers.map((paper) => (
-        <a href={paper.link} class="card featured-card" target="_blank" rel="noopener">
-          <span class="card-meta">{paper.meta}</span>
-          <h3 class="card-title">{paper.title}</h3>
-          <p class="card-body">{paper.authors}</p>
-          <span class="link-arrow">Read Paper &rarr;</span>
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      {allPapers.map((paper) => (
+        <a href={paper.link} class="featured-card" target="_blank" rel="noopener">
+          <span class="featured-card__meta">{paper.meta}</span>
+          <h3 class="featured-card__title">{paper.title}</h3>
+          <p class="featured-card__authors">{paper.authors}</p>
+          <span class="featured-card__link">Read Paper &rarr;</span>
         </a>
       ))}
     </div>
@@ -47,47 +51,50 @@ const papers = [
 </section>
 
 <style>
-  .scroll-track {
+  .marquee-wrapper {
+    overflow: hidden;
+    padding: 0 0 2rem;
+  }
+
+  .marquee-track {
     display: flex;
     gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--gray-600) transparent;
+    width: max-content;
+    animation: marquee 30s linear infinite;
   }
 
-  .scroll-track::-webkit-scrollbar {
-    height: 6px;
+  .marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
   }
 
-  .scroll-track::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scroll-track::-webkit-scrollbar-thumb {
-    background: var(--gray-600);
-    border-radius: 3px;
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
 
   .featured-card {
-    flex: 0 0 min(340px, 80vw);
-    scroll-snap-align: start;
+    flex: 0 0 340px;
     display: flex;
     flex-direction: column;
     padding: 2rem;
     border: 1px solid var(--gray-700, #333);
+    border-bottom: 1px solid var(--gray-700, #333);
+    text-decoration: none;
+    color: inherit;
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
-  a.featured-card:hover {
+  .featured-card:hover {
     border-color: var(--white);
     transform: translateY(-4px);
     opacity: 1;
   }
 
-  .featured-card .card-meta {
+  .featured-card__meta {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -95,7 +102,7 @@ const papers = [
     margin-bottom: 1rem;
   }
 
-  .featured-card .card-title {
+  .featured-card__title {
     font-family: var(--font-body);
     font-size: 1.15rem;
     font-weight: 600;
@@ -106,25 +113,32 @@ const papers = [
     flex: 1;
   }
 
-  .featured-card .card-body {
+  .featured-card__authors {
     color: var(--gray-400);
     font-size: 0.85rem;
     margin-bottom: 1.25rem;
   }
 
-  .featured-card .link-arrow {
+  .featured-card__link {
     color: var(--gray-400);
     font-size: 0.8rem;
     transition: color 0.2s ease;
   }
 
-  a.featured-card:hover .link-arrow {
+  .featured-card:hover .featured-card__link {
     color: var(--white);
   }
 
   @media (max-width: 768px) {
     .featured-card {
       flex: 0 0 85vw;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+      overflow-x: auto;
     }
   }
 </style>
