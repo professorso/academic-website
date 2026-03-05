@@ -1,0 +1,315 @@
+---
+// data.astro — Data + Artifacts page with datasets and AI/education resources
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const datasets = [
+  {
+    name: 'Implied Cost of Capital & Expected Return Data',
+    paper: 'Lee, Wang, So — Review of Financial Studies',
+    link: 'https://leesowang2021.github.io/data/',
+    details: '',
+    format: 'WEB',
+  },
+  {
+    name: 'Expectations Management Incentive (EMI)',
+    paper: 'Johnson, Kim, So — Review of Financial Studies',
+    link: 'https://www.dropbox.com/s/kc7u4gowjkggdgk/EMI_RFS.csv?dl=0',
+    details: '1985–2015 · Permno, Expected_ann_date, EMI',
+    format: 'CSV',
+  },
+  {
+    name: 'Daily Information Asymmetry Proxy (MIA)',
+    paper: 'Johnson, So — Management Science',
+    link: 'https://www.dropbox.com/s/4hlqlws7dqs8c5o/miadata1996to2018.sas7bdat?dl=0',
+    details: '2006–2018 · Permno, Date, MIA',
+    format: 'SAS',
+  },
+  {
+    name: 'Annual Earnings Forecasts',
+    paper: 'So — Journal of Financial Economics 108(3)',
+    link: 'https://www.dropbox.com/preview/Documents/Published%20Papers/OAF/Data/ericso_epsforecasts.sas7bdat?share=1',
+    details: '1978–2016 · GVKEY, CUSIP, FYEAR, FYR, ForecastDate, WF1/2/3, Shares',
+    format: 'SAS',
+  },
+];
+
+const edTechResources = [
+  {
+    name: 'Deep Research: Transforming the Creation of Learning Materials with Research-Backed AI',
+    source: 'MIT Sloan EdTech',
+    link: 'https://mitsloanedtech.mit.edu/2025/03/26/deep-research-transforming-the-creation-of-learning-materials-with-research-backed-ai/',
+  },
+  {
+    name: 'Timely Insights: Use Cases for OpenAI in the Classroom — DALL-E Imagery and ChatGPT\'s Image Analysis & Voice Functionality',
+    source: 'MIT Sloan EdTech',
+    link: 'https://mitsloanedtech.mit.edu/2023/10/20/timely-insights-use-cases-for-openai-in-the-classroom-dalle-imagery-and-chatgpts-image-analysis-voice-functionality/',
+  },
+  {
+    name: 'Harnessing AI in Finance: Eric So\'s Innovative Take on Teaching Value Investing',
+    source: 'MIT Sloan EdTech',
+    link: 'https://mitsloanedtech.mit.edu/2023/09/01/harnessing-ai-in-finance-eric-sos-innovative-take-on-teaching-value-investing/',
+  },
+  {
+    name: 'Sloan Generative AI Peer Learning Initiative',
+    source: 'MIT Registrar — Education Initiatives',
+    link: 'https://registrar.mit.edu/faculty-curriculum-support/education-initiatives-funding/funded-projects/sloan-generative-ai-peer',
+  },
+];
+---
+
+<BaseLayout title="Data + Artifacts — Eric So" description="Research datasets and AI education resources from Eric So.">
+  <PageHeader label="Resources" title="Data + Artifacts" image="/images/backdrops/Sloan2.jpeg" />
+
+  <section class="section" data-theme="light">
+    <div class="section-inner">
+      <h2 class="data-heading">Datasets</h2>
+      <div class="data-list">
+        {datasets.map((ds) => (
+          <a href={ds.link} class="data-card" target="_blank" rel="noopener">
+            <span class={`file-badge badge-${ds.format.toLowerCase()}`}>{ds.format}</span>
+            <div class="data-info">
+              <h3 class="data-name">{ds.name}</h3>
+              <p class="data-paper">{ds.paper}</p>
+              {ds.details && <p class="data-details">{ds.details}</p>}
+            </div>
+            <span class="data-arrow">→</span>
+          </a>
+        ))}
+      </div>
+      <p class="disclaimer">
+        I do not guarantee the accuracy of this data. These files are
+        intended as references that require updating and corrections. Use at
+        your own risk.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" data-theme="dark">
+    <div class="section-inner">
+      <h2 class="data-heading">AI & Education</h2>
+      <div class="edtech-grid">
+        {edTechResources.map((res) => (
+          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
+            <span class="edtech-source">{res.source}</span>
+            <h3 class="edtech-title">{res.name}</h3>
+            <span class="edtech-cta">Read More →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .data-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .data-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .data-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--gray-200);
+    transition: padding-left 0.2s ease;
+  }
+
+  .section[data-theme="dark"] .data-card {
+    border-color: var(--gray-800);
+  }
+
+  .data-card:first-child {
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .section[data-theme="dark"] .data-card:first-child {
+    border-top-color: var(--gray-800);
+  }
+
+  .data-card:hover {
+    padding-left: 1rem;
+    opacity: 1;
+  }
+
+  .data-name {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+  }
+
+  .data-paper {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-bottom: 0.2rem;
+  }
+
+  .section[data-theme="dark"] .data-paper {
+    color: var(--gray-400);
+  }
+
+  .data-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .data-details {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    font-family: monospace;
+  }
+
+  /* File type badges */
+  .file-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 6px;
+  }
+
+  .badge-csv {
+    background: rgba(76, 175, 80, 0.12);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+  }
+
+  .badge-sas {
+    background: rgba(50, 120, 210, 0.12);
+    color: #3278d2;
+    border: 1px solid rgba(50, 120, 210, 0.3);
+  }
+
+  .badge-web {
+    background: rgba(140, 140, 140, 0.1);
+    color: #888;
+    border: 1px solid rgba(140, 140, 140, 0.3);
+  }
+
+  .badge-link {
+    background: rgba(163, 31, 52, 0.12);
+    color: #a31f34;
+    border: 1px solid rgba(163, 31, 52, 0.3);
+  }
+
+  /* Dark theme badge adjustments */
+  .section[data-theme="dark"] .badge-csv {
+    background: rgba(76, 175, 80, 0.15);
+  }
+  .section[data-theme="dark"] .badge-sas {
+    background: rgba(50, 120, 210, 0.15);
+  }
+  .section[data-theme="dark"] .badge-link {
+    background: rgba(163, 31, 52, 0.2);
+    color: #e05a6f;
+  }
+
+  .data-arrow {
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .data-card:hover .data-arrow {
+    opacity: 1;
+  }
+
+  /* AI & Education grid cards */
+  .edtech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .edtech-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    aspect-ratio: 1;
+    padding: 2rem;
+    border: 1px solid var(--gray-800);
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .edtech-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+  }
+
+  .edtech-source {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray-400);
+  }
+
+  .edtech-title {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  .edtech-cta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-400);
+    transition: color 0.2s;
+  }
+
+  .edtech-card:hover .edtech-cta {
+    color: var(--white);
+  }
+
+  @media (max-width: 768px) {
+    .edtech-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .edtech-card {
+      aspect-ratio: auto;
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+  }
+
+  .disclaimer {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    font-style: italic;
+    max-width: 60ch;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .data-arrow {
+      display: none;
+    }
+  }
+</style>

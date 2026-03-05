@@ -1,0 +1,295 @@
+---
+// research.astro — Full publications list organized by category
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import FeaturedResearch from '../components/FeaturedResearch.astro';
+
+const behavioralFinance = [
+  {
+    title: 'Losing is Optional',
+    authors: 'de Silva, Smith, So',
+    journal: 'Review of Finance',
+    volume: 'Forthcoming',
+    link: 'https://academic.oup.com/rof/advance-article-abstract/doi/10.1093/rof/rfaf052/8301159?redirectedFrom=fulltext',
+  },
+  {
+    title: 'Investor Corporate Visits and Predictable Returns',
+    authors: 'Zhang, Wang, So',
+    journal: 'Journal of Financial and Quantitative Analysis',
+    volume: '60(6), Sep 2025, pp. 2615–2648',
+    link: 'https://www.cambridge.org/core/services/aop-cambridge-core/content/view/77C958598BB1DC92C46EA32BF252A4B9/S0022109024000528a.pdf/investor_corporate_visits_and_predictable_returns.pdf',
+  },
+  {
+    title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook',
+    authors: 'Harris, Mehrotra, So',
+    journal: 'Brookings Institution',
+    volume: 'Feb 2025',
+    link: 'https://www.brookings.edu/articles/the-fiscal-frontier/',
+  },
+  {
+    title: 'Flight to Earnings: The Role of Earnings in Periods of Capital Scarcity',
+    authors: 'Guest, Kothari, So',
+    journal: 'Management Science',
+    volume: '69(8), Aug 2023, pp. 4363–4971',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2929704',
+  },
+  {
+    title: 'Core Earnings: New Data and Evidence',
+    authors: 'Rouen, Wang, So',
+    journal: 'Journal of Financial Economics',
+    volume: '142(3), Dec 2021, pp. 1068–1091',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3467814',
+  },
+  {
+    title: 'Calendar Rotations',
+    authors: 'Noh, Verdi, So',
+    journal: 'Journal of Financial Economics',
+    volume: '140(3), Jun 2021, pp. 865–893',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3473873',
+  },
+  {
+    title: 'Evaluating Firm-Level Expected Return Proxies',
+    authors: 'Lee, Wang, So',
+    journal: 'Review of Financial Studies',
+    volume: '34(4), Apr 2021, pp. 1907–1951',
+    link: 'https://academic.oup.com/rfs/advance-article-abstract/doi/10.1093/rfs/hhaa066/5855684',
+  },
+  {
+    title: 'Expectations Management and Stock Returns',
+    authors: 'Johnson, Kim, So',
+    journal: 'Review of Financial Studies',
+    volume: '33(10), Oct 2020, pp. 4580–4626',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2866522',
+  },
+  {
+    title: 'A Simple Multimarket Measure of Information Asymmetry',
+    authors: 'Johnson, So',
+    journal: 'Management Science',
+    volume: '64(3), Mar 2018, pp. 1055–1080',
+    link: 'https://doi.org/10.1287/mnsc.2016.2608',
+  },
+  {
+    title: 'Time Will Tell: Information in the Timing of Scheduled Earnings News',
+    authors: 'Johnson, So',
+    journal: 'Journal of Financial and Quantitative Analysis',
+    volume: '53(6), Dec 2018, pp. 2431–2464',
+    link: 'https://depts.washington.edu/jfqa/2017/06/30/time-will-tell-information-in-the-timing-of-scheduled-earnings-news/',
+  },
+  {
+    title: 'News-Driven Return Reversals: Liquidity Provision Ahead of Earnings Announcements',
+    authors: 'Wang, So',
+    journal: 'Journal of Financial Economics',
+    volume: '114(1), Oct 2014, pp. 20–35',
+    link: 'https://doi.org/10.1016/j.jfineco.2014.06.009',
+  },
+  {
+    title: 'A New Approach to Predicting Analyst Forecast Errors: Do Investors Overweight Analyst Forecasts?',
+    authors: 'So',
+    journal: 'Journal of Financial Economics',
+    volume: '108(3), Jun 2013, pp. 615–640',
+    link: 'http://dx.doi.org/10.1016/j.jfineco.2013.02.002',
+  },
+  {
+    title: 'Identifying Expectation Errors in Value/Glamour Strategies: A Fundamental Analysis Approach',
+    authors: 'Piotroski, So',
+    journal: 'Review of Financial Studies',
+    volume: '25(9), 2012, pp. 2841–2875',
+    link: 'http://rfs.oxfordjournals.org/content/25/9/2841',
+  },
+  {
+    title: 'The Option to Stock Volume Ratio and Future Returns',
+    authors: 'Johnson, So',
+    journal: 'Journal of Financial Economics',
+    volume: '106(2), Nov 2012, pp. 262–286',
+    link: 'https://doi.org/10.1016/j.jfineco.2012.05.008',
+  },
+];
+
+const measurement = [
+  {
+    title: 'Financial Reporting and Consumer Behavior',
+    authors: 'Noh, So, Zhu',
+    journal: 'Accounting Review',
+    volume: '100(1), 2025, pp. 407–435',
+    link: 'https://publications.aaahq.org/accounting-review/article-abstract/100/1/407/12932/Financial-Reporting-and-Consumer-Behavior?redirectedFrom=fulltext',
+  },
+  {
+    title: 'Conflicts of Interest in Subscriber-Paid Credit Ratings',
+    authors: 'Bonsall, Gillette, Pundrich, So',
+    journal: 'Journal of Accounting and Economics',
+    volume: '70(2), May 2022',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3132741',
+  },
+  {
+    title: 'Measuring Risk Information',
+    authors: 'Smith, So',
+    journal: 'Journal of Accounting Research',
+    volume: '60(2), May 2022',
+    link: 'https://onlinelibrary.wiley.com/doi/abs/10.1111/1475-679X.12413',
+  },
+  {
+    title: 'Switching from Voluntary and Mandatory Disclosure: Do Managers View them as Substitutes?',
+    authors: 'Noh, Weber, So',
+    journal: 'Journal of Accounting and Economics',
+    volume: '68(1), Aug 2019',
+    link: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382',
+  },
+  {
+    title: 'Asymmetric Trading Costs Prior to Earnings Announcements: Implications for Price Discovery',
+    authors: 'Johnson, So',
+    journal: 'Journal of Accounting Research',
+    volume: '56(1), Mar 2018, pp. 217–263',
+    link: 'http://doi.org/10.1111/1475-679X.12189',
+  },
+  {
+    title: 'Non-Diversifiable Volatility Risk and Risk Premiums at Earnings Announcements',
+    authors: 'Barth, So',
+    journal: 'Accounting Review',
+    volume: '89(5), Sep 2014, pp. 1579–1607',
+    link: 'https://doi.org/10.2308/accr-50758',
+  },
+  {
+    title: 'Boardroom Centrality and Firm Performance',
+    authors: 'Larcker, Wang, So',
+    journal: 'Journal of Accounting and Economics',
+    volume: '55(2–3), Apr–May 2013, pp. 225–250',
+    link: 'https://doi.org/10.1016/j.jacceco.2013.01.006',
+  },
+  {
+    title: 'Analyst Initiations of Coverage and Stock Return Synchronicity',
+    authors: 'Roulstone, Crawford, So',
+    journal: 'Accounting Review',
+    volume: '87(5), Sep 2012, pp. 1527–1553',
+    link: 'http://aaajournals.org/doi/abs/10.2308/accr-50186',
+  },
+];
+
+const laborEcon = [
+  {
+    title: 'Inside the Black Box of Doctoral Education',
+    authors: 'Ehrenberg, Jakubson, Groen, Price, So',
+    journal: 'Educational Evaluation and Policy Analysis',
+    volume: '29(2), Jun 2007, pp. 134–150',
+    link: 'https://www.jstor.org/stable/30128037',
+  },
+];
+
+const surveys = [
+  {
+    title: 'Teaching and Learning Economics with AI: A Guide',
+    authors: 'So',
+    journal: 'The Ultimate Guide to Teaching Economics (Norton Press)',
+    volume: '2025',
+    link: '',
+  },
+  {
+    title: "Analysts' Forecasts and Asset Pricing: A Survey",
+    authors: 'Kothari, Verdi, So',
+    journal: 'Annual Review of Financial Economics',
+    volume: '89(5), Sep 2016, pp. 1597–1607',
+    link: 'https://doi.org/10.1146/annurev-financial-121415-032930',
+  },
+  {
+    title: 'Alphanomics: The Informational Underpinning of Market Efficiency',
+    authors: 'Lee, So',
+    journal: 'Foundations and Trends in Accounting',
+    volume: 'Vol. 9, 2015, pp. 59–258',
+    link: 'http://dx.doi.org/10.1561/1400000022',
+  },
+];
+
+const categories = [
+  { name: 'Behavioral and Financial Economics', papers: behavioralFinance },
+  { name: 'Measurement, Regulation, and Disclosure', papers: measurement },
+  { name: 'Labor Economics', papers: laborEcon },
+  { name: 'Surveys and Monographs', papers: surveys },
+];
+---
+
+<BaseLayout title="Research — Eric So" description="Published research by Eric So spanning behavioral finance, asset pricing, AI, and regulatory policy.">
+  <PageHeader label="Research" title="Publications" image="/images/backdrops/Sloan2.jpeg" />
+
+  <FeaturedResearch />
+
+  {categories.map((cat) => (
+    <section class="section" data-theme="light">
+      <div class="section-inner">
+        <h2 class="category-title">{cat.name}</h2>
+        <div class="papers-list">
+          {cat.papers.map((paper) => (
+            <article class="paper-item">
+              {paper.link ? (
+                <a href={paper.link} class="paper-link" target="_blank" rel="noopener">
+                  <h3 class="paper-title">{paper.title}</h3>
+                </a>
+              ) : (
+                <h3 class="paper-title">{paper.title}</h3>
+              )}
+              <p class="paper-authors">{paper.authors}</p>
+              <p class="paper-journal">
+                <em>{paper.journal}</em> — {paper.volume}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .category-title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .papers-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .paper-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .paper-item:last-child {
+    border-bottom: none;
+  }
+
+  .paper-title {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.5;
+    margin-bottom: 0.4rem;
+  }
+
+  .paper-link {
+    text-decoration: none;
+  }
+
+  .paper-link:hover .paper-title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .paper-link:hover {
+    opacity: 1;
+  }
+
+  .paper-authors {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-bottom: 0.2rem;
+  }
+
+  .paper-journal {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+  }
+</style>

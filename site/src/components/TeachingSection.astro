@@ -1,0 +1,52 @@
+---
+// TeachingSection.astro — Placeholder for courses
+---
+
+<section class="section" data-theme="light" id="teaching">
+  <div class="section-inner">
+    <span class="section-label">Teaching</span>
+    <h2 class="section-title">Courses</h2>
+    <div class="teaching-grid">
+      <div class="teaching-card">
+        <h3>AI Applications in Business</h3>
+        <p>Exploring how artificial intelligence transforms business decision-making, strategy, and operations.</p>
+      </div>
+      <div class="teaching-card">
+        <h3>Investment Decisions</h3>
+        <p>Frameworks for evaluating investment opportunities, with emphasis on behavioral factors and market efficiency.</p>
+      </div>
+    </div>
+    <p class="teaching-note">Course details and syllabi coming soon.</p>
+  </div>
+</section>
+
+<style>
+  .teaching-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .teaching-card {
+    padding: 2rem;
+    border: 1px solid var(--gray-200);
+  }
+
+  .teaching-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .teaching-card p {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  .teaching-note {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+// PhotoStrip.astro — Auto-scrolling horizontal strip of B&W action photos
+const photos = [
+  { src: '/images/Action1.jpg', alt: 'Eric So speaking' },
+  { src: '/images/Action2.jpg', alt: 'Eric So presenting' },
+  { src: '/images/Action3.jpg', alt: 'Eric So at conference' },
+  { src: '/images/Action6.jpg', alt: 'Eric So teaching' },
+  { src: '/images/Action7.jpg', alt: 'Eric So in discussion' },
+];
+// Duplicate for seamless loop
+const allPhotos = [...photos, ...photos];
+---
+
+<div class="strip-wrapper" aria-hidden="true">
+  <div class="strip-track">
+    {allPhotos.map((photo) => (
+      <div class="strip-item">
+        <img src={photo.src} alt={photo.alt} loading="lazy" />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .strip-wrapper {
+    overflow: hidden;
+    padding: 1rem 0;
+    background: var(--black);
+  }
+
+  .strip-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: scroll-strip 40s linear infinite;
+  }
+
+  .strip-item {
+    flex-shrink: 0;
+    width: 320px;
+    height: 220px;
+    overflow: hidden;
+  }
+
+  .strip-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  @keyframes scroll-strip {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .strip-wrapper:hover .strip-track {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 768px) {
+    .strip-item {
+      width: 240px;
+      height: 160px;
+    }
+  }
+</style>

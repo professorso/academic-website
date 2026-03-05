@@ -1,0 +1,33 @@
+---
+// AreasOfInterest.astro — Research areas tag cloud
+const areas = [
+  'Asset Pricing and Valuation',
+  'Behavioral Finance',
+  'Limits to Arbitrage',
+  'Market Microstructure',
+  'Earnings Announcements',
+  'Artificial Intelligence',
+  'Human-Computer Interactions',
+  'Regulatory Policy',
+];
+---
+
+<section class="section" data-theme="dark" id="areas">
+  <div class="section-inner">
+    <span class="section-label">Research</span>
+    <h2 class="section-title">Areas of Interest</h2>
+    <div class="areas-tags">
+      {areas.map((area) => (
+        <span class="tag">{area}</span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .areas-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

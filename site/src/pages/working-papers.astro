@@ -1,0 +1,124 @@
+---
+// working-papers.astro — Current working papers
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const papers = [
+  {
+    title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings',
+    authors: 'Lauren Cohen, David S. Kim, Eric So',
+    date: 'November 2024',
+    link: 'http://doi.org/10.2139/ssrn.4971228',
+  },
+  {
+    title: 'Judgment-Free AI Advisors: The Comparative Advantage of Artificial Advisors for Information Disclosure',
+    authors: 'Abby Sussman, Fiona Yang, Eric So',
+    date: '',
+    link: '',
+  },
+  {
+    title: 'When AI Speaks, Do We Listen? Examining Factors in the Uptake of LLM Advice',
+    authors: 'Andrew Lo, Jillian Ross, Eric So',
+    date: '',
+    link: '',
+  },
+  {
+    title: 'Fee the People',
+    authors: 'Omri Even-Tov, Kimberlyn George, Shimon Kogan, Eric So',
+    date: '',
+    link: '',
+  },
+  {
+    title: 'Bad News Bearers: The Negative Tilt of the Financial Press',
+    authors: 'Marina Niessner, Eric So',
+    date: '',
+    link: '',
+  },
+];
+---
+
+<BaseLayout title="Working Papers — Eric So" description="Current working papers and research in progress by Eric So.">
+  <PageHeader label="Research" title="Working Papers" image="/images/backdrops/blurred-abstract-background-interior-view-looking-out-toward-empty-office-lobby-entrance-doors-glass-curtain-wall-with-frame.jpg" />
+
+  <section class="section" data-theme="light">
+    <div class="section-inner">
+      <div class="papers-list">
+        {papers.map((paper) => (
+          <article class="wp-card">
+            {paper.link ? (
+              <a href={paper.link} class="wp-link" target="_blank" rel="noopener">
+                <h2 class="wp-title">{paper.title}</h2>
+                <span class="link-arrow">Read Paper</span>
+              </a>
+            ) : (
+              <div class="wp-link">
+                <h2 class="wp-title">{paper.title}</h2>
+              </div>
+            )}
+            <p class="wp-authors">{paper.authors}</p>
+            {paper.date && <p class="wp-date">{paper.date}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .papers-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .wp-card {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .wp-card:last-child {
+    border-bottom: none;
+  }
+
+  .wp-link {
+    display: block;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+  }
+
+  a.wp-link:hover {
+    opacity: 1;
+  }
+
+  .wp-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  a.wp-link:hover .wp-title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .wp-authors {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    margin-bottom: 0.25rem;
+  }
+
+  .wp-date {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .link-arrow {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+  }
+
+  a.wp-link:hover .link-arrow {
+    color: var(--black);
+  }
+</style>

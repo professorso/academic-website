@@ -1,0 +1,89 @@
+---
+// BaseLayout.astro — HTML shell with fonts, nav, footer, contact modal
+import Navbar from '../components/Navbar.astro';
+import ContactModal from '../components/ContactModal.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Eric So — MIT Sloan',
+  description = 'Eric So is the Sloan Distinguished Professor of Global Economics and Behavioral Science at MIT.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <Navbar />
+    <ContactModal />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer section" data-theme="dark">
+      <div class="section-inner footer-inner">
+        <span class="footer-logo">ERIC SO</span>
+        <p class="footer-text">MIT Sloan School of Management</p>
+        <p class="footer-text footer-small">100 Main St, Cambridge, MA 02142</p>
+      </div>
+    </footer>
+
+    <script is:inline src="/scripts/scroll-inversion.js"></script>
+    <script is:inline src="/scripts/particles.js"></script>
+  </body>
+</html>
+
+<style>
+  .site-footer {
+    padding: 3rem var(--section-pad-x);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-text {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    margin-bottom: 0;
+  }
+
+  .footer-small {
+    font-size: 0.75rem;
+  }
+</style>

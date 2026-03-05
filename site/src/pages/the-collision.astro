@@ -1,0 +1,185 @@
+---
+// the-collision.astro — Dramatic book page for The Collision
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="The Collision — Eric So" description="The Collision — a new book by Eric So, published by Norton.">
+  <!-- Full-bleed dark hero with floating book cover -->
+  <section class="book-hero" data-theme="dark">
+    <div class="book-hero-inner">
+      <a href="https://www.amazon.com/Collision-What-AI-Does-Us/dp/1324124628" class="book-cover-wrap" target="_blank" rel="noopener">
+        <img
+          src="/images/book-cover.jpg"
+          alt="The Collision — book cover"
+          loading="eager"
+          class="book-cover-img"
+        />
+      </a>
+      <div class="book-hero-text">
+        <span class="section-label">New Book</span>
+        <h1 class="book-hero-title">The Collision</h1>
+        <p class="book-hero-subtitle">What AI Does to Us</p>
+        <p class="book-hero-author">Eric So</p>
+        <p class="book-hero-publisher">Published by W. W. Norton</p>
+        <hr class="book-divider" />
+        <p class="book-hero-desc">
+          Book description and details coming soon.
+        </p>
+        <a href="https://www.amazon.com/Collision-What-AI-Does-Us/dp/1324124628" class="book-cta" target="_blank" rel="noopener">
+          Order on Amazon →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-theme="light">
+    <div class="section-inner">
+      <span class="section-label">Related</span>
+      <h2 class="section-title">Alphanomics</h2>
+      <p class="related-description">
+        <em>Alphanomics: The Informational Underpinnings of Market Efficiency</em>
+        — a monograph with Charles M.C. Lee exploring the informational
+        foundations of market efficiency, published in Foundations and Trends
+        in Accounting.
+      </p>
+      <a href="http://dx.doi.org/10.1561/1400000022" class="link-arrow" target="_blank" rel="noopener">
+        Read the Monograph
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .book-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--black);
+    color: var(--white);
+    padding: 6rem var(--section-pad-x) 4rem;
+    overflow: hidden;
+  }
+
+  .book-hero-inner {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .book-cover-wrap {
+    display: flex;
+    justify-content: center;
+    perspective: 800px;
+  }
+
+  .book-cover-img {
+    max-width: 520px;
+    width: 100%;
+    height: auto;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(163, 31, 52, 0.08);
+    transform: rotateY(-6deg) rotateX(2deg);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+
+  .book-cover-wrap:hover .book-cover-img {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.03);
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.6),
+      0 0 100px rgba(163, 31, 52, 0.12);
+  }
+
+  .book-hero-text {
+    padding-right: 2rem;
+  }
+
+  .book-hero-title {
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    margin-bottom: 0.75rem;
+    line-height: 0.95;
+  }
+
+  .book-hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #4a7cbf;
+    margin-top: -0.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .book-hero-author {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .book-hero-publisher {
+    font-size: 0.9rem;
+    color: var(--gray-400);
+  }
+
+  .book-divider {
+    border: none;
+    border-top: 1px solid var(--gray-800);
+    margin: 2rem 0;
+  }
+
+  .book-hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--gray-400);
+    margin-bottom: 2.5rem;
+    max-width: 45ch;
+  }
+
+  .book-cta {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--white);
+    padding: 0.9rem 2rem;
+    color: var(--white);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .book-cta:hover {
+    background: var(--white);
+    color: var(--black);
+    opacity: 1;
+  }
+
+  .related-description {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--gray-600);
+    max-width: 60ch;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .book-hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .book-cover-img {
+      max-width: 260px;
+      transform: none;
+    }
+
+    .book-hero-text {
+      padding: 0;
+    }
+  }
+</style>

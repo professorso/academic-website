@@ -1,0 +1,151 @@
+---
+// BioSection.astro — Professional bio + education
+---
+
+<section class="section" data-theme="dark" id="bio">
+  <div class="section-inner">
+    <span class="section-label">About</span>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>
+          Eric So is the Sloan Distinguished Professor of Global Economics and Behavioral Science and Professor, Global Economics and Management at MIT Sloan, where he studies how human nature and technology interact with incentives to shape decision making and market outcomes. A tenured full professor, he is a member of both the Global Economics and Management group and the Behavioral and Policy Sciences area at the MIT Sloan School of Management.
+        </p>
+        <p>
+          So leads several AI-focused initiatives at MIT, serving as Faculty Co-Director for the AI Executive Academy and Lead Faculty for the MIT Sloan Generative AI Hub for Teaching and Learning. His current research portfolio spans interconnected topics including artificial intelligence (AI), behavioral economics, human-computer interactions, and regulatory policy.        </p>
+        <p>
+          So joined MIT in 2012 after earning his PhD from Stanford University's Graduate School of Business and master's degree in economics from Cornell University. An award-winning educator recognized for excellence in teaching and leadership, he currently teaches courses on AI applications in business and investment decisions and serves as Faculty Chair of MIT Sloan's PhD program.
+        </p>
+      </div>
+      <div class="bio-education">
+        <h3>Education</h3>
+        <ul>
+          <li>
+            <span class="edu-degree">PhD</span>
+            <span class="edu-school">Stanford University</span>
+            <span class="edu-detail">Graduate School of Business</span>
+          </li>
+          <li>
+            <span class="edu-degree">Master's in Economics</span>
+            <span class="edu-school">Cornell University</span>
+          </li>
+        </ul>
+        <p class="bio-note">Joined MIT in 2012</p>
+        <div class="bio-buttons">
+          <a href="/files/CV_EricSo.pdf" class="bio-cv-link" target="_blank" rel="noopener">
+            Download CV →
+          </a>
+          <button class="bio-cv-link bio-contact-btn" id="bio-contact-btn">
+            Contact →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+
+  .bio-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--gray-200);
+    max-width: 60ch;
+  }
+
+  .bio-education h3 {
+    font-size: 0.7rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray-400);
+    margin-bottom: 1.5rem;
+  }
+
+  .bio-education ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .bio-education li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .edu-degree {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .edu-school {
+    font-size: 0.95rem;
+    color: var(--gray-200);
+  }
+
+  .edu-detail {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+  }
+
+  .bio-note {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--gray-400);
+  }
+
+  .bio-cv-link {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1.25rem;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .bio-cv-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+  }
+
+  .bio-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .bio-cv-link {
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .bio-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .bio-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  document.getElementById('bio-contact-btn')?.addEventListener('click', () => {
+    document.getElementById('contact-modal')?.classList.add('active');
+    document.getElementById('modal-overlay')?.classList.add('active');
+    document.getElementById('contact-modal')?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  });
+</script>

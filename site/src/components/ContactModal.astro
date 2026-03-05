@@ -1,0 +1,225 @@
+---
+// ContactModal.astro — Slide-out contact panel
+---
+
+<div class="modal-overlay" id="modal-overlay"></div>
+
+<aside class="contact-modal" id="contact-modal" aria-label="Contact information" role="dialog" aria-hidden="true">
+  <button class="modal-close" id="modal-close" aria-label="Close contact panel">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="modal-content">
+    <h2 class="modal-name">Eric So</h2>
+    <p class="modal-title">Sloan Distinguished Professor of Global Economics and Behavioral Science</p>
+    <p class="modal-subtitle">Professor, Global Economics and Management</p>
+    <p class="modal-subtitle">Chair, MIT Sloan PhD Program</p>
+
+    <hr class="modal-divider" />
+
+    <div class="modal-section">
+      <h3>Office</h3>
+      <p>E62-460</p>
+      <p>MIT Sloan School of Management</p>
+      <p>100 Main St, Cambridge, MA 02142</p>
+    </div>
+
+    <div class="modal-section">
+      <h3>Email</h3>
+      <p><a href="mailto:eso@mit.edu">eso@mit.edu</a></p>
+    </div>
+
+    <div class="modal-section">
+      <h3>Phone</h3>
+      <p><a href="tel:+16172536470">(617) 253-6470</a></p>
+    </div>
+
+    <div class="modal-section">
+      <a href="/files/CV_EricSo.pdf" class="cv-link" target="_blank" rel="noopener">
+        Download CV
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </a>
+    </div>
+
+    <hr class="modal-divider" />
+
+    <div class="modal-section">
+      <h3>Scheduling & Administrative Support</h3>
+      <p class="support-name">Sumaiya Rahman Haddad</p>
+      <p><a href="mailto:sumaiyar@mit.edu">sumaiyar@mit.edu</a></p>
+      <p><a href="tel:+16172536679">(617) 253-6679</a></p>
+      <p class="support-note">For scheduling requests, please contact Sumaiya directly.</p>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .contact-modal {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 400px;
+    max-width: 90vw;
+    height: 100vh;
+    background: var(--pure-white);
+    color: var(--black);
+    z-index: 201;
+    overflow-y: auto;
+    transition: right 0.35s ease;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .contact-modal.active {
+    right: 0;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    color: var(--black);
+    padding: 0.5rem;
+  }
+
+  .modal-close:hover {
+    opacity: 0.5;
+  }
+
+  .modal-content {
+    padding: 3.5rem 2.5rem 2.5rem;
+  }
+
+  .modal-name {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .modal-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+    margin-bottom: 0.15rem;
+  }
+
+  .modal-divider {
+    border: none;
+    border-top: 1px solid var(--gray-200);
+    margin: 1.75rem 0;
+  }
+
+  .modal-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section h3 {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray-400);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-section p {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.6;
+  }
+
+  .modal-section a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .modal-section a:hover {
+    opacity: 0.6;
+  }
+
+  .cv-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--black);
+    padding: 0.7rem 1.5rem;
+    text-decoration: none !important;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .cv-link:hover {
+    background: var(--black);
+    color: var(--white);
+    opacity: 1;
+  }
+
+  .support-name {
+    font-weight: 500;
+  }
+
+  .support-note {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--gray-500);
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('contact-modal');
+  const overlay = document.getElementById('modal-overlay');
+  const closeBtn = document.getElementById('modal-close');
+  const contactBtn = document.getElementById('contact-btn');
+
+  function openModal() {
+    modal?.classList.add('active');
+    overlay?.classList.add('active');
+    modal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal?.classList.remove('active');
+    overlay?.classList.remove('active');
+    modal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  contactBtn?.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  overlay?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>

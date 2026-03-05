@@ -1,0 +1,27 @@
+---
+// index.astro — Homepage assembling all sections
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import BioSection from '../components/BioSection.astro';
+import RolesSection from '../components/RolesSection.astro';
+import FeaturedResearch from '../components/FeaturedResearch.astro';
+import NewsFeed from '../components/NewsFeed.astro';
+import AreasOfInterest from '../components/AreasOfInterest.astro';
+import TeachingSection from '../components/TeachingSection.astro';
+import ResearchGroup from '../components/ResearchGroup.astro';
+import ExternalLinks from '../components/ExternalLinks.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
+---
+
+<BaseLayout>
+  <Hero />
+  <BioSection />
+  <PhotoStrip />
+  <RolesSection />
+  <FeaturedResearch />
+  <NewsFeed />
+  <AreasOfInterest />
+  <TeachingSection />
+  <ResearchGroup />
+  <ExternalLinks />
+</BaseLayout>

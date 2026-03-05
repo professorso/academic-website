@@ -1,0 +1,264 @@
+---
+// media.astro — Media appearances and YouTube videos
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const videos = [
+  {
+    id: '--VyDPtDdMo',
+    title: 'Eric So — Research Talk',
+  },
+  {
+    id: 'cf7Uu2SRPUU',
+    title: 'Eric So — Lecture',
+  },
+  {
+    id: '4sohouIxyPc',
+    title: 'Eric So — Presentation',
+  },
+  {
+    id: 'vvGFr-qADY4',
+    title: 'Eric So — Talk',
+  },
+  {
+    id: 'rVGlZx7C29s',
+    title: 'MIT Sloan — New Thinkers',
+  },
+  {
+    id: 'FOwmBfjrdJ8',
+    title: 'Eric So — Discussion',
+  },
+];
+
+const press = [
+  {
+    title: 'AI Adoption Likely to Accelerate with Upcoming Economic Headwinds',
+    source: 'Washington Post',
+    link: 'https://www.washingtonpost.com/business/2025/06/05/ai-business-economy-automation/',
+  },
+  {
+    title: 'Americans Worry AI Is Coming for These Jobs',
+    source: 'Washington Post',
+    link: 'https://www.washingtonpost.com/business/2025/04/08/ai-job-loss-work/',
+  },
+  {
+    title: 'How Much Do Aspiring CEOs Really Need to Know About AI?',
+    source: 'Fortune',
+    link: 'https://fortune.com/2025/02/06/aspiring-ceo-ai-skills-future-leaders-tech/',
+  },
+  {
+    title: 'MIT Sloan: AI in Business Education',
+    source: 'GMAC',
+    link: 'https://www.gmac.com/market-intelligence-and-research/research-library/curriculum-insight/mit-sloan-ai-in-business-education',
+  },
+  {
+    title: '4 Takeaways for Finance Teams as They Implement AI',
+    source: 'MIT Sloan',
+    link: 'https://mitsloan.mit.edu/ideas-made-to-matter/4-takeaways-finance-teams-they-implement-ai',
+  },
+  {
+    title: 'Financial Times Feature',
+    source: 'Financial Times',
+    link: 'https://www.ft.com/content/daa0f68d-774a-4e5e-902c-5d6e8bf687dc',
+  },
+  {
+    title: 'Highlights from MIT Sloan Reunion 2024',
+    source: 'MIT Sloan',
+    link: 'https://mitsloan.mit.edu/alumni/highlights-mit-sloan-reunion-2024',
+  },
+  {
+    title: 'Retail Investors Lose Big in Options Markets, Research Shows',
+    source: 'MIT Sloan',
+    link: 'https://mitsloan.mit.edu/ideas-made-to-matter/retail-investors-lose-big-options-markets-research-shows',
+  },
+  {
+    title: 'When Companies Report Earnings, Going First Has Plenty of Upsides',
+    source: 'MIT Sloan',
+    link: 'https://mitsloan.mit.edu/ideas-made-to-matter/when-companies-report-earnings-going-first-has-plenty-of-upsides',
+  },
+  {
+    title: 'Why Regulators Shouldn\'t Get Trigger-Happy in Trying to Rein in GameStop\'s Stock Mania',
+    source: 'MarketWatch',
+    link: 'https://www.marketwatch.com/story/why-regulators-shouldnt-get-trigger-happy-in-trying-to-rein-in-gamestops-stock-mania-11611939882',
+  },
+  {
+    title: 'The Hidden Signal in Delayed Earnings Announcements',
+    source: 'Forbes',
+    link: 'https://www.forbes.com/sites/simonmoore/2019/01/30/the-hidden-signal-in-delayed-earnings-announcements/',
+  },
+  {
+    title: 'How Face-to-Face Meetings Pay Off',
+    source: 'Institutional Investor',
+    link: 'https://www.institutionalinvestor.com/article/2bsws3k22w3gon0yz92io/portfolio/how-face-to-face-meetings-pay-off',
+  },
+  {
+    title: 'Beware Fund Companies Gaming the Ratings System',
+    source: 'Index Fund Advisors',
+    link: 'https://www.ifa.com/articles/beware_fund_companies_gaming_ratings_system',
+  },
+  {
+    title: 'New Researcher Examines Whether AI Will Lead to Better Finance Decisions',
+    source: 'MIT IDE',
+    link: 'https://ide.mit.edu/insights/new-researcher-examines-whether-ai-will-leads-to-better-finance-decisions/',
+  },
+  {
+    title: "The Fiscal Frontier: Projecting AI's Long-term Impact on the US Fiscal Outlook",
+    source: 'Brookings',
+    link: 'https://www.brookings.edu/articles/the-fiscal-frontier-projecting-ais-long-term-impact-on-the-us-fiscal-outlook/',
+  },
+];
+---
+
+<BaseLayout title="Media + Videos — Eric So" description="Media appearances, talks, and video content featuring Eric So.">
+  <PageHeader label="Media" title="Media + Videos" image="/images/backdrops/BlurredBackground.jpg" />
+
+  <section class="section" data-theme="light">
+    <div class="section-inner">
+      <h2 class="media-heading">Videos</h2>
+      <div class="video-grid">
+        {videos.map((video) => (
+          <div class="video-card">
+            <div class="video-embed">
+              <iframe
+                src={`https://www.youtube.com/embed/${video.id}`}
+                title={video.title}
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <p class="video-title">{video.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-theme="dark">
+    <div class="section-inner">
+      <h2 class="media-heading">Press &amp; Features</h2>
+      <div class="press-grid">
+        {press.map((item) => (
+          <a href={item.link} class="press-card" target="_blank" rel="noopener">
+            <span class="press-source">{item.source}</span>
+            <span class="press-title">{item.title}</span>
+            <span class="press-cta">Read →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .media-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  /* Video grid */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
+  }
+
+  .video-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    background: var(--gray-800);
+  }
+
+  .video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.75rem;
+    color: var(--gray-600);
+  }
+
+  /* Press grid */
+  .press-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .press-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.75rem;
+    border: 1px solid var(--gray-800);
+    min-height: 200px;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+
+  .press-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+
+  .press-source {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray-500);
+    margin-bottom: 1rem;
+  }
+
+  .press-title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--white);
+    flex: 1;
+  }
+
+  .press-cta {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+    margin-top: 1.25rem;
+    transition: color 0.2s;
+  }
+
+  .press-card:hover .press-cta {
+    color: var(--white);
+  }
+
+  @media (max-width: 1024px) {
+    .press-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .press-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .press-card {
+      min-height: auto;
+    }
+  }
+</style>
