@@ -109,6 +109,21 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 4 — 2026-03-05 (version control + homepage overhaul)
+
+**Changes made:**
+- Initialized git repo + created `.gitignore` (excludes node_modules, dist)
+- Connected to GitHub remote: `professorso/academic-website` (private)
+- Added git commit step to CLAUDE.md session workflow
+- FeaturedResearch: rebuilt with 4 papers (AI Advisors, Losing is Optional, Box Jumping, Fiscal Frontier) as auto-scrolling horizontal marquee (pauses on hover, respects prefers-reduced-motion). Fixed global `.card` class conflict by using scoped `featured-card` class names. Added to research page header.
+- NewsFeed: replaced markdown news items with 2x2 grid of 4 recent LinkedIn posts (stock screener, Prism, ChatGPT vs Google, Your Brain on AI)
+- AreasOfInterest: reordered (AI first, Asset Pricing middle), removed Behavioral Finance, Limits to Arbitrage, Market Microstructure, Earnings Announcements. Added Behavioral Science, Learning + Education, Technological Dependence.
+- Removed Research Group section from homepage
+- Removed MIT Sloan faculty page link from Elsewhere section
+- Elsewhere switched to dark theme for alternating background pattern
+
+---
+
 ## Issue Template
 
 ```markdown

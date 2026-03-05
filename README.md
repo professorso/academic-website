@@ -132,32 +132,30 @@ The site is static HTML. To deploy:
 1. Run `npm run build` inside `site/`
 2. Upload the contents of `site/dist/` to MIT web hosting
 
-## Build Status (as of 2026-03-03)
+## Build Status (as of 2026-03-05)
 
 ### Complete
-- Homepage: Hero with particle animation, bio, roles, photo strip, areas of interest, external links
+- Homepage: Hero with particle animation, bio, roles, photo strip, selected work (auto-scrolling marquee), LinkedIn posts (2x2 grid), areas of interest, external links
 - Navigation: Menu dropdown (top-left), inline nav links, CV/LinkedIn/Contact buttons (top-right, always visible), hamburger on mobile
 - CV links in navbar and bio section, Contact button in bio section
 - LinkedIn "Follow" link in navbar
 - Navbar stays dark over hero, adapts colors on scroll for light/dark sections
 - Scroll-triggered color inversions (light/dark sections)
-- Research page: All 21 published papers in 4 categories
+- Research page: Featured papers marquee + all 21 published papers in 4 categories
 - Working Papers page: All 6 working papers
 - Media + Videos page: 6 YouTube embeds, 15 press articles (3-column card grid)
 - Data + Artifacts page: 4 datasets with disclaimer, 4 AI & Education links (2-column card grid)
 - The Collision page: Book cover (clickable, links to Amazon), subtitle "What AI Does to Us", Amazon order button
 - Subpage headers using backdrop images (not action photos)
 - Responsive design across all pages
+- Version control: git + GitHub remote (professorso/academic-website, private)
 
 ### Awaiting Content from Eric
 - Book description (The Collision page — currently placeholder)
 - Teaching section: Course names, descriptions, syllabi links
-- Research group: PhD students, postdocs, RAs
-- Additional news items (currently 2, suggest 3-5)
 - Financial Times article title (currently placeholder on Media page)
 
 ### Minor Polish Remaining
-- `prefers-reduced-motion` media queries for animations
 - Structured data (JSON-LD) for SEO/Google Scholar
 
 ## Key Design Features

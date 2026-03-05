@@ -71,22 +71,21 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-03-03)
+## Build Status (as of 2026-03-05)
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
 - **Phase 2 (Content Pages)**: Complete — research (21 papers), working papers (6), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
-- **Awaiting Eric's input**: Book description, teaching details, research group members, additional news items, FT article title (currently placeholder)
+- **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder)
 
 ## Change Log
 | Date | Changes |
 |------|---------|
 | 2026-03-03 | Initial build recovered from frozen session. Photo strip fixed (removed Action5, added Action4.JPG then removed Action4 due to dark rendering, removed clickable hover effects). Subpage headers switched to backdrop images. The Collision page: added subtitle "What AI Does to Us", replaced thecollision.ai link with Amazon order link, book cover links to Amazon, increased book cover size. Navbar: replaced "ERIC SO" logo with menu dropdown, added CV button and LinkedIn "Follow" button. CV link added to bio section. Data page: replaced code resources with AI & Education card grid (4 links), moved disclaimer under datasets, fixed text alignment. Media page: expanded press from 2 to 15 articles, redesigned as 3-column card grid. Created CLAUDE.md, README.md, ISSUES.md. |
 | 2026-03-04 | Contact modal: added scheduling note for Sumaiya Rahman Haddad. Bio section: added Contact button next to Download CV. Navbar visibility fix: added `:global(.navbar--on-light)` styles in Navbar.astro for proper light-mode button colors, excluded hero from scroll-inversion observer so navbar stays dark at page top. Right-side buttons set to `flex-shrink: 0` to prevent overflow hiding. |
+| 2026-03-05 | Git version control initialized + GitHub remote (professorso/academic-website, private). FeaturedResearch: rebuilt as auto-scrolling marquee with 4 papers (AI Advisors, Losing is Optional, Box Jumping, Fiscal Frontier), added to research page. NewsFeed: replaced with 2x2 grid of 4 LinkedIn posts. AreasOfInterest: reordered (AI first), removed 4 old topics, added Behavioral Science, Learning + Education, Technological Dependence. Removed Research Group section and MIT Sloan faculty link from Elsewhere. Elsewhere switched to dark theme for alternating pattern. |
 
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
-- `prefers-reduced-motion` not yet implemented for CSS/canvas animations
-- News feed only has 2 seed items (spec suggests 3-5)
 - FT article title is a placeholder ("Financial Times Feature") on Media page — needs real title from Eric
 - Action4.JPG removed from photo strip (too dark when grayscale filter applied)
 
