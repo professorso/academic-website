@@ -19,7 +19,15 @@ Every Claude Code session on this project must follow these steps:
    - Update the **Build Status** section below with what changed
    - Log any bugs or issues in `ISSUES.md`
    - Update `README.md` if new features, pages, or workflows were added
-7. **Build** — Run `npm run build` when ready to deploy
+7. **Git commit** — ALWAYS commit changes at the end of each session (or after each logical chunk of work). Use a descriptive commit message summarizing what changed. Never leave uncommitted work.
+8. **Build** — Run `npm run build` when ready to deploy
+
+## Version Control
+This project uses git for local version control (initialized 2026-03-05). The repo lives inside Dropbox so history syncs across machines.
+- **Always commit** at the end of a session — lost work is unrecoverable without it
+- Use `git log --oneline` to see history
+- Use `git diff` to review uncommitted changes
+- If something breaks, roll back with `git checkout <commit> -- <file>`
 
 ## Project Overview
 Academic website for Eric So, MIT Sloan professor. Built with Astro (static site generator). The full design spec is in `EricSo_Website_Spec.md` — read it before making significant changes.
