@@ -1,6 +1,7 @@
 ---
 // the-collision.astro — Dramatic book page for The Collision
 import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="The Collision — Eric So" description="The Collision — a new book by Eric So, published by Norton.">
@@ -9,7 +10,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="book-hero-inner">
       <a href="https://www.amazon.com/Collision-What-AI-Does-Us/dp/1324124628" class="book-cover-wrap" target="_blank" rel="noopener">
         <img
-          src="/images/book-cover.jpg"
+          src={`${base}/images/book-cover.jpg`}
           alt="The Collision — book cover"
           loading="eager"
           class="book-cover-img"

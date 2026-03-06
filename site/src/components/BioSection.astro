@@ -1,5 +1,6 @@
 ---
 // BioSection.astro — Professional bio + education
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <section class="section" data-theme="dark" id="bio">
@@ -31,7 +32,7 @@
         </ul>
         <p class="bio-note">Joined MIT in 2012</p>
         <div class="bio-buttons">
-          <a href="/files/CV_EricSo.pdf" class="bio-cv-link" target="_blank" rel="noopener">
+          <a href={`${base}/files/CV_EricSo.pdf`} class="bio-cv-link" target="_blank" rel="noopener">
             Download CV →
           </a>
           <button class="bio-cv-link bio-contact-btn" id="bio-contact-btn">

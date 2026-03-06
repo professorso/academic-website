@@ -1,11 +1,12 @@
 ---
 // PhotoStrip.astro — Auto-scrolling horizontal strip of B&W action photos
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const photos = [
-  { src: '/images/Action1.jpg', alt: 'Eric So speaking' },
-  { src: '/images/Action2.jpg', alt: 'Eric So presenting' },
-  { src: '/images/Action3.jpg', alt: 'Eric So at conference' },
-  { src: '/images/Action6.jpg', alt: 'Eric So teaching' },
-  { src: '/images/Action7.jpg', alt: 'Eric So in discussion' },
+  { src: `${base}/images/Action1.jpg`, alt: 'Eric So speaking' },
+  { src: `${base}/images/Action2.jpg`, alt: 'Eric So presenting' },
+  { src: `${base}/images/Action3.jpg`, alt: 'Eric So at conference' },
+  { src: `${base}/images/Action6.jpg`, alt: 'Eric So teaching' },
+  { src: `${base}/images/Action7.jpg`, alt: 'Eric So in discussion' },
 ];
 // Duplicate for seamless loop
 const allPhotos = [...photos, ...photos];

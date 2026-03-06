@@ -1,5 +1,6 @@
 ---
 // ContactModal.astro — Slide-out contact panel
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <div class="modal-overlay" id="modal-overlay"></div>
@@ -37,7 +38,7 @@
     </div>
 
     <div class="modal-section">
-      <a href="/files/CV_EricSo.pdf" class="cv-link" target="_blank" rel="noopener">
+      <a href={`${base}/files/CV_EricSo.pdf`} class="cv-link" target="_blank" rel="noopener">
         Download CV
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
