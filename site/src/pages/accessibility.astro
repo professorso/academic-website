@@ -1,0 +1,108 @@
+---
+// accessibility.astro — Accessibility statement
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Accessibility — Eric So" description="Accessibility statement for Eric So's academic website.">
+  <section class="a11y-hero" data-theme="dark">
+    <div class="section-inner">
+      <span class="section-label">Notice</span>
+      <h1 class="page-title">Accessibility</h1>
+    </div>
+  </section>
+
+  <section class="section" data-theme="light">
+    <div class="section-inner a11y-content">
+      <p>
+        MIT is committed to providing an accessible online environment. This website strives to comply with the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">Web Content Accessibility Guidelines (WCAG) 2.1</a> at the AA level.
+      </p>
+
+      <h2>Features</h2>
+      <ul>
+        <li>Semantic HTML structure with appropriate heading hierarchy</li>
+        <li>Keyboard-navigable interface with a skip-to-content link</li>
+        <li>Sufficient color contrast ratios for text and interactive elements</li>
+        <li>Descriptive alt text for images</li>
+        <li>Respect for <code>prefers-reduced-motion</code> user preferences</li>
+        <li>ARIA labels on interactive controls</li>
+      </ul>
+
+      <h2>Feedback</h2>
+      <p>
+        If you encounter any accessibility barriers on this site, please contact me at <a href="mailto:eso@mit.edu">eso@mit.edu</a>. I welcome your feedback and will make every effort to address concerns promptly.
+      </p>
+
+      <h2>MIT Resources</h2>
+      <p>
+        For more information about accessibility at MIT, visit the <a href="https://accessibility.mit.edu/" target="_blank" rel="noopener">MIT Accessibility</a> website.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .a11y-hero {
+    padding: 10rem var(--section-pad-x) 4rem;
+  }
+
+  .page-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    color: var(--white);
+  }
+
+  .section-label {
+    color: var(--gray-400);
+  }
+
+  .a11y-content {
+    max-width: 65ch;
+  }
+
+  .a11y-content p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+  }
+
+  .a11y-content h2 {
+    font-size: 1.1rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .a11y-content ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .a11y-content li {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--gray-600);
+    list-style: disc;
+  }
+
+  .a11y-content a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .a11y-content a:hover {
+    opacity: 0.6;
+  }
+
+  .a11y-content code {
+    font-size: 0.9em;
+    background: var(--gray-100, #f0f0f0);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+  }
+</style>
