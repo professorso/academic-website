@@ -124,6 +124,45 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 5 — 2026-03-06 (GitHub Pages deployment)
+
+**Changes made:**
+- Added `.github/workflows/deploy.yml` — GitHub Actions workflow that auto-builds and deploys on push to `main`
+- Updated `astro.config.mjs` to use GitHub Pages base path (`/academic-website`) instead of `https://eso.mit.edu`
+- Prefixed all hardcoded internal paths with `import.meta.env.BASE_URL` across 9 files: BaseLayout, Navbar, Hero, BioSection, ContactModal, PhotoStrip, PageHeader, the-collision, astro.config
+- Made repo public (required for GitHub Pages on free plan)
+- Enabled GitHub Pages via API with workflow build source
+- Refreshed `gh` CLI auth to add `workflow` scope (needed to push workflow files)
+- Site live at: https://professorso.github.io/academic-website/
+
+---
+
+### Session 6 — 2026-03-09 (accessibility page)
+
+**Changes made:**
+- Created `site/src/pages/accessibility.astro` — WCAG 2.1 AA commitment, site features list, feedback contact (eso@mit.edu), link to MIT accessibility resources
+- Added "Accessibility" link to footer in BaseLayout.astro (styled as underlined small text)
+- Required by MIT IS&T for DNS namespace approval
+
+---
+
+### Session 7 — 2026-03-12 (MIT domain denied + documentation)
+
+**What happened:**
+- Submitted DNS request for `eso.mit.edu` → `professorso.github.io`
+- Bara Blender (MIT Office of Communications) denied the request per MIT domain name policy
+- Policy prohibits: personal websites, `name.mit.edu` format, redirects to personal sites
+- Policy allows: faculty lab/group sites with format `namelab.mit.edu` or `namegroup.mit.edu`
+
+**Next steps (for Eric):**
+1. **Option A (recommended)**: Reply to Bara requesting `solab.mit.edu` or `sogroup.mit.edu`, framing as a faculty research site (publications, datasets, MIT initiative info) rather than a personal website
+2. **Option B**: Ask MIT Sloan communications team to sponsor as a DLC site
+3. **Option C**: Register a third-party domain (e.g., `ericso.com`) and skip MIT namespace entirely
+
+**Contact:** Bara Blender, bblender@mit.edu, Senior Communications Strategist, MIT Institute Office of Communications
+
+---
+
 ## Issue Template
 
 ```markdown

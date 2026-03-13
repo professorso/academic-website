@@ -128,11 +128,18 @@ Add an entry to the `edTechResources` array in `site/src/pages/data.astro`:
 
 ## Deployment
 
-The site is static HTML. To deploy:
-1. Run `npm run build` inside `site/`
-2. Upload the contents of `site/dist/` to MIT web hosting
+The site auto-deploys to **GitHub Pages** on every push to `main`:
+- **Live URL**: https://professorso.github.io/academic-website/
+- **Workflow**: `.github/workflows/deploy.yml` builds and deploys automatically
+- The site runs on GitHub's servers — no need to keep your computer on
 
-## Build Status (as of 2026-03-05)
+### Custom MIT domain (in progress)
+- `eso.mit.edu` was denied per MIT's domain name policy (no personal websites)
+- Next step: request `solab.mit.edu` or `sogroup.mit.edu` (policy allows faculty lab/group sites)
+- Contact: Bara Blender (bblender@mit.edu, MIT Office of Communications)
+- When approved: update `astro.config.mjs` (change `site`, remove `base`), add CNAME file to `site/public/`
+
+## Build Status (as of 2026-03-13)
 
 ### Complete
 - Homepage: Hero with particle animation, bio, roles, photo strip, selected work (auto-scrolling marquee), LinkedIn posts (2x2 grid), areas of interest, external links
@@ -148,7 +155,9 @@ The site is static HTML. To deploy:
 - The Collision page: Book cover (clickable, links to Amazon), subtitle "What AI Does to Us", Amazon order button
 - Subpage headers using backdrop images (not action photos)
 - Responsive design across all pages
-- Version control: git + GitHub remote (professorso/academic-website, private)
+- Accessibility page with WCAG 2.1 AA statement, footer link on all pages
+- Version control: git + GitHub remote (professorso/academic-website, public)
+- Auto-deploy to GitHub Pages via GitHub Actions
 
 ### Awaiting Content from Eric
 - Book description (The Collision page — currently placeholder)
