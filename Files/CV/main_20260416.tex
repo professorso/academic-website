@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{mathdesign}
+\usepackage{fullpage}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[bf]{caption}
+\usepackage{float}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{amssymb}
+\renewcommand{\labelitemi}{\tiny$\blacksquare$}
+\usetikzlibrary{snakes}
+\usepackage[hyperfootnotes=false,citebordercolor={0 0 1}, citecolor={blue}, linkcolor={blue}, urlcolor={blue}, colorlinks]{hyperref}
+
+
+\oddsidemargin -.25in
+\evensidemargin -.25in
+\textwidth=7.0in
+\itemsep=0in
+\parsep=0in
+
+\newenvironment{list1}{
+  \begin{list}{\ding{113}}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in} 
+      \setlength{\leftmargin}{0.17in}}}{\end{list}}
+\newenvironment{list2}{
+  \begin{list}{$\bullet$}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in} 
+      \setlength{\leftmargin}{0.2in}}}{\end{list}}
+
+%\pagestyle{empty}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN CONTACT INFORMATION SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0in}
+{\bf \LARGE Eric C. So}  \hfill April 2026\\
+\vskip -0.8cm \line(1,0){510} \\ \vskip -0.35cm
+
+\begin{comment}
+\begin{tabular}{@{}p{4.8in}p{4.5in}}
+MIT Sloan School of Management  &  E-mail:  ESo@mit.edu \\            
+100 Main Street, E62-677    & Phone:  617.253.6470 \\         
+Cambridge, MA  02142 USA & Web:    www.mit.edu/$\sim$eso \\      
+\end{tabular}
+\end{comment}
+
+MIT Sloan School of Management  \hfill Phone:  617.253.6470\\            
+100 Main Street, E62-460    \hfill  E-mail:  ESo@mit.edu\\         
+Cambridge, MA  02142 USA \hfill    Web: \href{https://ericso.pro}{ericso.pro}\\
+\vskip -0.5cm
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN RESEARCH INTEREST SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{comment}
+\vskip 0.75cm
+\setlength{\parindent}{0in}
+{\bf RESEARCH INTERESTS:\\}
+\vskip -0.85cm \line(1,0){510} \\
+\setlength{\parindent}{0.5in}
+Asset pricing and trading, behavioral economics, artificial intelligence, regulatory policy, market frictions.
+
+%Active investing, behavioral economics, and risk exposures. Broadly speaking, I am interested in the tensions and mechanisms that shape the information content of market prices.
+%\end{comment}
+%Fundamental analysis, market microstructure, and limits to arbitrage. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN EDUCATION SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.75cm
+\setlength{\parindent}{0in}
+{\bf ACADEMICS:\\}
+\vskip -0.85cm \line(1,0){510} \\ \vskip -0.5cm
+
+$\triangleright$ Massachusetts Institute of Technology (MIT), Cambridge, Massachusetts USA\\
+\vspace*{-.15in}
+\begin{list1}
+\item[] Sloan Distinguished Professor of Global Economics and Behavioral Science
+%\item[] Sloan Distinguished Professor of Financial Economics, Professor 7/2022 - Present
+%\item[] Sloan Distinguished Professor of Management, Associate Professor 7/2020 - 6/2021
+%\item[] Sarofim Family Career Development Associate Professor (With Tenure) 7/2018 - 6/2020
+
+%\item[] Sarofim Family Career Development Associate Professor, 7/2015 - Present
+%\item[] Associate Professor (Without Tenure) of Accounting 7/2015 - Present
+%\item[] Sarofim Family Career Development Assistant Professor, 7/2013 - 6/2015
+%\item[] Assistant Professor 7/2012 - 6/2015
+\item[] Global Economics and Management Group
+\item[] Jamieson Teaching Fellow,  May 2020 - Present
+%Department of Economics, Finance, and Accounting
+%\item[] Teaching: MIT Courses 15.515 (MBA Program), 15.511 (Sloan Fellows), and 15.539 (PhD Program)
+\end{list1}
+
+\vspace*{.1in}
+$\triangleright$ Stanford University, Stanford, California USA\\
+\vspace*{-.15in}
+\begin{list1}
+\item[] Ph.D., Business Administration, 2012
+\end{list1}
+
+\vspace*{.1in}
+$\triangleright$ Cornell University, Ithaca, New York USA\\
+\vspace*{-.15in}
+\begin{list1}
+\item[] M.A., Economics,  2005
+\end{list1}
+
+\vspace*{.1in}
+$\triangleright$ University of Maryland, College Park, Maryland USA\\
+\vspace*{-.15in}
+\begin{list1}
+\item[] B.A., Economics,  2003
+\end{list1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN PUBLISHED RESEARCH SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.75cm
+\setlength{\parindent}{0in}
+{\bf PUBLISHED, FORTHCOMING, \& ACCEPTED RESEARCH:\\}
+\vskip -0.85cm \line(1,0){510} \\ \vskip %-0.25cm
+
+{\bf Topic: Behavioral and Financial Economics} \\
+\vspace*{-.2in}
+\begin{enumerate}
+    \input{pubs_finance.tex} 
+\end{enumerate}
+
+\medskip
+\vspace*{.2in}
+{\bf Topic: Measurement, Regulation, and Disclosure} \\
+\vspace*{-.2in}
+\begin{enumerate}
+    \input{pubs_finreporting.tex} 
+\end{enumerate}
+
+\medskip
+\vspace*{.1in}
+{\bf Topic: Labor Economics} \\
+\vspace*{-.2in}
+\begin{enumerate}
+\item``Inside the Black Box of Doctoral Education: What Program Characteristics Influence Doctoral Students' Attrition and Graduation Probabilities?''
+\begin{itemize}
+\vspace*{-.07in}
+	\item \href{https://www.jstor.org/stable/30128037?seq=1#page_scan_tab_contents}{Published in {\it Educational Evaluation and Policy Analysis} [29(2): 134-150 (Jun., 2007)]}
+\vspace*{-.07in}
+	\item Coauthors: Ron Ehrenberg, George Jakubson, Jeffrey Groen, Joseph Price
+\end{itemize}
+\end{enumerate}
+
+
+
+\medskip
+\vspace*{.1in}
+{\bf Topic: Surveys and Monographs} \\
+\vspace*{-.2in}
+\begin{enumerate}
+
+\item ``Teaching and Learning Economics with AI: A Guide''
+\begin{itemize}
+\vspace*{-.07in}
+	\item \href{https://seagull.wwnorton.com/essentialecon3}{Chapter in {\it The Ultimate Guide to Teaching Economics} [Norton Press] 2025 }
+	% Published in the {\it Annual Review of Financial Economics} [89(5): 1579-1607 (September 2016)] 
+%\vspace*{-.07in}
+	%\item Coauthors: SP Kothari and Rodrigo Verdi
+\end{itemize}
+
+\item ``Analysts' Forecasts and Asset Pricing: A Survey''
+\begin{itemize}
+\vspace*{-.07in}
+	\item \href{http://www.annualreviews.org/doi/abs/10.1146/annurev-financial-121415-032930?src=recsys}{Published in the {\it Annual Review of Financial Economics} [89(5): 1579-1607 (September 2016)] }
+	% Published in the {\it Annual Review of Financial Economics} [89(5): 1579-1607 (September 2016)] 
+\vspace*{-.07in}
+	\item Coauthors: SP Kothari and Rodrigo Verdi
+\end{itemize}
+
+\vskip 0.17cm
+
+\item ``Alphanomics: The Informational Underpinnings of Market Efficiency''
+\begin{itemize}
+\vspace*{-.07in}
+	\item \href{http://www.nowpublishers.com/article/Details/ACC-022}{Published in {\it Foundation and Trends in Accounting} [Vol. 9: 59-258 (2015)]}
+	% Published in {\it Foundation and Trends in Accounting} [Vol. 9: 59-258 (2015)]
+\vspace*{-.07in}
+	\item Coauthor: Charles Lee
+\end{itemize}
+
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN ADDITIONAL RESEARCH SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.75cm
+\setlength{\parindent}{0in}
+{\bf RESEARCH-IN-PROGRESS:\\}
+\vskip -0.85cm \line(1,0){510} \\ 
+
+\input{research_in_progress} 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN PROFESSIONAL EXPERIENCE SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.75cm
+\setlength{\parindent}{0in}
+{\bf PRIOR WORK EXPERIENCE:\\}
+\vskip -0.85cm \line(1,0){510} \\ \vskip -0.35cm
+
+$\triangleright$ Nasdaq Stock Market, Rockville, Maryland USA \hfill Aug. 2005 - June 2007\\
+{\em Research Analyst, Nasdaq Economic Research Department}\\
+%Implemented rigorous technical analyses for all facets of exchange business. \\Developed detailed understanding of market microstructure and price discovery mechanisms.
+%\vskip 0.25cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN PROFESSIONAL EXPERIENCE SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.5cm
+\setlength{\parindent}{0in}
+{\bf OUTSIDE ENGAGEMENTS:\\}
+\vskip -0.85cm \line(1,0){510} \\ \vskip -0.35cm
+
+$\triangleright$ Academic Advisor, Fuller-Thaler Asset Management (2017-Present)\\
+$\triangleright$ Consultant, Wellington Asset Management (2020-2022)\\
+$\triangleright$ Consultant, Robinhood Financial (2022)\\
+$\triangleright$ Member, Listing Council for Nasdaq Stock Market (2018-2020)
+
+%\vskip 0.25cm
+
+\vskip 0.25cm
+
+
+
+%\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BEGIN SERVICE SECTION;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vskip 0.5cm
+\setlength{\parindent}{0in}
+{\bf PROFESSIONAL SERVICE\\}
+\vskip -0.85cm \line(1,0){510} \\ \vskip -0.15cm
+$\triangleright$ \underline{MIT Sloan}: 
+\vspace*{-.07in}
+\begin{itemize} 
+		%\begin{singlespace}
+  \item Faculty Co-Director for AI Executive Academy (2024 - Present)
+  \vspace*{-.07in}
+  \item Faculty Director of MIT Sloan PhD Program (Oct 2022 - Present)
+\vspace*{-.07in}
+    \item Faculty Lead, for the MIT Sloan Generative AI Hub for Teaching and Learning  (2023-Present)
+		%\item Director of PhD Program, MIT Sloan Accounting Group (June 2017 - present)
+\vspace*{-.07in}
+    \item Committee Member, Committee on Undergraduate Admissions and Financial Aid (2022-Present)
+		%\item Faculty Director, MIT Joint Venture with Asia School of Business
+\vspace*{-.07in}
+		\item Committee Member, Faculty Data Research Committee (2017-Present)
+	\end{itemize}
+%\vspace*{-.1in}
+
+\begin{comment}
+\vspace*{.07in}
+$\triangleright$ \underline{Classes Taught}: 
+\vspace*{-.07in}
+	\begin{itemize} 
+		\item	Financial Accounting (15.515) [MBA Core]: Fall 2012, 2013, 2015\\
+			\vspace*{-.3in}
+		\item Financial Accounting (15.511) [Sloan Fellows]: Summer 2016 \\
+			\vspace*{-.3in}
+		\item Corporate Financial Accounting (15.511) [MFIN]: Summer 2017 \\
+					\vspace*{-.3in}
+		\item Doctoral Seminar in Accounting (15.539) [Co-taught with John Core]: Spring 2015 \\
+							\vspace*{-.3in}
+		\item Doctoral Seminar in Accounting (15.539): Spring 2018
+	\end{itemize}
+\end{comment}
+
+\vspace*{.07in}
+$\triangleright$  \underline{Dissertation Committees}: 
+\vspace*{-.07in}
+	\begin{itemize} 
+		%\begin{singlespace}
+		\item Committee Chair: Nick Guest (Cornell University 2018), Jinhwan Kim (Stanford University 2019), Suzie Noh (Stanford University 2020), Georg Rickman (Northwestern University 2020), Sam Anderson (Michigan, expected 2022), Ki-Soon Choi (Boston College, 2022), Gabriel Voelker (Dartmouth, 2024)
+		
+		\item Committee Member: Patricia Naranjo (Rice, 2014), Josh Anderson (Boston University, 2015), Ben Yost (Boston College, 2017), Tim de Silva (Stanford, 2024)
+
+	%\end{singlespace}
+	\end{itemize}
+%\vspace*{-.1in}
+\vspace*{.07in}
+$\triangleright$ \underline{Editorial Experience}: 
+\vspace*{-.07in}
+	\begin{itemize} 
+		\item	Management Science (MS), Department Editor [Nov. 2021 - Present], Associate Editor [Sep. 2018 - Oct. 2021]\\
+			\vspace*{-.3in}
+		\item	Journal of Accounting Research (JAR), Associate Editor [Jan. 2019 - Oct. 2021]\\
+			\vspace*{-.3in}
+	\end{itemize}
+	
+\begin{comment}
+\vspace*{.17in}
+$\triangleright$ \underline{Editorial Boards}: 
+\vspace*{-.07in}
+	\begin{itemize} 
+		%\item	The Accounting Review (TAR) \\
+			\vspace*{-.3in}
+		%\item Journal of Financial Reporting (JFR) \\
+					\vspace*{-.3in}
+		\item Journal of Accounting and Economics (JAE) 
+	\end{itemize}
+\end{comment}
+
+%\newpage
+\vspace*{.17in}
+$\triangleright$ \underline{Referee Service}:
+\begin{itemize}
+%\vspace*{-.07in}
+	%\item {\bf Editorial Board}: 
+\vspace*{-.07in}
+	\item  Quarterly Journal of Economics (QJE), Journal of Finance (JF), Journal of Financial Economics (JFE), Review of Financial Studies (RFS), Journal of Financial and Quantitative Analysis (JFQA), Management Science (MS), Review of Finance (RoF), Journal of Accounting and Economics (JAE), Journal of Accounting Research (JAR), The Accounting Review (TAR), Review of Accounting Studies (RAST), Contemporary Accounting Research (CAR)
+\end{itemize}
+
+
+
+\end{document}
+
+
+
+
+
+
+	
