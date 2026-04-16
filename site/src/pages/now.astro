@@ -1,0 +1,134 @@
+---
+// now.astro — What Eric is currently working on. Update this whenever the top-of-mind list changes.
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lastUpdated = 'April 2026';
+---
+
+<BaseLayout title="Now — Eric So" description="What Eric So is currently working on, reading, and thinking about.">
+  <section class="now-hero" data-theme="dark">
+    <div class="section-inner">
+      <span class="section-label">Now</span>
+      <h1 class="page-title">What I'm up to</h1>
+      <p class="hero-sub">A snapshot of current projects, teaching, and preoccupations. Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noopener">Derek Sivers' /now convention</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" data-theme="light">
+    <div class="section-inner now-content">
+      <h2>Research</h2>
+      <ul>
+        <li><em>Motivated Negligence</em> — how profit mandates induce emergent alignment failures in large language models deployed as business agents.</li>
+        <li><em>Loyalty Capture</em> — how reporting relationships alone bias frontier AI models toward organizational supervisors, even without explicit instruction.</li>
+        <li><em>Judgment-Free AI Advisors</em> — with Abby Sussman and Fiona Yang, on when people prefer AI over human advice in disclosure contexts.</li>
+      </ul>
+
+      <h2>Book</h2>
+      <p>
+        Finalizing <em>The Collision: What AI Does to Us</em>, a book on how artificial intelligence is reshaping the way people think, decide, and work together.
+      </p>
+
+      <h2>Teaching</h2>
+      <ul>
+        <li><strong>Applied AI</strong> — MBA course on deploying AI in business contexts.</li>
+        <li><strong>Quant Investing</strong> — MBA course on systematic investment strategies and market microstructure.</li>
+      </ul>
+
+      <h2>At MIT</h2>
+      <ul>
+        <li>Leading the <a href="https://ide.mit.edu/research-group/ai-finance-decisions/" target="_blank" rel="noopener">AI in Financial Markets and Decision-Making</a> research group at the MIT Initiative on the Digital Economy.</li>
+        <li>Faculty Co-Director, AI Executive Academy.</li>
+        <li>Lead Faculty, MIT Sloan Generative AI Hub for Teaching and Learning.</li>
+        <li>Faculty Chair, MIT Sloan PhD program.</li>
+      </ul>
+
+      <p class="now-footer">
+        Last updated {lastUpdated}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .now-hero {
+    padding: 10rem var(--section-pad-x) 4rem;
+  }
+
+  .page-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--gray-400);
+    max-width: 60ch;
+  }
+
+  .hero-sub a {
+    color: var(--gray-200);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .section-label {
+    color: var(--gray-400);
+  }
+
+  .now-content {
+    max-width: 65ch;
+  }
+
+  .now-content p,
+  .now-content li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--gray-600);
+  }
+
+  .now-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .now-content h2 {
+    font-size: 1.1rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .now-content ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .now-content li {
+    list-style: disc;
+  }
+
+  .now-content a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .now-content a:hover {
+    opacity: 0.6;
+  }
+
+  .now-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200, #e5e5e5);
+    font-size: 0.9rem;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+</style>
