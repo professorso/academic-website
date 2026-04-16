@@ -11,10 +11,30 @@ interface Props {
 
 const {
   title = 'Eric So — MIT Sloan',
-  description = 'Eric So is the Sloan Distinguished Professor of Global Economics and Behavioral Science at MIT.',
+  description = 'Eric C. So is the Sloan Distinguished Professor of Global Economics and Behavioral Science at MIT Sloan School of Management. Research on financial markets, investor behavior, and AI in finance and education.',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonical = `${siteUrl}${Astro.url.pathname}`;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Eric C. So',
+  jobTitle: 'Sloan Distinguished Professor of Global Economics and Behavioral Science',
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'MIT Sloan School of Management',
+    url: 'https://mitsloan.mit.edu',
+  },
+  url: siteUrl || 'https://ericso.pro',
+  sameAs: [
+    'https://www.linkedin.com/in/eric-so-87531768/',
+    'https://mitsloan.mit.edu/faculty/directory/eric-c-so',
+    'https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=891287',
+  ],
+};
 ---
 
 <!doctype html>
@@ -23,7 +43,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,6 +62,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+
+    <!-- Person schema for Google Knowledge Graph -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>

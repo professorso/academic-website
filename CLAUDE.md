@@ -36,12 +36,15 @@ This project uses git with a GitHub remote: `professorso/academic-website` (publ
 - The site builds on GitHub's servers — works even when your computer is off
 - All internal paths use `import.meta.env.BASE_URL` to handle the `/academic-website` base path
 
-### Custom domain (eso.mit.edu) — IN PROGRESS
-- MIT denied `eso.mit.edu` per their domain name policy (no personal websites, no `name.mit.edu`)
-- The policy allows faculty lab/group sites with format `namelab.mit.edu` or `namegroup.mit.edu`
-- **Next step**: Reply to Bara Blender (bblender@mit.edu) requesting `solab.mit.edu` or `sogroup.mit.edu` instead, framing the site as a faculty research site (not personal)
-- Alternatively, go through MIT Sloan's communications team to sponsor as a DLC site
-- When a custom domain is approved, update `astro.config.mjs`: uncomment the `site: 'https://DOMAIN'` line, remove the `base` path, and add a CNAME file to `site/public/`
+### Custom domain: ericso.pro
+- Registered 2026-04-16 after MIT denied `eso.mit.edu` (policy prohibits personal `name.mit.edu` sites).
+- `site/public/CNAME` contains `ericso.pro` — GitHub Pages reads this on deploy to auto-configure the custom domain.
+- `astro.config.mjs` uses `site: 'https://ericso.pro'` with no `base` path.
+- DNS at registrar:
+  - Apex A records → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+  - Optional AAAA → `2606:50c0:8000::153`, `...8001::153`, `...8002::153`, `...8003::153`
+  - CNAME `www` → `professorso.github.io`
+- After first deploy, enable "Enforce HTTPS" in GitHub repo Settings → Pages (may take a few hours for cert provisioning).
 
 ## Project Overview
 Academic website for Eric So, MIT Sloan professor. Built with Astro (static site generator). The full design spec is in `EricSo_Website_Spec.md` — read it before making significant changes.
@@ -85,11 +88,12 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-03-13)
+## Build Status (as of 2026-04-16)
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
 - **Phase 2 (Content Pages)**: Complete — research (21 papers), working papers (6), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
-- **Phase 4 (Deployment)**: Site live on GitHub Pages. Custom MIT domain pending (see Version Control & Deployment section above).
+- **Phase 4 (Deployment)**: Custom domain `ericso.pro` registered. CNAME file + Astro config updated. Awaiting DNS propagation + GitHub Pages HTTPS cert.
+- **SEO**: Person JSON-LD schema, canonical URL, and Open Graph tags added to BaseLayout for Google Knowledge Graph eligibility.
 - **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder)
 
 ## Change Log
@@ -101,16 +105,16 @@ cd site && npm run build  # Build static output to dist/
 | 2026-03-06 | GitHub Pages deployment: added `.github/workflows/deploy.yml` for auto-deploy on push to main. Updated `astro.config.mjs` to use GitHub Pages base path (`/academic-website`). Prefixed all internal paths (nav links, images, CV, scripts) with `import.meta.env.BASE_URL` across 9 files. Made repo public to enable GitHub Pages on free plan. Site live at `professorso.github.io/academic-website/`. |
 | 2026-03-09 | Added accessibility page (`site/src/pages/accessibility.astro`) and footer link. Required by MIT IS&T for DNS approval. Includes WCAG 2.1 AA commitment, site features list, feedback contact, link to MIT accessibility resources. |
 | 2026-03-12 | MIT denied `eso.mit.edu` — domain name policy prohibits personal websites and `name.mit.edu` format. Policy allows faculty lab/group sites (`namelab.mit.edu`). Next step: request `solab.mit.edu` or `sogroup.mit.edu`, or sponsor through MIT Sloan DLC. |
+| 2026-04-16 | Registered `ericso.pro` as custom domain (abandoning MIT subdomain path). Added `site/public/CNAME`, switched `astro.config.mjs` to `site: 'https://ericso.pro'` with no base path. Added Person JSON-LD schema, canonical URL, and Open Graph meta tags to BaseLayout for SEO / Google Knowledge Graph. |
 
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
 - FT article title is a placeholder ("Financial Times Feature") on Media page — needs real title from Eric
 - Action4.JPG removed from photo strip (too dark when grayscale filter applied)
-- Custom MIT domain pending — `eso.mit.edu` denied, need to request alternative (see Deployment section)
+- `ericso.pro` DNS propagation + HTTPS cert pending after first deploy
 
 ## Important Notes
 - The site auto-deploys to GitHub Pages on every push to `main`
-- Currently configured for GitHub Pages (`professorso.github.io/academic-website/`) in `astro.config.mjs`
-- When custom domain is approved: update `site` and remove `base` in `astro.config.mjs`, add CNAME file
+- Configured for custom domain `ericso.pro` in `astro.config.mjs` (CNAME file in `site/public/`)
 - Always log problems and fixes in `ISSUES.md`
 - Always update this file's Build Status and Change Log after making changes
