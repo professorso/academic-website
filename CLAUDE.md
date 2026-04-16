@@ -94,7 +94,7 @@ cd site && npm run build  # Build static output to dist/
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
 - **Phase 4 (Deployment)**: Custom domain `ericso.pro` registered. CNAME file + Astro config updated. Awaiting DNS propagation + GitHub Pages HTTPS cert.
 - **SEO**: Person JSON-LD schema, canonical URL, and Open Graph tags added to BaseLayout for Google Knowledge Graph eligibility.
-- **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder)
+- **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder), MIT Sloan faculty page URL + SSRN author URL (for Person schema `sameAs` in `BaseLayout.astro`)
 
 ## Change Log
 | Date | Changes |
@@ -105,7 +105,7 @@ cd site && npm run build  # Build static output to dist/
 | 2026-03-06 | GitHub Pages deployment: added `.github/workflows/deploy.yml` for auto-deploy on push to main. Updated `astro.config.mjs` to use GitHub Pages base path (`/academic-website`). Prefixed all internal paths (nav links, images, CV, scripts) with `import.meta.env.BASE_URL` across 9 files. Made repo public to enable GitHub Pages on free plan. Site live at `professorso.github.io/academic-website/`. |
 | 2026-03-09 | Added accessibility page (`site/src/pages/accessibility.astro`) and footer link. Required by MIT IS&T for DNS approval. Includes WCAG 2.1 AA commitment, site features list, feedback contact, link to MIT accessibility resources. |
 | 2026-03-12 | MIT denied `eso.mit.edu` — domain name policy prohibits personal websites and `name.mit.edu` format. Policy allows faculty lab/group sites (`namelab.mit.edu`). Next step: request `solab.mit.edu` or `sogroup.mit.edu`, or sponsor through MIT Sloan DLC. |
-| 2026-04-16 | Registered `ericso.pro` as custom domain (abandoning MIT subdomain path). Added `site/public/CNAME`, switched `astro.config.mjs` to `site: 'https://ericso.pro'` with no base path. Added Person JSON-LD schema, canonical URL, and Open Graph meta tags to BaseLayout for SEO / Google Knowledge Graph. |
+| 2026-04-16 | Registered `ericso.pro` at Cloudflare, DNS pointed to GitHub Pages (4 A records to 185.199.108-111.153 + CNAME www→professorso.github.io, proxy disabled). Added `site/public/CNAME`, switched `astro.config.mjs` to `site: 'https://ericso.pro'` with no base path. Site live at https://ericso.pro with HTTPS enforced. Added Person JSON-LD schema, canonical URL, and Open Graph meta tags to BaseLayout. Installed `@astrojs/sitemap`. Verified ownership in Google Search Console and submitted sitemap. |
 
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
