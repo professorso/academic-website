@@ -76,7 +76,7 @@ cd site && npm run build  # Build static output to dist/
 - **LinkedIn/Social**: Edit the navbar right-side buttons in `site/src/components/Navbar.astro`
 
 ## Design Decisions
-- **Photos**: Action photos (Action1-4, Action6-7) are for the homepage photo strip only. Subpage headers use backdrop images from `public/images/backdrops/`. Do NOT use Action5.jpg anywhere.
+- **Photos**: Homepage photo strip currently uses Action1-3, Action6-7 plus IDE1 + IDE2 (MIT IDE Conference, April 2026). Photos are color as of 2026-04-16 (grayscale filter removed). Subpage headers use backdrop images from `public/images/backdrops/`. Do NOT use Action5.jpg anywhere. Action4 is also omitted (too dark).
 - **Photo strip**: Decorative only — no hover effects, no click behavior, images have `pointer-events: none`
 - **Subpage header images**: Research → `Sloan2.jpeg`, Working Papers → `blurred-abstract-background...jpg`, Media → `BlurredBackground.jpg`, Data → `Sloan2.jpeg`
 - **Color scheme**: Black-and-white high-contrast with scroll-triggered inversions. MIT red (#A31F34) used sparingly.
@@ -110,7 +110,7 @@ cd site && npm run build  # Build static output to dist/
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
 - FT article title is a placeholder ("Financial Times Feature") on Media page — needs real title from Eric
-- Action4.JPG removed from photo strip (too dark when grayscale filter applied)
+- Action4.JPG not used in photo strip (too dark historically; may be reevaluated now that photos are in color)
 - `ericso.pro` DNS propagation + HTTPS cert pending after first deploy
 
 ## Important Notes
