@@ -66,14 +66,16 @@ cd site && npm run build  # Build static output to dist/
 
 ## Content Editing Patterns
 - **News items**: Add `.md` files to `site/src/content/news/` with frontmatter (title, date, category, link)
-- **Research papers**: Edit `site/src/pages/research.astro` directly (papers are inline, not markdown files)
-- **Working papers**: Edit `site/src/pages/working-papers.astro`
+- **Research papers**: Edit `site/src/pages/research.astro` directly (papers are inline, not markdown files). **Also add matching entry to `site/src/data/search-index.ts`** so it shows up in Cmd+K search.
+- **Working papers**: Edit `site/src/pages/working-papers.astro`. Also update `search-index.ts`.
 - **Press articles**: Edit the `press` array in `site/src/pages/media.astro` (displayed as 3-column card grid)
 - **AI & Education links**: Edit the `edTechResources` array in `site/src/pages/data.astro` (displayed as 2-column square card grid)
 - **Contact info**: Edit `site/src/components/ContactModal.astro`
 - **Bio/Roles**: Edit `BioSection.astro` and `RolesSection.astro`
-- **CV**: Replace the PDF at `site/public/files/CV_EricSo.pdf` (navbar and bio links auto-update)
+- **CV**: Replace the PDF at `site/public/files/CV_EricSo.pdf` (navbar and bio links auto-update). See cv_workflow memory for the full recompile-from-LaTeX flow.
 - **LinkedIn/Social**: Edit the navbar right-side buttons in `site/src/components/Navbar.astro`
+- **Now page**: Edit `site/src/pages/now.astro` — update the `lastUpdated` string in the frontmatter + the content lists. Should reflect what Eric is currently working on at the top of his mind.
+- **New top-level pages**: Add the route file under `site/src/pages/`. To be fully integrated, also (1) add the route key to `pages` in `site/src/pages/og/[...route].ts` so an OG image is generated, and (2) add an entry to `search-index.ts` so it's discoverable in Cmd+K.
 
 ## Design Decisions
 - **Photos**: Homepage photo strip currently uses Action1-3, Action6-7 plus IDE1 + IDE2 (MIT IDE Conference, April 2026). Photos are color as of 2026-04-16 (grayscale filter removed). Subpage headers use backdrop images from `public/images/backdrops/`. Do NOT use Action5.jpg anywhere. Action4 is also omitted (too dark).
@@ -106,6 +108,9 @@ cd site && npm run build  # Build static output to dist/
 | 2026-03-09 | Added accessibility page (`site/src/pages/accessibility.astro`) and footer link. Required by MIT IS&T for DNS approval. Includes WCAG 2.1 AA commitment, site features list, feedback contact, link to MIT accessibility resources. |
 | 2026-03-12 | MIT denied `eso.mit.edu` — domain name policy prohibits personal websites and `name.mit.edu` format. Policy allows faculty lab/group sites (`namelab.mit.edu`). Next step: request `solab.mit.edu` or `sogroup.mit.edu`, or sponsor through MIT Sloan DLC. |
 | 2026-04-16 | Registered `ericso.pro` at Cloudflare, DNS pointed to GitHub Pages (4 A records to 185.199.108-111.153 + CNAME www→professorso.github.io, proxy disabled). Added `site/public/CNAME`, switched `astro.config.mjs` to `site: 'https://ericso.pro'` with no base path. Site live at https://ericso.pro with HTTPS enforced. Added Person JSON-LD schema, canonical URL, and Open Graph meta tags to BaseLayout. Installed `@astrojs/sitemap`. Verified ownership in Google Search Console and submitted sitemap. |
+| 2026-04-16 | Cleaned up `Files/CV/` — kept active master `main_20260416.tex` + three `\input{}` dependencies, removed historical snapshots, specialized CVs, and duplicates. Updated CV website URL to `ericso.pro`, recompiled, synced to `site/public/files/CV_EricSo.pdf`. |
+| 2026-04-16 | Rewrote homepage bio (BioSection.astro) to emphasize applied AI, reference the forthcoming book, mention the MIT IDE AI in Financial Markets research group, and name the two separate courses (Applied AI, Quant Investing). Switched homepage photo strip to color and added two MIT IDE Conference photos (IDE1, IDE2). |
+| 2026-04-16 | Added four polish features: ClientRouter view transitions, `/now` page (linked from footer), Command-K search palette (CommandPalette.astro + search-index.ts + navbar ⌘K button), and per-page OG images via `astro-og-canvas` (endpoint at `site/src/pages/og/[...route].ts`). Added Twitter card meta tags. |
 
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
