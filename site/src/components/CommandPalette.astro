@@ -28,7 +28,7 @@ const indexJson = JSON.stringify(searchIndex);
   </div>
 </div>
 
-<script is:inline define:vars={{ indexJson }}>
+<script is:inline data-astro-rerun define:vars={{ indexJson }}>
   (function () {
     const overlay = document.getElementById('cmdk-overlay');
     const input = document.getElementById('cmdk-input');
@@ -148,41 +148,8 @@ const indexJson = JSON.stringify(searchIndex);
       close();
     }
 
-    // Global shortcut
-    document.addEventListener('keydown', (e) => {
-      const isOpen = overlay.classList.contains('cmdk-open');
-      const mod = e.metaKey || e.ctrlKey;
-
-      if (mod && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        isOpen ? close() : open();
-        return;
-      }
-
-      // "/" as an alternative shortcut when not typing in an input
-      if (!isOpen && e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
-        e.preventDefault();
-        open();
-        return;
-      }
-
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        close();
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        navigate(1);
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        navigate(-1);
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        activate();
-      }
-    });
-
+    // Element-level listeners: safe to re-add because old elements are
+    // garbage-collected after a view transition body swap.
     input.addEventListener('input', (e) => {
       search(e.target.value);
     });
@@ -201,21 +168,50 @@ const indexJson = JSON.stringify(searchIndex);
       }
     });
 
-    // Expose open/close on window so navbar search button can trigger
+    // Expose on window so the navbar search button can trigger
     window.openCommandPalette = open;
     window.closeCommandPalette = close;
 
-    // Custom event channel as a more idiomatic alternative
-    document.addEventListener('cmdk:open', open);
+    // Global listeners: only install once to avoid stacking across
+    // view transition re-runs.
+    if (!window.__cmdkInstalled) {
+      document.addEventListener('keydown', (e) => {
+        // Grab the live overlay reference — it may have been replaced
+        // by a view transition since the handler was first bound.
+        var ov = document.getElementById('cmdk-overlay');
+        if (!ov) return;
+        var isOpen = ov.classList.contains('cmdk-open');
+        var mod = e.metaKey || e.ctrlKey;
+
+        if (mod && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          isOpen ? close() : open();
+          return;
+        }
+
+        if (!isOpen && e.key === '/' && !['INPUT', 'TEXTAREA'].includes((document.activeElement || {}).tagName || '')) {
+          e.preventDefault();
+          open();
+          return;
+        }
+
+        if (!isOpen) return;
+
+        if (e.key === 'Escape') { e.preventDefault(); close(); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); navigate(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+        else if (e.key === 'Enter') { e.preventDefault(); activate(); }
+      });
+
+      document.addEventListener('cmdk:open', function () {
+        open();
+      });
+
+      window.__cmdkInstalled = true;
+    }
 
     // Pre-render default state
     search('');
-
-    // Rerun on view transition page loads so handlers bind to the current overlay
-    document.addEventListener('astro:after-swap', () => {
-      currentResults = [];
-      render();
-    });
   })();
 </script>
 

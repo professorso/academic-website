@@ -177,6 +177,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    white-space: nowrap;
     transition: opacity 0.2s;
   }
 
@@ -361,48 +362,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
-  // Site menu dropdown (top-left)
-  const menuBtn = document.getElementById('menu-btn');
-  const siteDropdown = document.getElementById('site-dropdown');
+  // Re-binds all navbar handlers. Called on initial load and after every
+  // view transition, since the <body> is swapped and element references
+  // from the prior page no longer exist.
+  function setupNavbar() {
+    const menuBtn = document.getElementById('menu-btn');
+    const siteDropdown = document.getElementById('site-dropdown');
 
-  menuBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = siteDropdown?.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Close dropdown when clicking a link or clicking outside
-  siteDropdown?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      siteDropdown.classList.remove('open');
-      menuBtn?.setAttribute('aria-expanded', 'false');
+    menuBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = siteDropdown?.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
     });
-  });
 
-  document.addEventListener('click', () => {
-    siteDropdown?.classList.remove('open');
-    menuBtn?.setAttribute('aria-expanded', 'false');
-  });
-
-  const toggle = document.getElementById('nav-toggle');
-  const links = document.getElementById('nav-links');
-
-  toggle?.addEventListener('click', () => {
-    const isOpen = links?.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Close on link click (mobile)
-  links?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      links.classList.remove('open');
-      toggle?.setAttribute('aria-expanded', 'false');
+    siteDropdown?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        siteDropdown.classList.remove('open');
+        menuBtn?.setAttribute('aria-expanded', 'false');
+      });
     });
-  });
 
-  // Search button opens the Command-K palette
-  const searchBtn = document.getElementById('navbar-search-btn');
-  searchBtn?.addEventListener('click', () => {
-    document.dispatchEvent(new CustomEvent('cmdk:open'));
-  });
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.getElementById('nav-links');
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = links?.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    links?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle?.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    const searchBtn = document.getElementById('navbar-search-btn');
+    searchBtn?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('cmdk:open'));
+    });
+  }
+
+  // Document-level outside-click handler. Install once so navigating
+  // between pages doesn't stack duplicate listeners.
+  if (!window.__navOutsideClickInstalled) {
+    document.addEventListener('click', () => {
+      const sd = document.getElementById('site-dropdown');
+      const mb = document.getElementById('menu-btn');
+      sd?.classList.remove('open');
+      mb?.setAttribute('aria-expanded', 'false');
+    });
+    window.__navOutsideClickInstalled = true;
+  }
+
+  setupNavbar();
+  document.addEventListener('astro:page-load', setupNavbar);
 </script>
