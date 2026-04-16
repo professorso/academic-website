@@ -1,0 +1,411 @@
+---
+// CommandPalette.astro — Cmd/Ctrl+K search modal. Keyboard-navigable, no external deps.
+import { searchIndex } from '../data/search-index';
+
+const indexJson = JSON.stringify(searchIndex);
+---
+
+<div class="cmdk-overlay" id="cmdk-overlay" aria-hidden="true">
+  <div class="cmdk-modal" role="dialog" aria-modal="true" aria-label="Site search">
+    <div class="cmdk-input-wrap">
+      <svg class="cmdk-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input
+        type="text"
+        id="cmdk-input"
+        class="cmdk-input"
+        placeholder="Search papers, pages, and more…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd class="cmdk-kbd-hint">ESC</kbd>
+    </div>
+    <ul class="cmdk-results" id="cmdk-results" role="listbox"></ul>
+    <div class="cmdk-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>⌘K</kbd> to toggle</span>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ indexJson }}>
+  (function () {
+    const overlay = document.getElementById('cmdk-overlay');
+    const input = document.getElementById('cmdk-input');
+    const resultsEl = document.getElementById('cmdk-results');
+    if (!overlay || !input || !resultsEl) return;
+
+    const entries = JSON.parse(indexJson);
+    let activeIndex = 0;
+    let currentResults = [];
+
+    const KIND_LABELS = {
+      page: 'Page',
+      paper: 'Paper',
+      working: 'Working Paper',
+      book: 'Book',
+      group: 'Group',
+    };
+
+    function score(entry, query) {
+      const q = query.toLowerCase();
+      const title = entry.title.toLowerCase();
+      const desc = (entry.description || '').toLowerCase();
+      if (title === q) return 100;
+      if (title.startsWith(q)) return 80;
+      if (title.includes(q)) return 60;
+      if (desc.includes(q)) return 30;
+      // word-boundary partial match
+      const words = q.split(/\s+/).filter(Boolean);
+      const hits = words.filter((w) => title.includes(w) || desc.includes(w)).length;
+      if (hits === words.length && hits > 1) return 40;
+      if (hits > 0) return 10 + hits * 5;
+      return 0;
+    }
+
+    function render() {
+      if (!currentResults.length) {
+        resultsEl.innerHTML = input.value
+          ? '<li class="cmdk-empty">No matches.</li>'
+          : '<li class="cmdk-empty">Start typing to search…</li>';
+        return;
+      }
+      resultsEl.innerHTML = currentResults
+        .map((entry, i) => {
+          const label = KIND_LABELS[entry.kind] || '';
+          const extIcon = entry.external
+            ? '<svg class="cmdk-ext" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+            : '';
+          return `
+            <li class="cmdk-item ${i === activeIndex ? 'cmdk-item--active' : ''}" role="option" data-index="${i}">
+              <a href="${entry.url}" ${entry.external ? 'target="_blank" rel="noopener"' : ''} class="cmdk-item-link">
+                <div class="cmdk-item-text">
+                  <span class="cmdk-item-title">${escapeHtml(entry.title)}${extIcon}</span>
+                  ${entry.description ? `<span class="cmdk-item-desc">${escapeHtml(entry.description)}</span>` : ''}
+                </div>
+                <span class="cmdk-item-kind">${label}</span>
+              </a>
+            </li>`;
+        })
+        .join('');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function search(query) {
+      if (!query.trim()) {
+        // Show top pages by default
+        currentResults = entries.filter((e) => e.kind === 'page').slice(0, 8);
+      } else {
+        currentResults = entries
+          .map((e) => ({ entry: e, s: score(e, query) }))
+          .filter((x) => x.s > 0)
+          .sort((a, b) => b.s - a.s)
+          .slice(0, 10)
+          .map((x) => x.entry);
+      }
+      activeIndex = 0;
+      render();
+    }
+
+    function open() {
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.classList.add('cmdk-open');
+      document.body.style.overflow = 'hidden';
+      input.value = '';
+      search('');
+      setTimeout(() => input.focus(), 20);
+    }
+
+    function close() {
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('cmdk-open');
+      document.body.style.overflow = '';
+    }
+
+    function navigate(delta) {
+      if (!currentResults.length) return;
+      activeIndex = (activeIndex + delta + currentResults.length) % currentResults.length;
+      render();
+      const activeEl = resultsEl.querySelector('.cmdk-item--active');
+      if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+    }
+
+    function activate() {
+      const entry = currentResults[activeIndex];
+      if (!entry) return;
+      if (entry.external) {
+        window.open(entry.url, '_blank', 'noopener');
+      } else {
+        window.location.href = entry.url;
+      }
+      close();
+    }
+
+    // Global shortcut
+    document.addEventListener('keydown', (e) => {
+      const isOpen = overlay.classList.contains('cmdk-open');
+      const mod = e.metaKey || e.ctrlKey;
+
+      if (mod && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        isOpen ? close() : open();
+        return;
+      }
+
+      // "/" as an alternative shortcut when not typing in an input
+      if (!isOpen && e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
+        e.preventDefault();
+        open();
+        return;
+      }
+
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        navigate(1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        activate();
+      }
+    });
+
+    input.addEventListener('input', (e) => {
+      search(e.target.value);
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    resultsEl.addEventListener('mousemove', (e) => {
+      const item = e.target.closest('.cmdk-item');
+      if (!item) return;
+      const i = parseInt(item.dataset.index, 10);
+      if (!isNaN(i) && i !== activeIndex) {
+        activeIndex = i;
+        render();
+      }
+    });
+
+    // Expose open/close on window so navbar search button can trigger
+    window.openCommandPalette = open;
+    window.closeCommandPalette = close;
+
+    // Custom event channel as a more idiomatic alternative
+    document.addEventListener('cmdk:open', open);
+
+    // Pre-render default state
+    search('');
+
+    // Rerun on view transition page loads so handlers bind to the current overlay
+    document.addEventListener('astro:after-swap', () => {
+      currentResults = [];
+      render();
+    });
+  })();
+</script>
+
+<style>
+  .cmdk-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12vh;
+  }
+
+  .cmdk-overlay.cmdk-open {
+    display: flex;
+  }
+
+  .cmdk-modal {
+    width: min(640px, 92vw);
+    max-height: 70vh;
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: cmdk-in 0.18s ease-out;
+  }
+
+  @keyframes cmdk-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .cmdk-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .cmdk-icon {
+    color: #888;
+    flex-shrink: 0;
+  }
+
+  .cmdk-input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    font-size: 1.05rem;
+    font-family: var(--font-body, system-ui, sans-serif);
+    color: #111;
+    background: transparent;
+    padding: 0.25rem 0;
+  }
+
+  .cmdk-input::placeholder {
+    color: #aaa;
+  }
+
+  .cmdk-kbd-hint {
+    font-family: var(--font-body, system-ui, sans-serif);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+    background: #f5f5f5;
+  }
+
+  .cmdk-results {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 50vh;
+  }
+
+  .cmdk-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .cmdk-item {
+    border-radius: 6px;
+  }
+
+  .cmdk-item--active {
+    background: #f0f0f0;
+  }
+
+  .cmdk-item-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.9rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cmdk-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .cmdk-item-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #111;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cmdk-ext {
+    color: #888;
+    flex-shrink: 0;
+  }
+
+  .cmdk-item-desc {
+    font-size: 0.8rem;
+    color: #777;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cmdk-item-kind {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999;
+    flex-shrink: 0;
+  }
+
+  .cmdk-footer {
+    display: flex;
+    gap: 1.25rem;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid #eaeaea;
+    background: #fafafa;
+    font-size: 0.7rem;
+    color: #888;
+  }
+
+  .cmdk-footer kbd {
+    display: inline-block;
+    margin-right: 0.3rem;
+    font-family: var(--font-body, system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #555;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0.08rem 0.3rem;
+  }
+
+  @media (max-width: 520px) {
+    .cmdk-overlay {
+      padding-top: 6vh;
+    }
+
+    .cmdk-footer {
+      display: none;
+    }
+  }
+</style>
