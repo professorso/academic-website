@@ -144,10 +144,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
-  document.getElementById('bio-contact-btn')?.addEventListener('click', () => {
-    document.getElementById('contact-modal')?.classList.add('active');
-    document.getElementById('modal-overlay')?.classList.add('active');
-    document.getElementById('contact-modal')?.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  });
+  function setupBioContact() {
+    document.getElementById('bio-contact-btn')?.addEventListener('click', () => {
+      document.getElementById('contact-modal')?.classList.add('active');
+      document.getElementById('modal-overlay')?.classList.add('active');
+      document.getElementById('contact-modal')?.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  setupBioContact();
+  document.addEventListener('astro:page-load', setupBioContact);
 </script>

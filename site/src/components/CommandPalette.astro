@@ -168,16 +168,16 @@ const indexJson = JSON.stringify(searchIndex);
       }
     });
 
-    // Expose on window so the navbar search button can trigger
-    window.openCommandPalette = open;
-    window.closeCommandPalette = close;
+    // Expose current closures on window so global handlers always
+    // call the latest versions (after each view-transition re-run).
+    window.__cmdk = { open: open, close: close, navigate: navigate, activate: activate };
 
-    // Global listeners: only install once to avoid stacking across
-    // view transition re-runs.
+    // Global listeners: install once, delegate via window.__cmdk so
+    // they always reach the closures that reference the current DOM.
     if (!window.__cmdkInstalled) {
-      document.addEventListener('keydown', (e) => {
-        // Grab the live overlay reference — it may have been replaced
-        // by a view transition since the handler was first bound.
+      document.addEventListener('keydown', function (e) {
+        var c = window.__cmdk;
+        if (!c) return;
         var ov = document.getElementById('cmdk-overlay');
         if (!ov) return;
         var isOpen = ov.classList.contains('cmdk-open');
@@ -185,26 +185,26 @@ const indexJson = JSON.stringify(searchIndex);
 
         if (mod && e.key.toLowerCase() === 'k') {
           e.preventDefault();
-          isOpen ? close() : open();
+          isOpen ? c.close() : c.open();
           return;
         }
 
         if (!isOpen && e.key === '/' && !['INPUT', 'TEXTAREA'].includes((document.activeElement || {}).tagName || '')) {
           e.preventDefault();
-          open();
+          c.open();
           return;
         }
 
         if (!isOpen) return;
 
-        if (e.key === 'Escape') { e.preventDefault(); close(); }
-        else if (e.key === 'ArrowDown') { e.preventDefault(); navigate(1); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
-        else if (e.key === 'Enter') { e.preventDefault(); activate(); }
+        if (e.key === 'Escape') { e.preventDefault(); c.close(); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); c.navigate(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); c.navigate(-1); }
+        else if (e.key === 'Enter') { e.preventDefault(); c.activate(); }
       });
 
       document.addEventListener('cmdk:open', function () {
-        open();
+        if (window.__cmdk) window.__cmdk.open();
       });
 
       window.__cmdkInstalled = true;

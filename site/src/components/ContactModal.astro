@@ -197,30 +197,42 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
-  const modal = document.getElementById('contact-modal');
-  const overlay = document.getElementById('modal-overlay');
-  const closeBtn = document.getElementById('modal-close');
-  const contactBtn = document.getElementById('contact-btn');
+  function setupContactModal() {
+    const modal = document.getElementById('contact-modal');
+    const overlay = document.getElementById('modal-overlay');
+    const closeBtn = document.getElementById('modal-close');
+    const contactBtn = document.getElementById('contact-btn');
 
-  function openModal() {
-    modal?.classList.add('active');
-    overlay?.classList.add('active');
-    modal?.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    function openModal() {
+      modal?.classList.add('active');
+      overlay?.classList.add('active');
+      modal?.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal?.classList.remove('active');
+      overlay?.classList.remove('active');
+      modal?.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    contactBtn?.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', closeModal);
+
+    window.__closeContactModal = closeModal;
   }
 
-  function closeModal() {
-    modal?.classList.remove('active');
-    overlay?.classList.remove('active');
-    modal?.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+  if (!window.__contactEscInstalled) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && typeof window.__closeContactModal === 'function') {
+        window.__closeContactModal();
+      }
+    });
+    window.__contactEscInstalled = true;
   }
 
-  contactBtn?.addEventListener('click', openModal);
-  closeBtn?.addEventListener('click', closeModal);
-  overlay?.addEventListener('click', closeModal);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
+  setupContactModal();
+  document.addEventListener('astro:page-load', setupContactModal);
 </script>

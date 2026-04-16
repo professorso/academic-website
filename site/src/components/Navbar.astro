@@ -165,17 +165,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .navbar-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
     flex-shrink: 1;
     overflow: hidden;
   }
 
+  .navbar-links li {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
   .navbar-links a {
     font-family: var(--font-body);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
     transition: opacity 0.2s;
@@ -286,6 +291,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   /* Mobile */
+  @media (max-width: 1200px) {
+    .search-kbd {
+      display: none;
+    }
+
+    .navbar-search-btn {
+      padding: 0.5rem;
+      border: none;
+    }
+  }
+
   @media (max-width: 900px) {
     .navbar-toggle {
       display: flex;
