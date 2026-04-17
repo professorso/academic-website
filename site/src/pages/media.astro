@@ -3,6 +3,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 
+const featuredVideo = {
+  id: 'KudI20J0bBg',
+  title: '2025 MIT CFO Summit — Shopify: Dreaming Big, Building Fast, and Growing Far',
+};
+
 const videos = [
   {
     id: '--VyDPtDdMo',
@@ -115,6 +120,19 @@ const press = [
   <section class="section" data-theme="light">
     <div class="section-inner">
       <h2 class="media-heading">Videos</h2>
+      <div class="featured-video">
+        <div class="video-embed">
+          <iframe
+            src={`https://www.youtube.com/embed/${featuredVideo.id}`}
+            title={featuredVideo.title}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <p class="video-title featured-video-title">{featuredVideo.title}</p>
+      </div>
       <div class="video-grid">
         {videos.map((video) => (
           <div class="video-card">
@@ -154,6 +172,19 @@ const press = [
 <style>
   .media-heading {
     margin-bottom: 2.5rem;
+  }
+
+  /* Featured video — wider, sits above the grid */
+  .featured-video {
+    max-width: 900px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .featured-video-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-align: center;
   }
 
   /* Video grid */
