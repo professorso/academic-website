@@ -17,6 +17,13 @@
   --gray-800: #2a2a2a;
   --mit-red: #a31f34;
 
+  /* Subpage accent palette (navy / medium blue / cool grey / MIT maroon).
+     Pages opt in via <body data-accent="..."> in BaseLayout. */
+  --accent-navy: #14213d;
+  --accent-blue: #3e5c99;
+  --accent-grey: #4a5568;
+  --accent-maroon: var(--mit-red);
+
   /* Theme tokens (default = light) */
   --bg: var(--white);
   --fg: var(--black);
@@ -120,7 +127,7 @@ p {
 }
 
 .section[data-theme="light"] .section-label {
-  color: var(--gray-400);
+  color: var(--accent);
 }
 
 /* Dark theme */
@@ -130,7 +137,20 @@ p {
 }
 
 .section[data-theme="dark"] .section-label {
-  color: var(--gray-400);
+  color: var(--accent);
+}
+
+/* Per-page accent palette. BaseLayout sets data-accent on <body>. */
+body[data-accent="navy"]   { --accent: var(--accent-navy); }
+body[data-accent="blue"]   { --accent: var(--accent-blue); }
+body[data-accent="grey"]   { --accent: var(--accent-grey); }
+body[data-accent="maroon"] { --accent: var(--accent-maroon); }
+
+/* Category titles on Research/Working Papers pick up the accent as a
+   thin left rule for a subtle editorial feel. */
+body[data-accent] .category-title {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.9rem;
 }
 
 .section[data-theme="dark"] a:hover {

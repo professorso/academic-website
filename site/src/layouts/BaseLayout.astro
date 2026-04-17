@@ -9,11 +9,15 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  // Accent tint for this page. See palette in global.css. Homepage
+  // leaves this unset to keep the default MIT-red accent.
+  accent?: 'navy' | 'blue' | 'grey' | 'maroon';
 }
 
 const {
   title = 'Eric So — MIT Sloan',
   description = 'Eric C. So is the Sloan Distinguished Professor of Global Economics and Behavioral Science at MIT Sloan School of Management. Research on financial markets, investor behavior, and AI in finance and education.',
+  accent,
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -87,7 +91,7 @@ const personSchema = {
 
     <ClientRouter />
   </head>
-  <body>
+  <body data-accent={accent}>
     <a href="#main" class="skip-link">Skip to content</a>
 
     <Navbar />
