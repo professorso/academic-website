@@ -9,10 +9,11 @@
   let animationId;
   let width, height;
 
-  const COLORS = [
-    'rgba(160, 160, 160, 0.26)',
-    'rgba(50, 120, 210, 0.30)',
-    'rgba(100, 170, 240, 0.26)',
+  // Mix of hollow "bubble" rings (whitish) and solid vibrant blue dots.
+  const STYLES = [
+    { type: 'bubble', color: 'rgba(230, 230, 230, 0.45)' },
+    { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
+    { type: 'solid',  color: 'rgba(100, 170, 240, 0.33)' },
   ];
 
   const COLS = 10;
@@ -33,6 +34,7 @@
 
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
+        const style = STYLES[Math.floor(Math.random() * STYLES.length)];
         dots.push({
           // 3D local coordinates — flat sheet on XY plane
           lx: col * SPACING - gridW / 2,
@@ -40,8 +42,9 @@
           lz: 0,
           x: 0,
           y: 0,
-          size: 2.3 + Math.random() * 1.725,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          size: 2.9 + Math.random() * 2.15,
+          type: style.type,
+          color: style.color,
           phase: col * 0.5 + row * 0.4,
         });
       }
@@ -102,8 +105,14 @@
       ctx.globalAlpha = depthFactor * 0.9;
       ctx.beginPath();
       ctx.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
-      ctx.fillStyle = dot.color;
-      ctx.fill();
+      if (dot.type === 'bubble') {
+        ctx.strokeStyle = dot.color;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = dot.color;
+        ctx.fill();
+      }
     });
 
     ctx.globalAlpha = 1;
