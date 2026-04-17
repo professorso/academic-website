@@ -30,7 +30,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AI in Financial Markets and Decision-Making', description: 'Research group at the MIT Initiative on the Digital Economy', url: 'https://ide.mit.edu/research-group/ai-finance-decisions/', kind: 'group', external: true },
 
   // Working papers
-  { title: 'Judgment-Free AI Advisors', description: 'Sussman, Yang, So — comparative advantage of artificial advisors for information disclosure', url: 'https://osf.io/preprints/psyarxiv/sejdg_v1', kind: 'working', external: true },
+  { title: 'Judgment-Free AI Advisors', description: 'Sussman, Yang, So — comparative advantage of artificial advisors for information disclosure', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326', kind: 'working', external: true },
   { title: 'When AI Speaks, Do We Listen?', description: 'Lo, Ross, So — factors in the uptake of LLM advice', url: `${base}/working-papers/`, kind: 'working' },
   { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'working', external: true },
   { title: 'Fee the People', description: 'Even-Tov, George, Kogan, So', url: `${base}/working-papers/`, kind: 'working' },
@@ -56,7 +56,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Financial Reporting and Consumer Behavior', description: 'Noh, So, Zhu — Accounting Review 2025', url: 'https://publications.aaahq.org/accounting-review/article-abstract/100/1/407/12932/Financial-Reporting-and-Consumer-Behavior?redirectedFrom=fulltext', kind: 'paper', external: true },
   { title: 'Conflicts of Interest in Subscriber-Paid Credit Ratings', description: 'Bonsall, Gillette, Pundrich, So — JAE 2022', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3132741', kind: 'paper', external: true },
   { title: 'Measuring Risk Information', description: 'Smith, So — JAR 2022', url: 'https://onlinelibrary.wiley.com/doi/abs/10.1111/1475-679X.12413', kind: 'paper', external: true },
-  { title: 'Switching from Voluntary and Mandatory Disclosure', description: 'Noh, Weber, So — JAE 2019', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382', kind: 'paper', external: true },
+  { title: 'Switching from Voluntary to Mandatory Disclosure', description: 'Noh, Weber, So — JAE 2019', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382', kind: 'paper', external: true },
   { title: 'Asymmetric Trading Costs Prior to Earnings Announcements', description: 'Johnson, So — JAR 2018', url: 'http://doi.org/10.1111/1475-679X.12189', kind: 'paper', external: true },
   { title: 'Non-Diversifiable Volatility Risk and Risk Premiums at Earnings Announcements', description: 'Barth, So — Accounting Review 2014', url: 'https://doi.org/10.2308/accr-50758', kind: 'paper', external: true },
   { title: 'Boardroom Centrality and Firm Performance', description: 'Larcker, Wang, So — JAE 2013', url: 'https://doi.org/10.1016/j.jacceco.2013.01.006', kind: 'paper', external: true },

@@ -4,8 +4,18 @@
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
-  // Skip the hero section so the navbar stays dark at the top of the page
-  const sections = document.querySelectorAll('.section[data-theme]:not(.hero)');
+  // Reset stale classes that may have been carried over by a view
+  // transition from the previous page. Defaults the navbar back to its
+  // base dark state until an observed section decides otherwise.
+  navbar.classList.remove('navbar--on-light', 'navbar--on-dark');
+
+  // Observe both interior `.section` blocks and the subpage `.page-header`
+  // (which sits at the top on non-home pages). Skip the homepage hero so
+  // the navbar stays dark over the hero image instead of flashing to
+  // light on initial load.
+  const sections = document.querySelectorAll(
+    '.section[data-theme]:not(.hero), .page-header[data-theme]'
+  );
   if (!sections.length) return;
 
   // Track which section is most visible behind the navbar
