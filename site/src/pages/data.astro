@@ -51,10 +51,25 @@ const edTechResources = [
 ];
 ---
 
-<BaseLayout title="Data + Artifacts — Eric So" description="Research datasets and AI education resources from Eric So." accent="grey">
-  <PageHeader label="Resources" title="Data + Artifacts" image="/images/backdrops/Sloan2.jpeg" />
+<BaseLayout title="Resources — Eric So" description="Reading on AI, finance, and teaching, plus research datasets shared by Eric So." accent="grey">
+  <PageHeader label="Reading + Data" title="Resources" image="/images/backdrops/Sloan2.jpeg" />
 
   <section class="section" data-theme="light">
+    <div class="section-inner">
+      <h2 class="data-heading">AI &amp; Education</h2>
+      <div class="edtech-grid">
+        {edTechResources.map((res) => (
+          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
+            <span class="edtech-source">{res.source}</span>
+            <h3 class="edtech-title">{res.name}</h3>
+            <span class="edtech-cta">Read More →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-theme="dark">
     <div class="section-inner">
       <h2 class="data-heading">Datasets</h2>
       <div class="data-list">
@@ -78,21 +93,6 @@ const edTechResources = [
         identified). Please treat these files as references that may
         require updating or correction. Use at your own risk.
       </p>
-    </div>
-  </section>
-
-  <section class="section" data-theme="dark">
-    <div class="section-inner">
-      <h2 class="data-heading">AI & Education</h2>
-      <div class="edtech-grid">
-        {edTechResources.map((res) => (
-          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
-            <span class="edtech-source">{res.source}</span>
-            <h3 class="edtech-title">{res.name}</h3>
-            <span class="edtech-cta">Read More →</span>
-          </a>
-        ))}
-      </div>
     </div>
   </section>
 
