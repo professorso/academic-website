@@ -216,6 +216,43 @@ const categories = [
 <BaseLayout title="Research — Eric So" description="Published research by Eric So spanning behavioral finance, asset pricing, AI, and regulatory policy." accent="navy">
   <PageHeader label="Research" title="Publications" image="/images/backdrops/Sloan2.jpeg" />
 
+  <section class="section sticky-intro" data-theme="light">
+    <div class="sticky-intro-inner">
+      <aside class="sticky-pane">
+        <span class="section-label">Research Agenda</span>
+        <h2 class="sticky-title">How markets learn — and how AI changes that.</h2>
+        <p class="sticky-body">
+          My work studies how investors, firms, and regulators make
+          decisions when information is costly, noisy, or manipulated —
+          and increasingly, how AI reshapes that landscape. Scroll to see
+          the themes that cut across my publications.
+        </p>
+      </aside>
+      <div class="reveal-pane">
+        <article class="reveal-card">
+          <span class="reveal-num">01</span>
+          <h3 class="reveal-title">Behavioral Finance</h3>
+          <p>How biases, expectations, and information asymmetries shape returns — from analyst forecast errors to liquidity ahead of earnings news.</p>
+        </article>
+        <article class="reveal-card">
+          <span class="reveal-num">02</span>
+          <h3 class="reveal-title">Measurement &amp; Disclosure</h3>
+          <p>How what firms report, and when, feeds through to price discovery — including the substitution between voluntary and mandatory disclosure.</p>
+        </article>
+        <article class="reveal-card">
+          <span class="reveal-num">03</span>
+          <h3 class="reveal-title">AI &amp; Financial Markets</h3>
+          <p>Whether algorithmic advisors and generative models change how investors process information, and how the financial press tilts sentiment.</p>
+        </article>
+        <article class="reveal-card">
+          <span class="reveal-num">04</span>
+          <h3 class="reveal-title">Education &amp; Technology</h3>
+          <p>How finance and economics should be taught in a classroom where AI is a first-order tool, not a distant prospect.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <FeaturedResearch />
 
   {categories.map((cat) => (
@@ -245,6 +282,107 @@ const categories = [
 </BaseLayout>
 
 <style>
+  /* --- Scrollytelling intro: sticky pane on the left, scrolling cards on the right --- */
+  .sticky-intro {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sticky-intro-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--section-pad-x);
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) 1.4fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .sticky-pane {
+    position: sticky;
+    top: 7rem;
+    padding: 2rem 0;
+  }
+
+  .sticky-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .sticky-body {
+    color: var(--gray-600);
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 42ch;
+  }
+
+  .reveal-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 40vh; /* extra scroll runway so the last card still shows alongside the sticky pane */
+  }
+
+  .reveal-card {
+    padding: 2rem 2rem 2rem 2.2rem;
+    background: var(--pure-white);
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .reveal-card.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-num {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .reveal-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .reveal-card p {
+    color: var(--gray-600);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .sticky-intro-inner {
+      grid-template-columns: 1fr;
+    }
+    .sticky-pane {
+      position: static;
+      padding: 0;
+    }
+    .reveal-pane {
+      padding-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-card {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
   .category-title {
     font-size: clamp(1.5rem, 3vw, 2.2rem);
     margin-bottom: 2rem;
@@ -300,3 +438,23 @@ const categories = [
     color: var(--gray-400);
   }
 </style>
+
+<script is:inline data-astro-rerun>
+  // Stagger-reveal the scrollytelling cards as they scroll into view.
+  (function () {
+    const cards = document.querySelectorAll('.reveal-card');
+    if (!cards.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -20% 0px', threshold: 0.1 }
+    );
+    cards.forEach((c) => io.observe(c));
+  })();
+</script>
