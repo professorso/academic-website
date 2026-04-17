@@ -148,6 +148,31 @@ body[data-accent="blue"]   { --accent: var(--accent-blue); }
 body[data-accent="grey"]   { --accent: var(--accent-grey); }
 body[data-accent="maroon"] { --accent: var(--accent-maroon); }
 
+/* --- Scroll progress bar --- */
+/* A thin accent-colored bar at the very top of the viewport that fills
+   as the reader scrolls. The width comes from --scroll-progress, set by
+   an inline rAF-throttled scroll listener in BaseLayout. Sits above the
+   navbar's z-index: 100 so it reads as a fine line at the top edge. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 101;
+  pointer-events: none;
+  background: transparent;
+}
+
+.scroll-progress::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: calc(var(--scroll-progress, 0) * 100%);
+  background: var(--accent);
+  transition: width 0.05s linear;
+}
+
 /* Category titles on Research/Working Papers pick up the accent as a
    thin left rule for a subtle editorial feel. */
 body[data-accent] .category-title {

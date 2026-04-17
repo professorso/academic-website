@@ -94,6 +94,7 @@ const personSchema = {
   <body data-accent={accent}>
     <a href="#main" class="skip-link">Skip to content</a>
 
+    <div class="scroll-progress" aria-hidden="true"></div>
     <Navbar />
     <ContactModal />
     <CommandPalette />
@@ -114,6 +115,33 @@ const personSchema = {
         </div>
       </div>
     </footer>
+
+    <script is:inline data-astro-rerun>
+      // Scroll progress bar — fills as the reader scrolls the page.
+      // Writes a 0..1 value to --scroll-progress on <html>, which the
+      // .scroll-progress bar in global.css reads for its width.
+      (function () {
+        const doc = document.documentElement;
+        function update() {
+          const scrollTop = doc.scrollTop || document.body.scrollTop;
+          const scrollable = doc.scrollHeight - doc.clientHeight;
+          const progress = scrollable > 0
+            ? Math.min(1, Math.max(0, scrollTop / scrollable))
+            : 0;
+          doc.style.setProperty('--scroll-progress', progress.toFixed(4));
+        }
+        let ticking = false;
+        function onScroll() {
+          if (!ticking) {
+            requestAnimationFrame(() => { update(); ticking = false; });
+            ticking = true;
+          }
+        }
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+      })();
+    </script>
 
     <script is:inline data-astro-rerun src={`${base}/scripts/scroll-inversion.js`}></script>
     <script is:inline data-astro-rerun src={`${base}/scripts/particles.js`}></script>
