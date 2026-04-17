@@ -11,7 +11,7 @@
 
   // Mix of hollow "bubble" rings (whitish) and solid vibrant blue dots.
   const STYLES = [
-    { type: 'bubble', color: 'rgba(230, 230, 230, 0.45)' },
+    { type: 'bubble', color: 'rgba(240, 240, 240, 0.75)' },
     { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
     { type: 'solid',  color: 'rgba(100, 170, 240, 0.33)' },
   ];
@@ -107,7 +107,7 @@
       ctx.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
       if (dot.type === 'bubble') {
         ctx.strokeStyle = dot.color;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       } else {
         ctx.fillStyle = dot.color;
