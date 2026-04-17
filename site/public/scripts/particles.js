@@ -9,12 +9,12 @@
   let animationId;
   let width, height;
 
-  // Mix of hollow "bubble" rings and solid dots for varied texture.
-  // `highlight` adds a small bright arc for a shiny metallic feel.
+  // Mix of hollow "bubble" rings (with internal glow + specular highlight
+  // for a glassy/shiny look) and solid dots for varied texture.
   const STYLES = [
-    { type: 'bubble', color: 'rgba(170, 180, 200, 0.85)', highlight: 'rgba(255, 255, 255, 0.95)' },
-    { type: 'bubble', color: 'rgba(70, 140, 220, 0.70)' },
-    { type: 'bubble', color: 'rgba(130, 190, 245, 0.65)' },
+    { type: 'bubble', color: 'rgba(180, 190, 210, 0.95)' },
+    { type: 'bubble', color: 'rgba(70, 140, 220, 0.85)' },
+    { type: 'bubble', color: 'rgba(130, 190, 245, 0.80)' },
     { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
     { type: 'solid',  color: 'rgba(100, 170, 240, 0.33)' },
   ];
@@ -109,17 +109,34 @@
       ctx.beginPath();
       ctx.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
       if (dot.type === 'bubble') {
+        // 1. Soft radial fill — brighter at upper-left, fades toward lower-right.
+        // Gives the bubble a sense of volume rather than a flat outline.
+        const grad = ctx.createRadialGradient(
+          screenX - dotSize * 0.3, screenY - dotSize * 0.3, dotSize * 0.1,
+          screenX, screenY, dotSize
+        );
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+        grad.addColorStop(0.6, 'rgba(255, 255, 255, 0.08)');
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // 2. Outer ring — the bubble's surface.
         ctx.strokeStyle = dot.color;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
-        // Shiny metallic highlight — small bright arc at top-left.
-        if (dot.highlight) {
+        // 3. Sharp specular highlight — the tell-tale bubble shine.
+        if (dotSize >= 2.2) {
           ctx.beginPath();
-          ctx.arc(screenX, screenY, dotSize, -Math.PI * 0.85, -Math.PI * 0.4);
-          ctx.strokeStyle = dot.highlight;
-          ctx.lineWidth = 1.8;
-          ctx.stroke();
+          ctx.arc(
+            screenX - dotSize * 0.4,
+            screenY - dotSize * 0.4,
+            Math.max(0.9, dotSize * 0.28),
+            0, Math.PI * 2
+          );
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+          ctx.fill();
         }
       } else {
         ctx.fillStyle = dot.color;
