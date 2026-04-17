@@ -12,11 +12,11 @@
   // Mix of hollow "bubble" rings (with internal glow + specular highlight
   // for a glassy/shiny look) and solid dots for varied texture.
   const STYLES = [
-    { type: 'bubble', color: 'rgba(180, 190, 210, 0.95)' },
-    { type: 'bubble', color: 'rgba(70, 140, 220, 0.85)' },
-    { type: 'bubble', color: 'rgba(130, 190, 245, 0.80)' },
-    { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
-    { type: 'solid',  color: 'rgba(100, 170, 240, 0.33)' },
+    { type: 'bubble', color: 'rgba(180, 190, 210, 0.72)' },
+    { type: 'bubble', color: 'rgba(70, 140, 220, 0.62)' },
+    { type: 'bubble', color: 'rgba(130, 190, 245, 0.56)' },
+    { type: 'solid',  color: 'rgba(50, 120, 210, 0.28)' },
+    { type: 'solid',  color: 'rgba(100, 170, 240, 0.24)' },
   ];
 
   const COLS = 10;
@@ -84,9 +84,10 @@
     const focalLength = 600;
 
     dots.forEach((dot) => {
-      // Add a gentle fabric ripple in local Z
-      const ripple = Math.sin(t * 0.0006 + dot.phase) * 15
-        + Math.cos(t * 0.0003 + dot.phase * 0.7) * 10;
+      // Fabric ripple in local Z — deeper amplitude so the sheet folds
+      // more visibly while the overall particle field reads as quieter.
+      const ripple = Math.sin(t * 0.0006 + dot.phase) * 24
+        + Math.cos(t * 0.0003 + dot.phase * 0.7) * 16;
 
       let x = dot.lx;
       let y = dot.ly;
@@ -113,7 +114,7 @@
       const depthFactor = Math.max(0.3, Math.min(1, scale));
       const dotSize = dot.size * depthFactor;
 
-      ctx.globalAlpha = depthFactor * 0.9 * scrollFade;
+      ctx.globalAlpha = depthFactor * 0.72 * scrollFade;
       ctx.beginPath();
       ctx.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
       if (dot.type === 'bubble') {
@@ -123,8 +124,8 @@
           screenX - dotSize * 0.3, screenY - dotSize * 0.3, dotSize * 0.1,
           screenX, screenY, dotSize
         );
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
-        grad.addColorStop(0.6, 'rgba(255, 255, 255, 0.08)');
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.32)');
+        grad.addColorStop(0.6, 'rgba(255, 255, 255, 0.05)');
         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx.fillStyle = grad;
         ctx.fill();
@@ -143,7 +144,7 @@
             Math.max(0.9, dotSize * 0.28),
             0, Math.PI * 2
           );
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
           ctx.fill();
         }
       } else {
