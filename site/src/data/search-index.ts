@@ -34,9 +34,9 @@ export const searchIndex: SearchEntry[] = [
   { title: 'When AI Speaks, Do We Listen?', description: 'Lo, Ross, So — factors in the uptake of LLM advice', url: `${base}/working-papers/`, kind: 'working' },
   { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'working', external: true },
   { title: 'Fee the People', description: 'Even-Tov, George, Kogan, So', url: `${base}/working-papers/`, kind: 'working' },
-  { title: 'Bad News Bearers: The Negative Tilt of the Financial Press', description: 'Niessner, So', url: `${base}/working-papers/`, kind: 'working' },
 
   // Published — behavioral and financial economics
+  { title: 'Bad News Bearers: The Negative Tilt of the Financial Press', description: 'Liu, Niessner, So — Management Science (forthcoming)', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3219831', kind: 'paper', external: true },
   { title: 'Losing is Optional', description: 'de Silva, Smith, So — Review of Finance (forthcoming)', url: 'https://academic.oup.com/rof/advance-article-abstract/doi/10.1093/rof/rfaf052/8301159?redirectedFrom=fulltext', kind: 'paper', external: true },
   { title: 'Investor Corporate Visits and Predictable Returns', description: 'Zhang, Wang, So — JFQA 2025', url: 'https://www.cambridge.org/core/services/aop-cambridge-core/content/view/77C958598BB1DC92C46EA32BF252A4B9/S0022109024000528a.pdf/investor_corporate_visits_and_predictable_returns.pdf', kind: 'paper', external: true },
   { title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook', description: 'Harris, Mehrotra, So — Brookings 2025', url: 'https://www.brookings.edu/articles/the-fiscal-frontier/', kind: 'paper', external: true },
