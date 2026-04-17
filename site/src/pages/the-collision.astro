@@ -2,6 +2,45 @@
 // the-collision.astro — Dramatic book page for The Collision
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const chapters = [
+  {
+    title: 'The Collision',
+    body: 'Every prior cognitive tool reshaped human thought at the periphery, but AI is qualitatively different because it participates in the thinking itself across every domain at once — which is why its effects feel simultaneously subtle and seismic.',
+  },
+  {
+    title: 'AI Gravity',
+    body: 'Deep, deliberate thinking is metabolically expensive, so evolution wired us to conserve cognitive effort — which is precisely why an effortless thinking machine exerts a near-gravitational pull we rarely notice, let alone resist.',
+  },
+  {
+    title: 'Rules for Navigating the Collision',
+    body: 'We need a deliberate cognitive discipline for the AI age, built on four principles: value the struggle, value who you are without AI, reinvest the time AI saves in things that stretch you, and use AI as a cognitive trainer rather than an answer engine.',
+  },
+  {
+    title: 'Deskilling Me Softly',
+    body: 'When we outsource cognitive work to AI, the underlying skills quietly atrophy — judgment, pattern recognition, and expertise fade long before we notice, and often only reveal their absence in the moments we most need them.',
+  },
+  {
+    title: 'Comfort Traps',
+    body: 'Convenience is seductive because it disguises formative struggle as unnecessary friction, and the very effort we bypass is what builds memory, understanding, and the neural pathways of thinking itself.',
+  },
+  {
+    title: 'Controlling the Conversation',
+    body: 'AI companions exploit deep social wiring — our hunger for approval, our instinct to project minds onto machines, our willingness to confide — and in doing so they narrow our views, reinforce our errors, and erode our capacity for authentic human connection.',
+  },
+  {
+    title: 'False Confidence',
+    body: 'AI warps three perceptions at once — what is true, how capable we are, and how capable others are — leaving our confidence intact while the perceptual tools that confidence relies on become dangerously unreliable.',
+  },
+  {
+    title: 'The Myth of the Dream Team',
+    body: 'Pairing powerful AI with capable humans does not automatically produce better outcomes; effective partnerships depend less on the caliber of the components than on designs that calibrate trust, sustain vigilance, and force humans to keep thinking.',
+  },
+  {
+    title: 'The Aristotle Problem',
+    body: 'Personalized, dialogic tutoring has long been the gold standard of learning but unreachable at scale; AI could finally democratize it, but only if classrooms and workplaces are deliberately designed so the technology amplifies learning rather than substituting for it.',
+  },
+];
 ---
 
 <BaseLayout title="The Collision — Eric So" description="The Collision — a new book by Eric So, published by Norton." accent="blue">
@@ -31,6 +70,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </a>
       </div>
     </div>
+  </section>
+
+  <section class="chapters-section" data-theme="light">
+    <div class="chapters-intro section-inner">
+      <span class="section-label">Inside the Book</span>
+      <h2 class="chapters-heading">Nine chapters, one argument.</h2>
+      <p class="chapters-lede">
+        Each chapter takes on a different way AI is reshaping how we
+        think, decide, and learn. Scroll through to see what the book
+        covers.
+      </p>
+    </div>
+    <ol class="chapters">
+      {chapters.map((ch, i) => (
+        <li class="chapter">
+          <div class="chapter-inner">
+            <span class="chapter-num">Chapter {String(i + 1).padStart(2, '0')}</span>
+            <h3 class="chapter-title">{ch.title}</h3>
+            <p class="chapter-body">{ch.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <section class="section" data-theme="light">
@@ -183,4 +245,111 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       padding: 0;
     }
   }
+
+  /* --- Chapter scrollytelling --- */
+  .chapters-section {
+    background: var(--pure-white);
+    color: var(--black);
+    padding: 6rem 0 2rem;
+  }
+
+  .chapters-intro {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding-left: var(--section-pad-x);
+    padding-right: var(--section-pad-x);
+  }
+
+  .chapters-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.02;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .chapters-lede {
+    color: var(--gray-600);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+
+  .chapters {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 var(--section-pad-x);
+    list-style: none;
+    counter-reset: chapter;
+  }
+
+  .chapter {
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--gray-200);
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .chapter:last-child {
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .chapter.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .chapter-num {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .chapter-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .chapter-body {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--gray-800);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chapter {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 </style>
+
+<script is:inline data-astro-rerun>
+  // Fade each chapter in as the reader scrolls it into view.
+  (function () {
+    const chapters = document.querySelectorAll('.chapter');
+    if (!chapters.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -15% 0px', threshold: 0.15 }
+    );
+    chapters.forEach((c) => io.observe(c));
+  })();
+</script>
