@@ -352,42 +352,52 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   // Re-binds all navbar handlers. Called on initial load and after every
   // view transition, since the <body> is swapped and element references
   // from the prior page no longer exist.
+  // Uses `.onclick = ...` instead of addEventListener so re-running setup
+  // (script parse + astro:page-load both fire on initial load) overwrites
+  // the handler instead of stacking duplicates. Two listeners cancel each
+  // other out by toggling the dropdown twice in the same tap.
   function setupNavbar() {
     const menuBtn = document.getElementById('menu-btn');
     const siteDropdown = document.getElementById('site-dropdown');
 
-    menuBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = siteDropdown?.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', String(isOpen));
-    });
+    if (menuBtn) {
+      menuBtn.onclick = (e) => {
+        e.stopPropagation();
+        const isOpen = siteDropdown?.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+      };
+    }
 
     siteDropdown?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
+      link.onclick = () => {
         siteDropdown.classList.remove('open');
         menuBtn?.setAttribute('aria-expanded', 'false');
-      });
+      };
     });
 
     const toggle = document.getElementById('nav-toggle');
     const links = document.getElementById('nav-links');
 
-    toggle?.addEventListener('click', () => {
-      const isOpen = links?.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
-    });
+    if (toggle) {
+      toggle.onclick = () => {
+        const isOpen = links?.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      };
+    }
 
     links?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
+      link.onclick = () => {
         links.classList.remove('open');
         toggle?.setAttribute('aria-expanded', 'false');
-      });
+      };
     });
 
     const searchBtn = document.getElementById('navbar-search-btn');
-    searchBtn?.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('cmdk:open'));
-    });
+    if (searchBtn) {
+      searchBtn.onclick = () => {
+        document.dispatchEvent(new CustomEvent('cmdk:open'));
+      };
+    }
   }
 
   // Document-level outside-click handler. Install once so navigating
