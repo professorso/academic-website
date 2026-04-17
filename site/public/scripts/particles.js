@@ -58,6 +58,14 @@
     const t = timestamp || 0;
     ctx.clearRect(0, 0, width, height);
 
+    // Read the same --hero-progress value the hero CSS uses so particles
+    // dim and recede in lockstep with the hero fade. 0 = top of page,
+    // 1 = fully scrolled past hero.
+    const heroProgress = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--hero-progress') || '0'
+    );
+    const scrollFade = Math.max(0, 1 - heroProgress * 1.1);
+
     // Center point — anchored near title with gentle drift
     const cx = width * 0.70 + Math.sin(t * 0.00004) * width * 0.04;
     const cy = height * 0.43 + Math.cos(t * 0.000035) * height * 0.04;
@@ -105,7 +113,7 @@
       const depthFactor = Math.max(0.3, Math.min(1, scale));
       const dotSize = dot.size * depthFactor;
 
-      ctx.globalAlpha = depthFactor * 0.9;
+      ctx.globalAlpha = depthFactor * 0.9 * scrollFade;
       ctx.beginPath();
       ctx.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
       if (dot.type === 'bubble') {
