@@ -53,9 +53,12 @@ const resolvedImage = image.startsWith('/') ? `${base}${image}` : image;
   .page-title {
     font-size: clamp(3rem, 6vw, 5rem);
     color: var(--white);
+    display: inline-block;
+    padding-bottom: 0.6rem;
+    border-bottom: 3px solid var(--accent);
   }
 
   .section-label {
-    color: var(--gray-400);
+    color: var(--accent);
   }
 </style>
