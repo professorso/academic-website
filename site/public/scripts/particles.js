@@ -10,8 +10,9 @@
   let width, height;
 
   // Mix of hollow "bubble" rings and solid dots for varied texture.
+  // `highlight` adds a small bright arc for a shiny metallic feel.
   const STYLES = [
-    { type: 'bubble', color: 'rgba(185, 195, 210, 0.9)' },
+    { type: 'bubble', color: 'rgba(170, 180, 200, 0.85)', highlight: 'rgba(255, 255, 255, 0.95)' },
     { type: 'bubble', color: 'rgba(70, 140, 220, 0.70)' },
     { type: 'bubble', color: 'rgba(130, 190, 245, 0.65)' },
     { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
@@ -111,6 +112,15 @@
         ctx.strokeStyle = dot.color;
         ctx.lineWidth = 1.5;
         ctx.stroke();
+
+        // Shiny metallic highlight — small bright arc at top-left.
+        if (dot.highlight) {
+          ctx.beginPath();
+          ctx.arc(screenX, screenY, dotSize, -Math.PI * 0.85, -Math.PI * 0.4);
+          ctx.strokeStyle = dot.highlight;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
       } else {
         ctx.fillStyle = dot.color;
         ctx.fill();
