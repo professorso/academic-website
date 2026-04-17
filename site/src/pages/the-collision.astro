@@ -5,40 +5,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const chapters = [
   {
+    label: 'Introduction',
+    title: 'Why this book, now.',
+    body: 'The framing that animates the chapters to come — why AI marks a genuinely different inflection in how we think, and why the usual reassurances miss what is actually at stake.',
+  },
+  {
+    label: 'Chapter 01',
     title: 'The Collision',
     body: 'Every prior cognitive tool reshaped human thought at the periphery, but AI is qualitatively different because it participates in the thinking itself across every domain at once — which is why its effects feel simultaneously subtle and seismic.',
   },
   {
+    label: 'Chapter 02',
     title: 'AI Gravity',
     body: 'Deep, deliberate thinking is metabolically expensive, so evolution wired us to conserve cognitive effort — which is precisely why an effortless thinking machine exerts a near-gravitational pull we rarely notice, let alone resist.',
   },
   {
+    label: 'Chapter 03',
     title: 'Rules for Navigating the Collision',
     body: 'We need a deliberate cognitive discipline for the AI age, built on four principles: value the struggle, value who you are without AI, reinvest the time AI saves in things that stretch you, and use AI as a cognitive trainer rather than an answer engine.',
   },
   {
+    label: 'Chapter 04',
     title: 'Deskilling Me Softly',
     body: 'When we outsource cognitive work to AI, the underlying skills quietly atrophy — judgment, pattern recognition, and expertise fade long before we notice, and often only reveal their absence in the moments we most need them.',
   },
   {
+    label: 'Chapter 05',
     title: 'Comfort Traps',
     body: 'Convenience is seductive because it disguises formative struggle as unnecessary friction, and the very effort we bypass is what builds memory, understanding, and the neural pathways of thinking itself.',
   },
   {
+    label: 'Chapter 06',
     title: 'Controlling the Conversation',
     body: 'AI companions exploit deep social wiring — our hunger for approval, our instinct to project minds onto machines, our willingness to confide — and in doing so they narrow our views, reinforce our errors, and erode our capacity for authentic human connection.',
   },
   {
+    label: 'Chapter 07',
     title: 'False Confidence',
     body: 'AI warps three perceptions at once — what is true, how capable we are, and how capable others are — leaving our confidence intact while the perceptual tools that confidence relies on become dangerously unreliable.',
   },
   {
+    label: 'Chapter 08',
     title: 'The Myth of the Dream Team',
     body: 'Pairing powerful AI with capable humans does not automatically produce better outcomes; effective partnerships depend less on the caliber of the components than on designs that calibrate trust, sustain vigilance, and force humans to keep thinking.',
   },
   {
+    label: 'Chapter 09',
     title: 'The Aristotle Problem',
     body: 'Personalized, dialogic tutoring has long been the gold standard of learning but unreachable at scale; AI could finally democratize it, but only if classrooms and workplaces are deliberately designed so the technology amplifies learning rather than substituting for it.',
+  },
+  {
+    label: 'Chapter 10',
+    title: 'The Final Turn',
+    body: 'The book ends where you are about to begin. This one stays between the covers — order your copy to see where the argument lands.',
   },
 ];
 ---
@@ -83,32 +102,16 @@ const chapters = [
       </p>
     </div>
     <ol class="chapters">
-      {chapters.map((ch, i) => (
+      {chapters.map((ch) => (
         <li class="chapter">
           <div class="chapter-inner">
-            <span class="chapter-num">Chapter {String(i + 1).padStart(2, '0')}</span>
+            <span class="chapter-num">{ch.label}</span>
             <h3 class="chapter-title">{ch.title}</h3>
             <p class="chapter-body">{ch.body}</p>
           </div>
         </li>
       ))}
     </ol>
-  </section>
-
-  <section class="section" data-theme="light">
-    <div class="section-inner">
-      <span class="section-label">Related</span>
-      <h2 class="section-title">Alphanomics</h2>
-      <p class="related-description">
-        <em>Alphanomics: The Informational Underpinnings of Market Efficiency</em>
-        — a monograph with Charles M.C. Lee exploring the informational
-        foundations of market efficiency, published in Foundations and Trends
-        in Accounting.
-      </p>
-      <a href="http://dx.doi.org/10.1561/1400000022" class="link-arrow" target="_blank" rel="noopener">
-        Read the Monograph
-      </a>
-    </div>
   </section>
 </BaseLayout>
 
