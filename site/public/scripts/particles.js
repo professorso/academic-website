@@ -10,9 +10,9 @@
   let width, height;
 
   const COLORS = [
-    'rgba(160, 160, 160, 0.22)',
-    'rgba(50, 120, 210, 0.25)',
-    'rgba(100, 170, 240, 0.22)',
+    'rgba(160, 160, 160, 0.26)',
+    'rgba(50, 120, 210, 0.30)',
+    'rgba(100, 170, 240, 0.26)',
   ];
 
   const COLS = 10;
@@ -40,7 +40,7 @@
           lz: 0,
           x: 0,
           y: 0,
-          size: 2 + Math.random() * 1.5,
+          size: 2.3 + Math.random() * 1.725,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
           phase: col * 0.5 + row * 0.4,
         });

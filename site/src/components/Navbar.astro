@@ -12,7 +12,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <line x1="3" y1="12" x2="21" y2="12"/>
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
-        <span class="menu-btn-label">MENU</span>
       </button>
       <ul class="site-dropdown" id="site-dropdown">
         <li><a href={`${base}/`}>HOME</a></li>
@@ -104,14 +103,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   .navbar-menu-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
     color: var(--white);
-    padding: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    padding: 0.4rem;
+    line-height: 0;
     transition: opacity 0.2s;
   }
 
@@ -303,39 +300,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   @media (max-width: 900px) {
+    .navbar-links,
     .navbar-toggle {
-      display: flex;
-    }
-
-    .navbar-links {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 280px;
-      height: 100vh;
-      flex-direction: column;
-      background: var(--black);
-      padding: 5rem 2rem 2rem;
-      gap: 1.5rem;
-      align-items: flex-start;
-      transition: right 0.3s ease;
-    }
-
-    .navbar-links.open {
-      right: 0;
-    }
-
-    .dropdown {
-      position: static;
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-      padding: 0.5rem 0 0 1rem;
+      display: none;
     }
 
     .contact-label,
-    .icon-btn-label,
-    .menu-btn-label {
+    .icon-btn-label {
       display: none;
     }
 

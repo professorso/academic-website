@@ -96,7 +96,7 @@ cd site && npm run build  # Build static output to dist/
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
 - **Phase 4 (Deployment)**: Custom domain `ericso.pro` registered. CNAME file + Astro config updated. Awaiting DNS propagation + GitHub Pages HTTPS cert.
 - **SEO**: Person JSON-LD schema, canonical URL, and Open Graph tags added to BaseLayout for Google Knowledge Graph eligibility.
-- **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder), MIT Sloan faculty page URL + SSRN author URL (for Person schema `sameAs` in `BaseLayout.astro`)
+- **Awaiting Eric's input**: Book description, teaching details, FT article title (currently placeholder)
 
 ## Change Log
 | Date | Changes |
@@ -111,6 +111,7 @@ cd site && npm run build  # Build static output to dist/
 | 2026-04-16 | Cleaned up `Files/CV/` — kept active master `main_20260416.tex` + three `\input{}` dependencies, removed historical snapshots, specialized CVs, and duplicates. Updated CV website URL to `ericso.pro`, recompiled, synced to `site/public/files/CV_EricSo.pdf`. |
 | 2026-04-16 | Rewrote homepage bio (BioSection.astro) to emphasize applied AI, reference the forthcoming book, mention the MIT IDE AI in Financial Markets research group, and name the two separate courses (Applied AI, Quant Investing). Switched homepage photo strip to color and added two MIT IDE Conference photos (IDE1, IDE2). |
 | 2026-04-16 | Added four polish features: ClientRouter view transitions, `/now` page (linked from footer), Command-K search palette (CommandPalette.astro + search-index.ts + navbar ⌘K button), and per-page OG images via `astro-og-canvas` (endpoint at `site/src/pages/og/[...route].ts`). Added Twitter card meta tags. |
+| 2026-04-17 | Contact modal: added MIT Sloan faculty page link (`mitsloan.mit.edu/faculty/directory/eric-so`) between Phone and CV button. Added same URL to Person schema `sameAs` in BaseLayout.astro. Navbar: removed "MENU" text label (now icon-only hamburger) and fixed vertical alignment with inline nav links. On mobile (≤900px), removed redundant right-side hamburger so the left menu button is the single nav entry point. Particle animation: increased dot opacity ~20% (0.22–0.25 → 0.26–0.30) and size ~15% (2.0–3.5 → 2.3–4.0). |
 
 ## Known Issues
 See `ISSUES.md` for the full log. Key items:
