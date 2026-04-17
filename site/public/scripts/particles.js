@@ -9,9 +9,11 @@
   let animationId;
   let width, height;
 
-  // Mix of hollow "bubble" rings (whitish) and solid vibrant blue dots.
+  // Mix of hollow "bubble" rings and solid dots for varied texture.
   const STYLES = [
     { type: 'bubble', color: 'rgba(240, 240, 240, 0.75)' },
+    { type: 'bubble', color: 'rgba(70, 140, 220, 0.70)' },
+    { type: 'bubble', color: 'rgba(130, 190, 245, 0.65)' },
     { type: 'solid',  color: 'rgba(50, 120, 210, 0.38)' },
     { type: 'solid',  color: 'rgba(100, 170, 240, 0.33)' },
   ];
