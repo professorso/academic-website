@@ -228,7 +228,7 @@ const edTechResources = [
     opacity: 1;
   }
 
-  /* AI & Education grid cards */
+  /* AI & Education grid cards (light-theme section) */
   .edtech-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -239,24 +239,28 @@ const edTechResources = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    aspect-ratio: 1;
-    padding: 2rem;
-    border: 1px solid var(--gray-800);
-    transition: background-color 0.2s, border-color 0.2s;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    background: var(--pure-white);
+    border: 1px solid var(--gray-200);
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    min-height: 200px;
   }
 
   .edtech-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
     opacity: 1;
   }
 
   .edtech-source {
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--gray-400);
+    letter-spacing: 0.15em;
+    color: var(--accent);
   }
 
   .edtech-title {
@@ -266,7 +270,7 @@ const edTechResources = [
     text-transform: none;
     letter-spacing: 0;
     line-height: 1.5;
-    color: var(--white);
+    color: var(--black);
   }
 
   .edtech-cta {
@@ -274,12 +278,12 @@ const edTechResources = [
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--gray-400);
+    color: var(--gray-600);
     transition: color 0.2s;
   }
 
   .edtech-card:hover .edtech-cta {
-    color: var(--white);
+    color: var(--accent);
   }
 
   @media (max-width: 768px) {
@@ -288,9 +292,8 @@ const edTechResources = [
     }
 
     .edtech-card {
-      aspect-ratio: auto;
       padding: 1.5rem;
-      gap: 1rem;
+      min-height: auto;
     }
   }
 
