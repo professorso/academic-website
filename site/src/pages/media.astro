@@ -11,6 +11,7 @@ const featuredVideo = {
 const videos = [
   {
     id: 'KudI20J0bBg',
+    start: 1,
     title: '2025 MIT CFO Summit — Shopify: Dreaming Big, Building Fast, and Growing Far',
   },
   {
@@ -133,7 +134,7 @@ const press = [
           <div class="video-card">
             <div class="video-embed">
               <iframe
-                src={`https://www.youtube.com/embed/${video.id}`}
+                src={`https://www.youtube.com/embed/${video.id}${video.start ? `?start=${video.start}` : ''}`}
                 title={video.title}
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
