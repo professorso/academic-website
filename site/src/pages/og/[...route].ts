@@ -48,11 +48,6 @@ const pages: Record<string, PageEntry> = {
     description:
       'Writing on AI in education and research datasets shared for teaching and reference.',
   },
-  now: {
-    title: 'Now',
-    subtitle: 'Current Projects',
-    description: "A snapshot of what Eric So is currently working on.",
-  },
   accessibility: {
     title: 'Accessibility',
     subtitle: 'Statement',

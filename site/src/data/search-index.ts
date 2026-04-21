@@ -20,7 +20,6 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Media + Videos', description: 'Talks, interviews, and press coverage', url: `${base}/media/`, kind: 'page' },
   { title: 'The Collision', description: 'Forthcoming book: What AI Does to Us', url: `${base}/the-collision/`, kind: 'page' },
   { title: 'Resources', description: 'Reading on AI in education, plus research datasets', url: `${base}/data/`, kind: 'page' },
-  { title: 'Now', description: 'What I am currently working on', url: `${base}/now/`, kind: 'page' },
   { title: 'Accessibility', description: 'WCAG 2.1 AA accessibility statement', url: `${base}/accessibility/`, kind: 'page' },
 
   // Book
