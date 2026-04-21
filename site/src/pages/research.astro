@@ -2,7 +2,7 @@
 // research.astro — Full publications list organized by category
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import FeaturedResearch from '../components/FeaturedResearch.astro';
+import { featuredPapers } from '../data/featured-research';
 
 const behavioralFinance = [
   {
@@ -219,42 +219,30 @@ const categories = [
   <section class="section sticky-intro" data-theme="light">
     <div class="sticky-intro-inner">
       <aside class="sticky-pane">
-        <span class="section-label">Research Agenda</span>
+        <span class="section-label">Featured Research</span>
         <h2 class="sticky-title">Applied AI — in businesses, in markets, in our thinking.</h2>
         <p class="sticky-body">
-          My research asks how AI changes the way investors, firms, and
-          students reason about information and make decisions. Behavioral
-          finance and information economics are the through-lines that
-          anchor this work in how people — not just machines — actually
+          A rotating selection of recent and forthcoming papers that
+          anchor my research agenda: how AI is changing the way investors,
+          firms, and students reason about information and make decisions.
+          Behavioral finance and information economics run through all of
+          it as the anchor in how people — not just machines — actually
           behave.
         </p>
       </aside>
       <div class="reveal-pane">
-        <article class="reveal-card">
-          <span class="reveal-num">01</span>
-          <h3 class="reveal-title">Applied AI in Financial Markets</h3>
-          <p>How generative models, algorithmic traders, and machine-read text reshape price discovery, sentiment, and the flow of capital — including the fiscal and labor-market consequences as AI scales.</p>
-        </article>
-        <article class="reveal-card">
-          <span class="reveal-num">02</span>
-          <h3 class="reveal-title">AI Advisors &amp; Human Decisions</h3>
-          <p>When people prefer an AI advisor over a human one, what makes AI advice trusted or ignored, and the comparative advantage of machines for sensitive disclosures.</p>
-        </article>
-        <article class="reveal-card">
-          <span class="reveal-num">03</span>
-          <h3 class="reveal-title">Behavioral Finance &amp; Information</h3>
-          <p>How biases, expectations, and information asymmetries shape returns — from analyst forecast errors and press tilt to liquidity around earnings announcements.</p>
-        </article>
-        <article class="reveal-card">
-          <span class="reveal-num">04</span>
-          <h3 class="reveal-title">Emergent Behavior of AI Models</h3>
-          <p>How large models exhibit capabilities, biases, and failure modes that weren't explicitly designed in — and what those emergent behaviors mean for deploying them in high-stakes financial decisions.</p>
-        </article>
+        {featuredPapers.map((paper, i) => (
+          <a class="reveal-card reveal-card--paper" href={paper.link} target="_blank" rel="noopener">
+            <span class="reveal-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="reveal-meta">{paper.meta}</span>
+            <h3 class="reveal-title reveal-title--paper">{paper.title}</h3>
+            <p class="reveal-authors">{paper.authors}</p>
+            <span class="reveal-link">Read Paper →</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
-
-  <FeaturedResearch />
 
   {categories.map((cat) => (
     <section class="section" data-theme="light">
@@ -361,6 +349,57 @@ const categories = [
   .reveal-card p {
     color: var(--gray-600);
     line-height: 1.6;
+  }
+
+  /* Paper-variant reveal card (used on Research page). Clickable,
+     shows a paper's venue/meta + authors + "Read Paper" affordance. */
+  .reveal-card--paper {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .reveal-card--paper:hover {
+    opacity: 1;
+    border-left-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .reveal-meta {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray-400);
+    margin-bottom: 0.6rem;
+  }
+
+  .reveal-title--paper {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  .reveal-authors {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+
+  .reveal-link {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
   }
 
   @media (max-width: 900px) {

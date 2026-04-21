@@ -1,33 +1,10 @@
 ---
-// FeaturedResearch.astro — Auto-scrolling featured paper cards
-const papers = [
-  {
-    title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
-    authors: 'Abigail B. Sussman, Eric C. So, Yujin Yang',
-    meta: 'Working Paper \u00B7 January 2026',
-    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
-  },
-  {
-    title: 'Losing is Optional',
-    authors: 'Tim de Silva, Kevin Smith, Eric So',
-    meta: 'Review of Finance \u00B7 Forthcoming',
-    link: 'https://academic.oup.com/rof/advance-article-abstract/doi/10.1093/rof/rfaf052/8301159?redirectedFrom=fulltext',
-  },
-  {
-    title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings',
-    authors: 'Lauren Cohen, David S. Kim, Eric So',
-    meta: 'Working Paper \u00B7 November 2024',
-    link: 'https://doi.org/10.2139/ssrn.4971228',
-  },
-  {
-    title: 'The Fiscal Frontier: Projecting AI\u2019s Long-term Impact on the US Fiscal Outlook',
-    authors: 'Ben Harris, Neil R. Mehrotra, Eric So',
-    meta: 'Brookings Institution \u00B7 February 2025',
-    link: 'https://www.brookings.edu/articles/the-fiscal-frontier-projecting-ais-long-term-impact-on-the-us-fiscal-outlook/',
-  },
-];
+// FeaturedResearch.astro — Auto-scrolling featured paper cards.
+// Papers come from site/src/data/featured-research.ts so the Research
+// page's sticky-intro reads from the same source.
+import { featuredPapers } from '../data/featured-research';
 // Duplicate for seamless loop
-const allPapers = [...papers, ...papers];
+const allPapers = [...featuredPapers, ...featuredPapers];
 ---
 
 <section class="section" data-theme="dark" id="featured-research">
