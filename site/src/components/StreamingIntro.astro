@@ -1,0 +1,136 @@
+---
+// StreamingIntro.astro — animated Q&A intro for the Resources page.
+// Ports the punctuation-pause variant from Notes/gif_20260423/gif-recorder.html
+// as live DOM text. Responsive, crisp at any size, ~0KB assets vs 2.9MB GIF.
+---
+
+<figure class="streaming-intro" role="img" aria-label="A reading room. Essays, articles, and books I recommend. Datasets I return to. Shared freely.">
+  <p class="si-question" aria-hidden="true">
+    <span class="si-q-prefix">Q:</span>&nbsp;What is this subpage?
+  </p>
+  <p class="si-answer" aria-hidden="true">
+    <span class="si-ghost">A reading room. Essays, articles, and books I recommend. Datasets I return to. Shared freely.</span>
+    <span class="si-active"><span class="si-stream" data-stream></span><span class="si-caret" data-caret></span></span>
+  </p>
+</figure>
+
+<script>
+  const ANSWER =
+    'A reading room. Essays, articles, and books I recommend. Datasets I return to. Shared freely.';
+  const SPEED = 1.8;
+  const END_HOLD = 3000;
+
+  function delayFor(c: string) {
+    let d = 14;
+    if (c === '.') d = 320;
+    else if (c === '?') d = 400;
+    else if (c === ',') d = 180;
+    else if (c === '—') d = 260;
+    return d * SPEED;
+  }
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  document.querySelectorAll<HTMLElement>('.streaming-intro').forEach((root) => {
+    const streamEl = root.querySelector<HTMLElement>('[data-stream]');
+    const caretEl = root.querySelector<HTMLElement>('[data-caret]');
+    if (!streamEl || !caretEl) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      streamEl.textContent = ANSWER;
+      caretEl.style.display = 'none';
+      return;
+    }
+
+    let cancelled = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting && !cancelled) {
+          cancelled = true;
+          io.disconnect();
+          run();
+        }
+      }
+    }, { threshold: 0.1 });
+    io.observe(root);
+
+    async function run() {
+      if (!streamEl) return;
+      while (true) {
+        streamEl.textContent = '';
+        for (const ch of ANSWER) {
+          streamEl.textContent += ch;
+          await sleep(delayFor(ch));
+        }
+        await sleep(END_HOLD);
+      }
+    }
+  });
+</script>
+
+<style>
+  .streaming-intro {
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
+    color: #f2f2f2;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .si-question,
+  .si-answer {
+    margin: 0;
+    font-size: clamp(1rem, 2.3vw, 1.9rem);
+    line-height: 1.35;
+    letter-spacing: 0.005em;
+    text-align: left;
+  }
+
+  .si-question {
+    margin-bottom: clamp(0.5rem, 1.2vw, 0.9rem);
+  }
+
+  .si-q-prefix {
+    color: #9a9a9a;
+  }
+
+  .si-answer {
+    position: relative;
+    color: #f2f2f2;
+    word-break: break-word;
+  }
+
+  .si-ghost {
+    visibility: hidden;
+  }
+
+  .si-active {
+    position: absolute;
+    inset: 0;
+  }
+
+  .si-stream {
+    white-space: pre-wrap;
+  }
+
+  .si-caret {
+    display: inline-block;
+    width: 0.32em;
+    height: 1em;
+    background: #f2f2f2;
+    vertical-align: -0.12em;
+    margin-left: 0.08em;
+    animation: si-blink 1s steps(2) infinite;
+  }
+
+  @keyframes si-blink {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .si-caret { animation: none; }
+  }
+</style>

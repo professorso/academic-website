@@ -2,6 +2,7 @@
 // data.astro — Data + Artifacts page with datasets and AI/education resources
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import StreamingIntro from '../components/StreamingIntro.astro';
 
 const datasets = [
   {
@@ -54,6 +55,12 @@ const edTechResources = [
 <BaseLayout title="Resources — Eric So" description="Reading on AI, finance, and teaching, plus research datasets shared by Eric So." accent="grey">
   <PageHeader label="Reading + Data" title="Resources" image="/images/backdrops/Sloan2.jpeg" />
 
+  <section class="section intro-section" data-theme="dark">
+    <div class="section-inner">
+      <StreamingIntro />
+    </div>
+  </section>
+
   <section class="section" data-theme="light">
     <div class="section-inner">
       <h2 class="data-heading">AI &amp; Education</h2>
@@ -101,6 +108,11 @@ const edTechResources = [
 <style>
   .data-heading {
     margin-bottom: 2.5rem;
+  }
+
+  .intro-section {
+    padding-top: clamp(1.5rem, 4vw, 3rem);
+    padding-bottom: clamp(1.5rem, 4vw, 3rem);
   }
 
   .data-list {
