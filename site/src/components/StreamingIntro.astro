@@ -31,42 +31,49 @@
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-  document.querySelectorAll<HTMLElement>('.streaming-intro').forEach((root) => {
-    const streamEl = root.querySelector<HTMLElement>('[data-stream]');
-    const caretEl = root.querySelector<HTMLElement>('[data-caret]');
-    if (!streamEl || !caretEl) return;
+  function setup() {
+    document.querySelectorAll<HTMLElement>('.streaming-intro').forEach((root) => {
+      if (root.dataset.siInit) return;
+      root.dataset.siInit = '1';
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      streamEl.textContent = ANSWER;
-      caretEl.style.display = 'none';
-      return;
-    }
+      const streamEl = root.querySelector<HTMLElement>('[data-stream]');
+      const caretEl = root.querySelector<HTMLElement>('[data-caret]');
+      if (!streamEl || !caretEl) return;
 
-    let cancelled = false;
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting && !cancelled) {
-          cancelled = true;
-          io.disconnect();
-          run();
-        }
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        streamEl.textContent = ANSWER;
+        caretEl.style.display = 'none';
+        return;
       }
-    }, { threshold: 0.1 });
-    io.observe(root);
 
-    async function run() {
-      if (!streamEl) return;
-      while (true) {
-        streamEl.textContent = '';
-        for (const ch of ANSWER) {
-          streamEl.textContent += ch;
-          await sleep(delayFor(ch));
+      let started = false;
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !started) {
+            started = true;
+            io.disconnect();
+            run(streamEl);
+          }
         }
-        await sleep(END_HOLD);
+      }, { threshold: 0.1 });
+      io.observe(root);
+    });
+  }
+
+  async function run(streamEl: HTMLElement) {
+    while (document.contains(streamEl)) {
+      streamEl.textContent = '';
+      for (const ch of ANSWER) {
+        if (!document.contains(streamEl)) return;
+        streamEl.textContent += ch;
+        await sleep(delayFor(ch));
       }
+      await sleep(END_HOLD);
     }
-  });
+  }
+
+  document.addEventListener('astro:page-load', setup);
 </script>
 
 <style>
