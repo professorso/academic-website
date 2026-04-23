@@ -1,8 +1,44 @@
 ---
-// data.astro — Data + Artifacts page with datasets and AI/education resources
+// data.astro — Resources page: recommended books, datasets, AI/education links
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import StreamingIntro from '../components/StreamingIntro.astro';
+
+// Books Eric recommends. `featured: true` gets a highlighted "Favorite" badge.
+// Cover images resolve from OpenLibrary via ISBN-13; if a cover 404s the tile
+// falls back to a dark typographic card. Links go to an Amazon search so we
+// never have to track ASINs.
+const recommendedBooks = [
+  { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman', isbn: '9780374533557', featured: true },
+  { title: 'Nudge: The Final Edition', author: 'Richard H. Thaler and Cass R. Sunstein', isbn: '9780143137009' },
+  { title: 'Misbehaving: The Making of Behavioral Economics', author: 'Richard H. Thaler', isbn: '9780393352795' },
+  { title: 'Irrational Exuberance (Revised and Expanded Third Edition)', author: 'Robert J. Shiller', isbn: '9780691166261' },
+  { title: 'Narrative Economics', author: 'Robert J. Shiller', isbn: '9780691182292' },
+  { title: 'Adaptive Markets: Financial Evolution at the Speed of Thought', author: 'Andrew W. Lo', isbn: '9780691191362' },
+  { title: 'Efficiently Inefficient: How Smart Money Invests and Market Prices Are Determined', author: 'Lasse Heje Pedersen', isbn: '9780691166193', localCover: 'efficiently-inefficient.jpg' },
+  { title: 'Alphanomics: The Informational Underpinnings of Market Efficiency', author: 'Charles M. C. Lee and Eric C. So', isbn: '9781601988928', localCover: 'alphanomics.jpg' },
+  { title: 'The Signal and the Noise', author: 'Nate Silver', isbn: '9780143125082' },
+  { title: 'Everybody Lies', author: 'Seth Stephens-Davidowitz', isbn: '9780062390868' },
+  { title: "Don't Trust Your Gut", author: 'Seth Stephens-Davidowitz', isbn: '9780062880918', coverId: 14695616 },
+  { title: 'Outliers: The Story of Success', author: 'Malcolm Gladwell', isbn: '9780316017930' },
+  { title: 'Nexus: A Brief History of Information Networks from the Stone Age to AI', author: 'Yuval Noah Harari', isbn: '9780593734223' },
+  { title: 'Co-Intelligence: Living and Working with AI', author: 'Ethan Mollick', isbn: '9780593716717', coverId: 14805433 },
+  { title: 'Power and Progress: Our Thousand-Year Struggle Over Technology and Prosperity', author: 'Daron Acemoglu and Simon Johnson', isbn: '9781541702530' },
+  { title: 'Duped: Truth-Default Theory and the Social Science of Lying and Deception', author: 'Timothy R. Levine', isbn: '9780817320614', coverId: 13547149 },
+  { title: 'Designing Your Life: How to Build a Well-Lived, Joyful Life', author: 'Bill Burnett and Dave Evans', isbn: '9781101875322' },
+];
+
+function amazonUrl(title: string, author: string) {
+  const query = encodeURIComponent(`${title} ${author}`);
+  return `https://www.amazon.com/s?k=${query}&i=stripbooks`;
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+function coverUrl(book: { isbn: string; coverId?: number; localCover?: string }) {
+  if (book.localCover) return `${base}/images/books/${book.localCover}`;
+  if (book.coverId) return `https://covers.openlibrary.org/b/id/${book.coverId}-L.jpg?default=false`;
+  return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+}
 
 const datasets = [
   {
@@ -63,13 +99,27 @@ const edTechResources = [
 
   <section class="section" data-theme="light">
     <div class="section-inner">
-      <h2 class="data-heading">AI &amp; Education</h2>
-      <div class="edtech-grid">
-        {edTechResources.map((res) => (
-          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
-            <span class="edtech-source">{res.source}</span>
-            <h3 class="edtech-title">{res.name}</h3>
-            <span class="edtech-cta">Read More →</span>
+      <h2 class="data-heading">Recommended Books</h2>
+      <div class="books-grid">
+        {recommendedBooks.map((book) => (
+          <a href={amazonUrl(book.title, book.author)} class={`book-card${book.featured ? ' featured' : ''}`} target="_blank" rel="noopener">
+            {book.featured && <span class="book-badge">Favorite</span>}
+            <div class="book-cover">
+              <img
+                src={coverUrl(book)}
+                alt=""
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <span class="book-cover-fallback">
+                <span class="fallback-title">{book.title}</span>
+                <span class="fallback-author">{book.author}</span>
+              </span>
+            </div>
+            <div class="book-meta">
+              <h3 class="book-title">{book.title}</h3>
+              <p class="book-author">{book.author}</p>
+            </div>
           </a>
         ))}
       </div>
@@ -103,11 +153,173 @@ const edTechResources = [
     </div>
   </section>
 
+  <section class="section" data-theme="light">
+    <div class="section-inner">
+      <h2 class="data-heading">AI &amp; Education</h2>
+      <div class="edtech-grid">
+        {edTechResources.map((res) => (
+          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
+            <span class="edtech-source">{res.source}</span>
+            <h3 class="edtech-title">{res.name}</h3>
+            <span class="edtech-cta">Read More →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
   .data-heading {
     margin-bottom: 2.5rem;
+  }
+
+  /* Recommended Books grid */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.75rem 1.25rem;
+  }
+
+  .book-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+
+  .book-card:hover {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+
+  .book-card.featured {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .book-cover {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    background: linear-gradient(140deg, #1a1a1a 0%, #2a2a2a 100%);
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.25s ease;
+  }
+
+  .book-card:hover .book-cover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  }
+
+  .book-cover img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .book-cover-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    text-align: center;
+    color: #f2f2f2;
+  }
+
+  .fallback-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+  }
+
+  .fallback-author {
+    font-size: 0.75rem;
+    color: #9a9a9a;
+    letter-spacing: 0.02em;
+  }
+
+  .book-badge {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 3;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.3rem 0.55rem;
+    background: #a31f34;
+    color: #fff;
+  }
+
+  .book-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .book-title {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .book-author {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    margin: 0;
+  }
+
+  .book-card.featured .book-title {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  .book-card.featured .book-author {
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 1000px) {
+    .books-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .books-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .book-card.featured {
+      grid-row: auto;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .books-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 1rem;
+    }
+    .book-card.featured {
+      grid-column: span 2;
+    }
   }
 
   .intro-section {
