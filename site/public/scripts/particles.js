@@ -84,10 +84,14 @@
     const focalLength = 600;
 
     dots.forEach((dot) => {
-      // Fabric ripple in local Z — deeper amplitude so the sheet folds
-      // more visibly while the overall particle field reads as quieter.
+      // Tamer coarse ripple (original amplitudes) + a slow torsion term
+      // that bends one side of the sheet forward while the other tips
+      // back — reverses over a ~35s cycle. Twist scales with dot.lx so
+      // the center holds still and the edges lift most.
+      const twist = Math.sin(t * 0.00018) * dot.lx * 0.10;
       const ripple = Math.sin(t * 0.0006 + dot.phase) * 24
-        + Math.cos(t * 0.0003 + dot.phase * 0.7) * 16;
+        + Math.cos(t * 0.0003 + dot.phase * 0.7) * 16
+        + twist;
 
       let x = dot.lx;
       let y = dot.ly;
