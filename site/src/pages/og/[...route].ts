@@ -42,11 +42,11 @@ const pages: Record<string, PageEntry> = {
     description:
       'What AI Does to Us — a book on AI, human judgment, and decision-making.',
   },
-  data: {
+  resources: {
     title: 'Resources',
-    subtitle: 'Reading + Datasets',
+    subtitle: 'Books + Datasets',
     description:
-      'Writing on AI in education and research datasets shared for teaching and reference.',
+      'Recommended books, research datasets, and AI in education reading.',
   },
   accessibility: {
     title: 'Accessibility',

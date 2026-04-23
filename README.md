@@ -117,7 +117,7 @@ Add an entry to the `press` array in `site/src/pages/media.astro`:
 ```
 
 ### Add an AI & Education link
-Add an entry to the `edTechResources` array in `site/src/pages/data.astro`:
+Add an entry to the `edTechResources` array in `site/src/pages/resources.astro`:
 ```js
 {
   name: 'Resource Title Here',

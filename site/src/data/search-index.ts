@@ -19,7 +19,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Working Papers', description: 'Current working papers and research in progress', url: `${base}/working-papers/`, kind: 'page' },
   { title: 'Media + Videos', description: 'Talks, interviews, and press coverage', url: `${base}/media/`, kind: 'page' },
   { title: 'The Collision', description: 'Forthcoming book: What AI Does to Us', url: `${base}/the-collision/`, kind: 'page' },
-  { title: 'Resources', description: 'Reading on AI in education, plus research datasets', url: `${base}/data/`, kind: 'page' },
+  { title: 'Resources', description: 'Recommended books, research datasets, and AI in education reading', url: `${base}/resources/`, kind: 'page' },
   { title: 'Accessibility', description: 'WCAG 2.1 AA accessibility statement', url: `${base}/accessibility/`, kind: 'page' },
 
   // Book
