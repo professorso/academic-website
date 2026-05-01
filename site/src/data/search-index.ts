@@ -29,6 +29,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AI in Financial Markets and Decision-Making', description: 'Research group at the MIT Initiative on the Digital Economy', url: 'https://ide.mit.edu/research-group/ai-finance-decisions/', kind: 'group', external: true },
 
   // Working papers
+  { title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions', description: 'Ross, So, Lo — pre-registered studies on LLMs durably correcting financial misconceptions', url: 'https://arxiv.org/abs/2604.27022', kind: 'working', external: true },
   { title: 'Judgment-Free AI Advisors', description: 'Sussman, Yang, So — comparative advantage of artificial advisors for information disclosure', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326', kind: 'working', external: true },
   { title: 'When AI Speaks, Do We Listen?', description: 'Lo, Ross, So — factors in the uptake of LLM advice', url: `${base}/working-papers/`, kind: 'working' },
   { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'working', external: true },
