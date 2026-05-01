@@ -4,6 +4,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { featuredPapers } from '../data/featured-research';
 
+const artificialIntelligence = [
+  {
+    title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
+    authors: 'Sussman, So, Yang',
+    journal: 'SSRN Working Paper',
+    volume: 'January 2026',
+    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
+  },
+  {
+    title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions',
+    authors: 'Ross, So, Lo',
+    journal: 'arXiv preprint',
+    volume: 'April 2026',
+    link: 'https://arxiv.org/abs/2604.27022',
+  },
+  {
+    title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook',
+    authors: 'Harris, Mehrotra, So',
+    journal: 'Brookings Institution',
+    volume: 'Feb 2025',
+    link: 'https://www.brookings.edu/articles/the-fiscal-frontier/',
+  },
+];
+
 const behavioralFinance = [
   {
     title: 'Bad News Bearers: The Negative Tilt of the Financial Press',
@@ -25,13 +49,6 @@ const behavioralFinance = [
     journal: 'Journal of Financial and Quantitative Analysis',
     volume: '60(6), Sep 2025, pp. 2615–2648',
     link: 'https://www.cambridge.org/core/services/aop-cambridge-core/content/view/77C958598BB1DC92C46EA32BF252A4B9/S0022109024000528a.pdf/investor_corporate_visits_and_predictable_returns.pdf',
-  },
-  {
-    title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook',
-    authors: 'Harris, Mehrotra, So',
-    journal: 'Brookings Institution',
-    volume: 'Feb 2025',
-    link: 'https://www.brookings.edu/articles/the-fiscal-frontier/',
   },
   {
     title: 'Flight to Earnings: The Role of Earnings in Periods of Capital Scarcity',
@@ -206,6 +223,7 @@ const surveys = [
 ];
 
 const categories = [
+  { name: 'Artificial Intelligence', papers: artificialIntelligence },
   { name: 'Behavioral and Financial Economics', papers: behavioralFinance },
   { name: 'Measurement, Regulation, and Disclosure', papers: measurement },
   { name: 'Labor Economics', papers: laborEcon },
