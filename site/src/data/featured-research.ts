@@ -13,16 +13,16 @@ export interface FeaturedPaper {
 
 export const featuredPapers: FeaturedPaper[] = [
   {
-    title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions',
-    authors: 'Jillian Ross, Eric So, Andrew W. Lo',
-    meta: 'Working Paper · April 2026',
-    link: 'https://arxiv.org/abs/2604.27022',
-  },
-  {
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
     authors: 'Abigail B. Sussman, Eric C. So, Yujin Yang',
     meta: 'Working Paper · January 2026',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
+  },
+  {
+    title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions',
+    authors: 'Jillian Ross, Eric So, Andrew W. Lo',
+    meta: 'Working Paper · April 2026',
+    link: 'https://arxiv.org/abs/2604.27022',
   },
   {
     title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings',
