@@ -25,12 +25,6 @@ export const featuredPapers: FeaturedPaper[] = [
     link: 'https://arxiv.org/abs/2604.27022',
   },
   {
-    title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings',
-    authors: 'Lauren Cohen, David S. Kim, Eric So',
-    meta: 'Working Paper · November 2024',
-    link: 'https://doi.org/10.2139/ssrn.4971228',
-  },
-  {
     title: 'The Fiscal Frontier: Projecting AI’s Long-term Impact on the US Fiscal Outlook',
     authors: 'Ben Harris, Neil R. Mehrotra, Eric So',
     meta: 'Brookings Institution · February 2025',
