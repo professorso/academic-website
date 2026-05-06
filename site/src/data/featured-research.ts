@@ -25,6 +25,16 @@ export interface FeaturedPaper {
 
 export const featuredPapers: FeaturedPaper[] = [
   {
+    slug: 'lost-in-context',
+    title: 'Lost in Context: Discovering Context Anxiety in Large Language Models',
+    authors: 'Anonymous Authors (under double-blind review)',
+    meta: 'Working Paper · April 2026',
+    tldr:
+      'Frontier reasoning models often fail not because they lack capability but because they prematurely self-doubt — a phenomenon we call "context anxiety," driven by miscalibrated token-budget estimates and substantially reducible through lightweight fine-tuning rather than further scaling.',
+    abstract:
+      'Conventional wisdom suggests that reasoning models fail when problems exceed their capabilities. However, we find that frontier reasoning models sometimes possess the necessary capabilities to solve problems but fail due to premature self-doubt — a phenomenon informally known as context anxiety. We provide the first systematic study of context anxiety, demonstrating that it arises, in part, from a model\'s inability to accurately estimate the tokens required to complete a task. We also show that context anxiety leads to material efficiency losses when models operate under perceived constraints. Building on this analysis, we further show that models can learn alternative strategies for solving long-horizon problems without exhibiting context anxiety, suggesting that performance improvements may be achievable not through scaling model capabilities, but by improving models\' ability to accurately assess and adapt to their own limitations.',
+  },
+  {
     slug: 'ai-advisors-competence-judgment',
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
     authors: 'Eric So, Abigail Sussman, Fiona Y. Yang',
