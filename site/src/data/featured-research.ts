@@ -27,10 +27,12 @@ export const featuredPapers: FeaturedPaper[] = [
   {
     slug: 'ai-advisors-competence-judgment',
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
-    authors: 'Abigail B. Sussman, Eric C. So, Yujin Yang',
+    authors: 'Eric So, Abigail Sussman, Fiona Y. Yang',
     meta: 'Working Paper · January 2026',
     tldr:
-      'When disclosing information to an advisor feels socially costly, AI advisors hold a comparative advantage over human advisors because they are perceived as competent without being judgmental. The paper develops a competence–judgment tradeoff framework that helps explain when AI is the more effective channel for eliciting honest disclosure and what that implies for how firms deploy AI in advisory roles.',
+      'People rely on a competence–judgment tradeoff to choose between human and AI advisors. They pay a "competence premium" to humans — until disclosure requires revealing embarrassing information, at which point AI\'s lack of social judgment flips the preference. AI adoption in professional services will depend not just on closing the capability gap, but on how domains differ in the social cost of disclosure.',
+    abstract:
+      'This paper finds that people rely on a competence-judgment tradeoff to choose between human and AI advisors, evaluating whether the benefit of expertise outweighs the cost of social judgment. AI advisors unbundle competence from judgment, offering psychological safety at the cost of expertise. Across three experiments, people preferred human advisors and shared more information with them, reflecting a competence premium that reversed when disclosure required revealing embarrassing information. Experimentally increasing AI competence produced the same reversal, providing evidence that competence and judgment are distinct but complementary inputs into the same tradeoff. People also feel less need to justify their actions to AI when those actions are embarrassing, suggesting they manage anticipated judgment from humans in ways that are unnecessary with AI. These findings reveal that AI adoption in professional services will depend not only on closing the capability gap but on how domains differ in the social costs of disclosure.',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
   },
   {
@@ -47,12 +49,12 @@ export const featuredPapers: FeaturedPaper[] = [
   {
     slug: 'fiscal-frontier',
     title: 'The Fiscal Frontier: Projecting AI’s Long-term Impact on the US Fiscal Outlook',
-    authors: 'Ben Harris, Neil R. Mehrotra, Eric So',
+    authors: 'Benjamin H. Harris, Neil Mehrotra, Eric So',
     meta: 'Brookings Institution · February 2025',
     tldr:
-      'AI’s effects on healthcare productivity, mortality, and costs could materially shift U.S. federal entitlement spending over the next two decades. Preliminary estimates range from a ~1.6% of GDP increase in annual deficits to a ~0.8% of GDP decrease by 2044, depending on whether AI primarily extends lifespans without cutting costs or also delivers comprehensive healthcare productivity gains.',
+      'A framework for how AI will reshape U.S. federal spending on old-age entitlements through three channels: mortality and population size, the price of health-care services, and demand for them. The nature of the AI shock is critical: depending on which channel dominates, the impact on annual budget deficits in 2044 ranges from a 1.63% of GDP increase to a 0.82% of GDP decrease — the latter cutting deficits by roughly one ninth.',
     abstract:
-      'This Brookings Institution paper examines how artificial intelligence could reshape U.S. federal spending on Social Security and Medicare over the next twenty years. The authors model scenarios in which AI’s impact on healthcare delivery, costs, and mortality dramatically shifts entitlement program expenditures, drawing on AI capabilities such as protein-folding advances, diagnostic accuracy that exceeds human clinicians, and personalized treatment optimization. The fiscal consequences are paradoxical: AI-driven gains in healthcare effectiveness and longevity may simultaneously increase total entitlement spending — by expanding the elderly population receiving benefits — and lower spending per beneficiary through cost reductions. The authors advocate that policymakers proactively integrate AI’s healthcare implications into long-term fiscal planning rather than overlook this critical variable in budget projections.',
+      'We simulate the impact of artificial intelligence (AI) on the long-term outlook for federal spending on old-age entitlement programs. This paper introduces a framework for how AI will affect these outlays through three primary channels: mortality rates and the size of the population, the price of health care services, and demands for health care services. Using this framework, we show that the nature of the AI shock is critical, as the impact of the shock on annual budget deficits could range from an increase of 1.63% of GDP to a decrease of 0.82% of GDP by 2044, with the latter reducing annual budget deficits in 2044 by roughly one ninth.',
     link: 'https://www.brookings.edu/articles/the-fiscal-frontier-projecting-ais-long-term-impact-on-the-us-fiscal-outlook/',
   },
 ];
