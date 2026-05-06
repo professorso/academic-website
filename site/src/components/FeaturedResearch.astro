@@ -1,8 +1,10 @@
 ---
 // FeaturedResearch.astro — Auto-scrolling featured paper cards.
 // Papers come from site/src/data/featured-research.ts so the Research
-// page's sticky-intro reads from the same source.
+// page's sticky-intro reads from the same source. Cards open the
+// FeaturedResearchModal on click — the modal is rendered once below.
 import { featuredPapers } from '../data/featured-research';
+import FeaturedResearchModal from './FeaturedResearchModal.astro';
 // Duplicate for seamless loop
 const allPapers = [...featuredPapers, ...featuredPapers];
 ---
@@ -16,16 +18,18 @@ const allPapers = [...featuredPapers, ...featuredPapers];
   <div class="marquee-wrapper">
     <div class="marquee-track">
       {allPapers.map((paper) => (
-        <a href={paper.link} class="featured-card" target="_blank" rel="noopener">
+        <button type="button" class="featured-card" data-paper-trigger={paper.slug} aria-haspopup="dialog">
           <span class="featured-card__meta">{paper.meta}</span>
           <h3 class="featured-card__title">{paper.title}</h3>
           <p class="featured-card__authors">{paper.authors}</p>
-          <span class="featured-card__link">Read Paper &rarr;</span>
-        </a>
+          <span class="featured-card__link">View paper &rarr;</span>
+        </button>
       ))}
     </div>
   </div>
 </section>
+
+<FeaturedResearchModal />
 
 <style>
   .marquee-wrapper {
@@ -57,18 +61,24 @@ const allPapers = [...featuredPapers, ...featuredPapers];
     flex: 0 0 340px;
     display: flex;
     flex-direction: column;
+    text-align: left;
     padding: 2rem;
     border: 1px solid var(--gray-700, #333);
     border-bottom: 1px solid var(--gray-700, #333);
     text-decoration: none;
     color: inherit;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
-  .featured-card:hover {
+  .featured-card:hover,
+  .featured-card:focus-visible {
     border-color: var(--white);
     transform: translateY(-4px);
     opacity: 1;
+    outline: none;
   }
 
   .featured-card__meta {

@@ -1,0 +1,274 @@
+---
+// FeaturedResearchModal.astro — Centered modal that opens when any element
+// with `data-paper-trigger="<slug>"` is clicked. Renders one panel per
+// paper from `featured-research.ts` so adding a new featured paper is a
+// single-file change.
+//
+// Usage: render <FeaturedResearchModal /> once on a page, then make any
+// click target on that page a button (or element) with
+//   data-paper-trigger="<slug>"
+// matching a paper's `slug` in the data file.
+import { featuredPapers } from '../data/featured-research';
+---
+
+<div class="paper-overlay" id="paper-overlay" aria-hidden="true"></div>
+
+<div class="paper-modal" id="paper-modal" role="dialog" aria-modal="true" aria-labelledby="paper-modal-title" aria-hidden="true">
+  <button class="paper-modal-close" id="paper-modal-close" aria-label="Close paper details">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  {featuredPapers.map((paper) => (
+    <article class="paper-panel" data-paper-slug={paper.slug} hidden>
+      <span class="paper-eyebrow">{paper.meta}</span>
+      <h2 class="paper-title" id={`paper-modal-title-${paper.slug}`}>{paper.title}</h2>
+      <p class="paper-authors">{paper.authors}</p>
+
+      <h3 class="paper-section-heading">TLDR</h3>
+      <p class="paper-tldr">{paper.tldr}</p>
+
+      {paper.abstract && (
+        <>
+          <h3 class="paper-section-heading">Abstract</h3>
+          <p class="paper-abstract">{paper.abstract}</p>
+        </>
+      )}
+
+      <div class="paper-link-row">
+        {paper.link ? (
+          <a class="paper-link-btn" href={paper.link} target="_blank" rel="noopener">
+            Read the paper
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17L17 7"/><polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </a>
+        ) : (
+          <span class="paper-link-pending">Full paper coming soon</span>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .paper-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .paper-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .paper-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(760px, calc(100vw - 2rem));
+    max-height: min(85vh, 820px);
+    background: var(--pure-white);
+    color: var(--black);
+    z-index: 201;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.985);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .paper-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .paper-modal-close {
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    display: block;
+    padding: 1rem;
+    background: var(--pure-white);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .paper-modal-close:hover {
+    opacity: 0.5;
+  }
+
+  .paper-panel {
+    padding: 0 2.75rem 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .paper-panel {
+      padding: 0 1.5rem 2rem;
+    }
+  }
+
+  .paper-eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gray-500);
+    margin-bottom: 0.75rem;
+  }
+
+  .paper-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .paper-authors {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin-bottom: 1.75rem;
+  }
+
+  .paper-section-heading {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-500);
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  .paper-tldr {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--black);
+    padding: 1rem 1.25rem;
+    background: var(--gray-50, #f7f7f7);
+    border-left: 3px solid var(--black);
+  }
+
+  .paper-abstract {
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: var(--gray-700, #2c2c2c);
+  }
+
+  .paper-link-row {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .paper-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--black);
+    padding: 0.75rem 1.4rem;
+    text-decoration: none !important;
+    color: var(--black);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .paper-link-btn:hover {
+    background: var(--black);
+    color: var(--white);
+    opacity: 1;
+  }
+
+  .paper-link-pending {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-500);
+    padding: 0.6rem 0;
+  }
+</style>
+
+<script>
+  function setupPaperModal() {
+    const modal = document.getElementById('paper-modal');
+    const overlay = document.getElementById('paper-overlay');
+    const closeBtn = document.getElementById('paper-modal-close');
+    const triggers = document.querySelectorAll<HTMLElement>('[data-paper-trigger]');
+    const panels = modal?.querySelectorAll<HTMLElement>('.paper-panel[data-paper-slug]');
+
+    if (!modal || !overlay || !panels) return;
+
+    let lastTrigger: HTMLElement | null = null;
+
+    function openModal(slug: string, trigger: HTMLElement) {
+      if (!modal || !overlay || !panels) return;
+      let matched = false;
+      panels.forEach((p) => {
+        const isMatch = p.dataset.paperSlug === slug;
+        p.hidden = !isMatch;
+        if (isMatch) matched = true;
+      });
+      if (!matched) return;
+      modal.classList.add('active');
+      overlay.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      lastTrigger = trigger;
+      modal.scrollTop = 0;
+    }
+
+    function closeModal() {
+      if (!modal || !overlay) return;
+      modal.classList.remove('active');
+      overlay.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lastTrigger?.focus();
+      lastTrigger = null;
+    }
+
+    triggers.forEach((el) => {
+      el.onclick = (e) => {
+        e.preventDefault();
+        const slug = el.dataset.paperTrigger;
+        if (slug) openModal(slug, el);
+      };
+    });
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+    overlay.onclick = closeModal;
+
+    (window as any).__closePaperModal = closeModal;
+  }
+
+  if (!(window as any).__paperEscInstalled) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && typeof (window as any).__closePaperModal === 'function') {
+        (window as any).__closePaperModal();
+      }
+    });
+    (window as any).__paperEscInstalled = true;
+  }
+
+  setupPaperModal();
+  document.addEventListener('astro:page-load', setupPaperModal);
+</script>

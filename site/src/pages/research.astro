@@ -2,6 +2,7 @@
 // research.astro — Full publications list organized by category
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import FeaturedResearchModal from '../components/FeaturedResearchModal.astro';
 import { featuredPapers } from '../data/featured-research';
 
 const artificialIntelligence = [
@@ -250,13 +251,13 @@ const categories = [
       </aside>
       <div class="reveal-pane">
         {featuredPapers.map((paper, i) => (
-          <a class="reveal-card reveal-card--paper" href={paper.link} target="_blank" rel="noopener">
+          <button type="button" class="reveal-card reveal-card--paper" data-paper-trigger={paper.slug} aria-haspopup="dialog">
             <span class="reveal-num">{String(i + 1).padStart(2, '0')}</span>
             <span class="reveal-meta">{paper.meta}</span>
             <h3 class="reveal-title reveal-title--paper">{paper.title}</h3>
             <p class="reveal-authors">{paper.authors}</p>
-            <span class="reveal-link">Read Paper →</span>
-          </a>
+            <span class="reveal-link">View paper →</span>
+          </button>
         ))}
       </div>
     </div>
@@ -286,6 +287,8 @@ const categories = [
       </div>
     </section>
   ))}
+
+  <FeaturedResearchModal />
 </BaseLayout>
 
 <style>
@@ -334,8 +337,14 @@ const categories = [
   }
 
   .reveal-card {
+    display: block;
+    width: 100%;
+    text-align: left;
     padding: 2rem 2rem 2rem 2.2rem;
     background: var(--pure-white);
+    color: inherit;
+    font: inherit;
+    border: none;
     border-left: 3px solid var(--accent);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     opacity: 0;
@@ -377,11 +386,13 @@ const categories = [
     cursor: pointer;
   }
 
-  .reveal-card--paper:hover {
+  .reveal-card--paper:hover,
+  .reveal-card--paper:focus-visible {
     opacity: 1;
     border-left-color: var(--accent);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
+    outline: none;
   }
 
   .reveal-meta {

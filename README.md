@@ -94,6 +94,14 @@ link: "https://..."
 ### Update research papers
 Edit `site/src/pages/research.astro` or `site/src/pages/working-papers.astro` directly.
 
+### Add or update a featured paper
+Edit a single file: `site/src/data/featured-research.ts`. Each entry feeds three places:
+1. The auto-scrolling marquee on the homepage,
+2. The sticky-intro reveal cards at the top of the Research page,
+3. The click-to-open detail modal on both pages (`FeaturedResearchModal.astro`).
+
+Each `FeaturedPaper` needs `slug`, `title`, `authors`, `meta`, and `tldr`. `abstract` and `link` are optional — when `link` is missing, the modal shows "Full paper coming soon". Also add a matching entry in `site/src/data/search-index.ts` for Cmd+K search.
+
 ### Update contact info
 Edit `site/src/components/ContactModal.astro`.
 
