@@ -1,5 +1,5 @@
 ---
-// TeachingSection.astro — Placeholder for courses
+// TeachingSection.astro — Courses with click-to-open course detail modal
 ---
 
 <section class="section" data-theme="light" id="teaching">
@@ -7,18 +7,122 @@
     <span class="section-label">Teaching</span>
     <h2 class="section-title">Courses</h2>
     <div class="teaching-grid">
-      <div class="teaching-card">
+      <button class="teaching-card" type="button" data-course="ai-applications" aria-haspopup="dialog">
         <h3>AI Applications in Business</h3>
         <p>Exploring how artificial intelligence transforms business decision-making, strategy, and operations.</p>
-      </div>
-      <div class="teaching-card">
+        <span class="teaching-card-cue">View course →</span>
+      </button>
+      <button class="teaching-card" type="button" data-course="investment-decisions" aria-haspopup="dialog">
         <h3>Investment Decisions</h3>
         <p>Frameworks for evaluating investment opportunities, with emphasis on behavioral factors and market efficiency.</p>
-      </div>
+        <span class="teaching-card-cue">View course →</span>
+      </button>
     </div>
-    <p class="teaching-note">Course details and syllabi coming soon.</p>
   </div>
 </section>
+
+<div class="course-overlay" id="course-overlay" aria-hidden="true"></div>
+
+<div class="course-modal" id="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title" aria-hidden="true">
+  <button class="course-modal-close" id="course-modal-close" aria-label="Close course details">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <article class="course-panel" data-course="ai-applications" hidden>
+    <span class="course-eyebrow">MIT Sloan · 15.236</span>
+    <h2 class="course-title" id="course-modal-title-ai">AI Applications in Business</h2>
+    <p class="course-subtitle">Global Business of Artificial Intelligence and Robotics</p>
+
+    <dl class="course-meta">
+      <div>
+        <dt>When</dt>
+        <dd>Spring semester (second half-term, H3)</dd>
+      </div>
+      <div>
+        <dt>Co-taught with</dt>
+        <dd>Simon Johnson and Jonathan Ruane</dd>
+      </div>
+      <div>
+        <dt>Audience</dt>
+        <dd>MBAs, engineers, law and policy graduate students, and aspiring AI founders. No technical background required.</dd>
+      </div>
+    </dl>
+
+    <h3 class="course-section-heading">Overview</h3>
+    <p class="course-paragraph">
+      An analytical investigation of where the opportunities and challenges
+      lie as AI and robotics are increasingly adopted across the economy
+      and society. The course balances frameworks, discussions, projects,
+      and external speakers, with the underlying conviction that
+      transformative technologies create both wealth and disruption — and
+      that leaders who understand the economics, business, and technology
+      have a real advantage.
+    </p>
+
+    <h3 class="course-section-heading">What we cover</h3>
+    <ol class="course-arc">
+      <li>
+        <strong>The Worker.</strong> AI at work as a general-purpose
+        technology; task-level frameworks for exposure, augmentation, and
+        the "jagged frontier"; skill loss and cognitive outsourcing; what
+        pro-worker AI looks like in design and policy.
+      </li>
+      <li>
+        <strong>The Firm.</strong> Competitive dynamics in AI markets; the
+        case for and against an AI bubble, including collapse and
+        contagion scenarios; the AI supply chain from chips to compute to
+        applications.
+      </li>
+      <li>
+        <strong>Robots, Policy &amp; Practice.</strong> Robotics, world
+        models, and the embodied frontier; national AI strategy through
+        country case studies; the practical and political work of
+        deploying AI responsibly.
+      </li>
+    </ol>
+  </article>
+
+  <article class="course-panel" data-course="investment-decisions" hidden>
+    <span class="course-eyebrow">MIT Sloan · Alphanomics</span>
+    <h2 class="course-title" id="course-modal-title-inv">Investment Decisions</h2>
+    <p class="course-subtitle">A New Approach to Security Analysis</p>
+
+    <dl class="course-meta">
+      <div>
+        <dt>When</dt>
+        <dd>Spring semester (full term)</dd>
+      </div>
+      <div>
+        <dt>Audience</dt>
+        <dd>Graduate students at the intersection of finance, accounting, and economics — especially those interested in return prediction, information flows, and active investing.</dd>
+      </div>
+    </dl>
+
+    <h3 class="course-section-heading">Overview</h3>
+    <p class="course-paragraph">
+      The course studies investment decisions in the presence of noisy
+      market prices. Its starting point is that costly information leaves
+      equilibrium prices reflecting some mispricing relative to
+      fundamental value, which creates a role for informational arbitrage.
+      We review recent evidence on this process and reflect on what it
+      means for financial markets, active investors, and researchers
+      working to lower information and arbitrage costs.
+    </p>
+
+    <h3 class="course-section-heading">What we cover</h3>
+    <ul class="course-topics">
+      <li>Active investing, alpha, and the role of fundamental analysis</li>
+      <li>Quantitative stock selection and value investing</li>
+      <li>Theory versus data: the CAPM in practice and its limits</li>
+      <li>Investor psychology and cognitive biases in security markets</li>
+      <li>Investor sentiment, retail investors, and meme-driven dynamics</li>
+      <li>Fraud detection and mis-reaction to news</li>
+      <li>AI and Alphanomics: how machine learning intersects with active investing</li>
+    </ul>
+  </article>
+</div>
 
 <style>
   .teaching-grid {
@@ -29,24 +133,305 @@
   }
 
   .teaching-card {
+    appearance: none;
+    background: transparent;
+    text-align: left;
     padding: 2rem;
     border: 1px solid var(--gray-200);
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .teaching-card:hover,
+  .teaching-card:focus-visible {
+    border-color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    outline: none;
   }
 
   .teaching-card h3 {
     font-size: 1.4rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
   }
 
   .teaching-card p {
     font-size: 0.95rem;
     color: var(--gray-600);
     line-height: 1.7;
+    margin: 0;
   }
 
-  .teaching-note {
-    font-size: 0.85rem;
+  .teaching-card-cue {
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-500);
+  }
+
+  .teaching-card:hover .teaching-card-cue,
+  .teaching-card:focus-visible .teaching-card-cue {
+    color: var(--black);
+  }
+
+  /* --- Modal --- */
+  .course-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .course-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .course-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(720px, calc(100vw - 2rem));
+    max-height: min(85vh, 760px);
+    background: var(--pure-white);
+    color: var(--black);
+    z-index: 201;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.985);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .course-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .course-modal-close {
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    display: block;
+    padding: 1rem;
+    background: var(--pure-white);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .course-modal-close:hover {
+    opacity: 0.5;
+  }
+
+  .course-panel {
+    padding: 0 2.75rem 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .course-panel {
+      padding: 0 1.5rem 2rem;
+    }
+  }
+
+  .course-eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gray-500);
+    margin-bottom: 0.75rem;
+  }
+
+  .course-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .course-subtitle {
+    font-size: 1.05rem;
+    color: var(--gray-600);
+    margin-bottom: 1.75rem;
+  }
+
+  .course-meta {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0 0 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--gray-50, #f7f7f7);
+    border-left: 3px solid var(--black);
+  }
+
+  .course-meta div {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  @media (max-width: 540px) {
+    .course-meta div {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+
+  .course-meta dt {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-500);
+  }
+
+  .course-meta dd {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .course-section-heading {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gray-500);
+    margin: 1.75rem 0 0.75rem;
+  }
+
+  .course-paragraph {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--gray-700, #2c2c2c);
+  }
+
+  .course-arc {
+    list-style: none;
+    counter-reset: arc;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .course-arc li {
+    counter-increment: arc;
+    position: relative;
+    padding-left: 2.4rem;
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--gray-700, #2c2c2c);
+  }
+
+  .course-arc li::before {
+    content: counter(arc, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.05rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
     color: var(--gray-400);
-    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+
+  .course-arc strong {
+    color: var(--black);
+  }
+
+  .course-topics {
+    padding-left: 1.1rem;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.97rem;
+    line-height: 1.55;
+    color: var(--gray-700, #2c2c2c);
+  }
+
+  .course-topics li::marker {
+    color: var(--gray-400);
   }
 </style>
+
+<script>
+  function setupCourseModal() {
+    const modal = document.getElementById('course-modal');
+    const overlay = document.getElementById('course-overlay');
+    const closeBtn = document.getElementById('course-modal-close');
+    const triggers = document.querySelectorAll<HTMLButtonElement>('.teaching-card[data-course]');
+    const panels = modal?.querySelectorAll<HTMLElement>('.course-panel[data-course]');
+
+    if (!modal || !overlay || !panels) return;
+
+    let lastTrigger: HTMLElement | null = null;
+
+    function openModal(courseKey: string, trigger: HTMLElement) {
+      if (!modal || !overlay || !panels) return;
+      panels.forEach((p) => {
+        p.hidden = p.dataset.course !== courseKey;
+      });
+      modal.classList.add('active');
+      overlay.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      lastTrigger = trigger;
+      modal.scrollTop = 0;
+    }
+
+    function closeModal() {
+      if (!modal || !overlay) return;
+      modal.classList.remove('active');
+      overlay.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lastTrigger?.focus();
+      lastTrigger = null;
+    }
+
+    triggers.forEach((btn) => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const key = btn.dataset.course;
+        if (key) openModal(key, btn);
+      };
+    });
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+    overlay.onclick = closeModal;
+
+    (window as any).__closeCourseModal = closeModal;
+  }
+
+  if (!(window as any).__courseEscInstalled) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && typeof (window as any).__closeCourseModal === 'function') {
+        (window as any).__closeCourseModal();
+      }
+    });
+    (window as any).__courseEscInstalled = true;
+  }
+
+  setupCourseModal();
+  document.addEventListener('astro:page-load', setupCourseModal);
+</script>
