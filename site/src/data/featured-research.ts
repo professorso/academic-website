@@ -27,8 +27,8 @@ export const featuredPapers: FeaturedPaper[] = [
   {
     slug: 'lost-in-context',
     title: 'Lost in Context: Discovering Context Anxiety in Large Language Models',
-    authors: 'Anonymous Authors (under double-blind review)',
-    meta: 'Working Paper · April 2026',
+    authors: 'Ifueko Igbinedion, Jillian Ross, Etienne Ricardez, Sertac Karaman, Eric So',
+    meta: 'International Conference on Machine Learning (ICML) · 2026',
     tldr:
       'Frontier reasoning models often fail not because they lack capability but because they prematurely self-doubt — a phenomenon we call "context anxiety," driven by miscalibrated token-budget estimates and substantially reducible through lightweight fine-tuning rather than further scaling.',
     abstract:
