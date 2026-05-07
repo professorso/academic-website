@@ -7,7 +7,8 @@ const videos = [
   {
     id: 'CAX-IPNjH3k',
     title: "AI Agents Don't Ask Permission (MIT Initiative on the Digital Economy)",
-    thumb: 'https://img.youtube.com/vi/CAX-IPNjH3k/1.jpg',
+    thumb: '/images/videos/ai-agents-permission.png',
+    thumbFit: 'contain' as const,
   },
   {
     id: '--VyDPtDdMo',
@@ -124,7 +125,7 @@ const press = [
           <div class="video-card">
             <div class="video-embed">
               {video.thumb ? (
-                <button type="button" class="video-facade" data-yt-id={video.id} aria-label={`Play: ${video.title}`}>
+                <button type="button" class="video-facade" data-yt-id={video.id} data-fit={video.thumbFit ?? 'cover'} aria-label={`Play: ${video.title}`}>
                   <img src={video.thumb} alt="" loading="lazy" />
                   <span class="play-overlay" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
@@ -212,6 +213,11 @@ const press = [
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .video-facade[data-fit="contain"] img {
+    object-fit: contain;
+    background: var(--black);
   }
 
   .play-overlay {
