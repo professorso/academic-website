@@ -7,6 +7,7 @@ const videos = [
   {
     id: 'CAX-IPNjH3k',
     title: "AI Agents Don't Ask Permission (MIT Initiative on the Digital Economy)",
+    thumb: 'https://img.youtube.com/vi/CAX-IPNjH3k/1.jpg',
   },
   {
     id: '--VyDPtDdMo',
@@ -122,14 +123,23 @@ const press = [
         {videos.map((video) => (
           <div class="video-card">
             <div class="video-embed">
-              <iframe
-                src={`https://www.youtube.com/embed/${video.id}${video.start ? `?start=${video.start}` : ''}`}
-                title={video.title}
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy"
-              ></iframe>
+              {video.thumb ? (
+                <button type="button" class="video-facade" data-yt-id={video.id} aria-label={`Play: ${video.title}`}>
+                  <img src={video.thumb} alt="" loading="lazy" />
+                  <span class="play-overlay" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                  </span>
+                </button>
+              ) : (
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}${video.start ? `?start=${video.start}` : ''}`}
+                  title={video.title}
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              )}
             </div>
             <p class="video-title">{video.title}</p>
           </div>
@@ -180,6 +190,58 @@ const press = [
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  /* Lite-YouTube facade: shows a custom poster until the user clicks play */
+  .video-facade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: var(--gray-800);
+    cursor: pointer;
+    overflow: hidden;
+    display: block;
+  }
+
+  .video-facade img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.18);
+    transition: background-color 0.2s ease;
+  }
+
+  .video-facade:hover .play-overlay,
+  .video-facade:focus-visible .play-overlay {
+    background: rgba(0, 0, 0, 0.32);
+  }
+
+  .video-facade:focus-visible {
+    outline: none;
+  }
+
+  .play-overlay svg {
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+    transition: transform 0.2s ease;
+  }
+
+  .video-facade:hover .play-overlay svg,
+  .video-facade:focus-visible .play-overlay svg {
+    transform: scale(1.08);
   }
 
   .video-title {
@@ -265,3 +327,24 @@ const press = [
     }
   }
 </style>
+
+<script>
+  function setupVideoFacades() {
+    document.querySelectorAll<HTMLButtonElement>('.video-facade').forEach((btn) => {
+      btn.onclick = () => {
+        const id = btn.dataset.ytId;
+        if (!id) return;
+        const title = btn.getAttribute('aria-label')?.replace(/^Play:\s*/, '') ?? '';
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.title = title;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.setAttribute('allowfullscreen', '');
+        btn.replaceWith(iframe);
+      };
+    });
+  }
+  setupVideoFacades();
+  document.addEventListener('astro:page-load', setupVideoFacades);
+</script>
