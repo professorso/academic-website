@@ -42,9 +42,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p><a href="https://mitsloan.mit.edu/faculty/directory/eric-so" target="_blank" rel="noopener">Link</a></p>
     </div>
 
-    <div class="modal-section">
+    <div class="modal-section modal-downloads">
       <a href={`${base}/files/CV_EricSo.pdf`} class="cv-link" target="_blank" rel="noopener">
         Download CV
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </a>
+      <a href={`${base}/files/EricSo_Headshot.jpg`} class="cv-link" download="EricSo_Headshot.jpg">
+        Download Headshot
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
@@ -167,6 +173,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .modal-section a:hover {
     opacity: 0.6;
+  }
+
+  .modal-downloads {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
   }
 
   .cv-link {
