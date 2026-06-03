@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>GIF preview</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #111; color: #ccc; font-family: ui-monospace, Menlo, monospace; }
+  body { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  h2 { font-size: 12px; font-weight: 500; color: #888; margin: 0 0 8px; letter-spacing: 0.06em; text-transform: uppercase;}
+  .frame { background: #000; padding: 1px; display: inline-block; max-width: 100%; }
+  img { display: block; max-width: 100%; height: auto; }
+  .note { font-size: 11px; color: #666; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <div>
+    <h2>Highlighter banner · 1600×300 · 2× (4.5s loop)</h2>
+    <div class="frame"><img src="gifs/highlighter-banner-2x.gif" alt="highlighter banner"></div>
+    <div class="note">Text sits, then a soft yellow stroke sweeps across "I return to".</div>
+  </div>
+  <div>
+    <h2>Typewriter banner · 1600×300 · 2× (8s loop)</h2>
+    <div class="frame"><img src="gifs/typewriter-banner-2x.gif" alt="typewriter banner"></div>
+    <div class="note">The GIF auto-plays and loops here. Refresh to restart from frame 0.</div>
+  </div>
+  <div>
+    <h2>Terminal banner · 1600×300 · 2× (7s loop)</h2>
+    <div class="frame"><img src="gifs/terminal-banner-ls-resources-2x.gif" alt="terminal banner"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!--
+  Embeddable streaming-banner snippet.
+  Paste this whole thing into an Astro component / page. No build step, no deps.
+  Scoping: every selector is prefixed with `.rr-banner` so it won't collide with host styles.
+-->
+<div class="rr-banner" role="img" aria-label="A reading room. Essays, articles, and books I recommend. Datasets I return to. Shared freely.">
+  <style>
+    .rr-banner {
+      /* Layout */
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: clamp(1.25rem, 4vw, 3rem) clamp(1.5rem, 5vw, 4.5rem);
+      background: transparent;
+      color: #f2f2f2;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.35;
+      text-align: left;
+      /* Type scale — matches recorder banner (34px at ~1600w) and stays readable on phones */
+      font-size: clamp(1.0625rem, 1.8vw + 0.5rem, 2.125rem);
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .rr-banner__q,
+    .rr-banner__a {
+      display: block;
+      margin: 0;
+    }
+    .rr-banner__q {
+      margin-bottom: clamp(0.4rem, 1.2vw, 0.75rem);
+    }
+    .rr-banner__qlabel {
+      color: #9a9a9a;
+      margin-right: 0.45em;
+    }
+    .rr-banner__qtext {
+      color: #f2f2f2;
+    }
+    /* Answer + streaming chars */
+    .rr-banner__a {
+      color: #f2f2f2;
+      min-height: 1.35em; /* reserve one line so layout doesn't jump */
+    }
+    .rr-banner__a .ch {
+      opacity: 0;
+      white-space: pre;
+    }
+    .rr-banner__a .ch.on {
+      opacity: 1;
+    }
+    /* Cursor */
+    .rr-banner__caret {
+      display: inline-block;
+      width: 0.08em;
+      min-width: 2px;
+      height: 1.05em;
+      background: #f2f2f2;
+      vertical-align: -0.15em;
+      margin-left: 0.06em;
+      animation: rrBannerBlink 1s steps(2, end) infinite;
+    }
+    .rr-banner__caret[hidden] { display: none; }
+    @keyframes rrBannerBlink { 50% { opacity: 0; } }
+
+    /* Reduced motion: show the finished frame, no animation, no caret */
+    @media (prefers-reduced-motion: reduce) {
+      .rr-banner__a .ch { opacity: 1 !important; }
+      .rr-banner__caret { display: none !important; animation: none !important; }
+    }
+  </style>
+
+  <span class="rr-banner__q" aria-hidden="true">
+    <span class="rr-banner__qlabel">Q:</span><span class="rr-banner__qtext">What is this subpage?</span>
+  </span>
+  <span class="rr-banner__a" aria-hidden="true"><span class="rr-banner__a-text"></span><span class="rr-banner__caret"></span></span>
+
+  <script>
+    (function () {
+      // Find THIS instance (supports multiple snippets on the same page).
+      var scripts = document.getElementsByTagName('script');
+      var self = scripts[scripts.length - 1];
+      var root = self.parentElement;
+      if (!root || root.dataset.rrInit === '1') return;
+      root.dataset.rrInit = '1';
+
+      var TEXT = 'A reading room. Essays, articles, and books I recommend. Datasets I return to. Shared freely.';
+
+      // Punctuation-pause timings — match the recorder exactly.
+      // Base per-char 14ms; '.'=320, '?'=400, ','=180, '—'=260. SPEED multiplier = 1.8.
+      var SPEED = 1.8;
+      var END_HOLD = 3000;
+      function delayFor(c) {
+        var d = 14;
+        if (c === '.') d = 320;
+        else if (c === '?') d = 400;
+        else if (c === ',') d = 180;
+        else if (c === '—') d = 260;
+        return d * SPEED;
+      }
+
+      var textEl = root.querySelector('.rr-banner__a-text');
+      var caretEl = root.querySelector('.rr-banner__caret');
+
+      // Build char spans once.
+      var chars = [];
+      for (var i = 0; i < TEXT.length; i++) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = TEXT[i];
+        textEl.appendChild(s);
+        chars.push(s);
+      }
+
+      // Respect reduced-motion: render finished state, exit.
+      var mql = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+      function renderFinalStatic() {
+        for (var j = 0; j < chars.length; j++) chars[j].classList.add('on');
+        if (caretEl) caretEl.setAttribute('hidden', '');
+      }
+      if (mql && mql.matches) { renderFinalStatic(); return; }
+
+      var stopped = false;
+      function reset() {
+        for (var j = 0; j < chars.length; j++) chars[j].classList.remove('on');
+        if (caretEl) caretEl.removeAttribute('hidden');
+      }
+
+      async function loop() {
+        while (!stopped) {
+          reset();
+          // Stream chars
+          for (var k = 0; k < chars.length; k++) {
+            if (stopped) return;
+            chars[k].classList.add('on');
+            await new Promise(function (r) { setTimeout(r, delayFor(TEXT[k])); });
+          }
+          // Hide caret during the held-finished frame
+          if (caretEl) caretEl.setAttribute('hidden', '');
+          await new Promise(function (r) { setTimeout(r, END_HOLD); });
+        }
+      }
+
+      // Switch to static if the user toggles reduced-motion on later.
+      if (mql && mql.addEventListener) {
+        mql.addEventListener('change', function (e) {
+          if (e.matches) { stopped = true; renderFinalStatic(); }
+        });
+      }
+
+      // Pause when offscreen/hidden to avoid wasted cycles (optional, safe).
+      document.addEventListener('visibilitychange', function () {
+        // We don't actually pause mid-char to keep code simple; the setTimeouts just drift.
+        // No-op — kept for future hook.
+      });
+
+      loop();
+    })();
+  </script>
+</div>

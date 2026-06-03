@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GIF recorder — text streaming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --panel: #151515;
+    --ink: #f2f2f2;
+    --dim: #9a9a9a;
+    --faint: #3a3a3a;
+    --line: #262626;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+  html, body { background: #0a0a0a; color: var(--ink); margin: 0; padding: 0; font-family: var(--sans); }
+  body { padding: 28px; display: flex; flex-direction: column; gap: 20px; align-items: flex-start; min-height: 100vh; }
+  h1 { font-family: var(--mono); font-size: 13px; font-weight: 500; margin: 0; letter-spacing: 0.02em; color: var(--dim);}
+  h1 span { color: var(--ink); }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-family: var(--mono); font-size: 12px;}
+  .controls label { color: var(--dim); display: flex; align-items: center; gap: 6px; }
+  .controls select, .controls button {
+    font-family: var(--mono); font-size: 12px;
+    background: #1a1a1a; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 7px 10px; cursor: pointer;
+  }
+  .controls button:hover { background: #222; }
+  .controls button:disabled { opacity: 0.4; cursor: wait; }
+  .status { color: var(--dim); font-family: var(--mono); font-size: 12px; }
+  canvas { background: #151515; border: 1px solid var(--line); display: block; max-width: 100%; height: auto; }
+  .previews { display: flex; flex-direction: column; gap: 28px; width: 100%; }
+  .preview-group { display: flex; flex-direction: column; gap: 10px; }
+  .preview-group h2 {
+    font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--dim);
+    margin: 0; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .preview-group h2 b { color: var(--ink); font-weight: 500; }
+  .row { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start; }
+  .row .btn-col { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .row button.dl {
+    font-family: var(--mono); font-size: 12px;
+    background: #1a1a1a; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 8px 12px; cursor: pointer; min-width: 180px;
+  }
+  .row button.dl:hover { background: #222; }
+  .row button.dl:disabled { opacity: 0.4; cursor: wait; }
+  .row .status-text { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+  progress { width: 180px; height: 6px; }
+</style>
+</head>
+<body>
+  <h1>gif-recorder <span>/ text streaming · card + banner</span></h1>
+
+  <div class="previews" id="previews"></div>
+
+<!-- gif.js from unpkg -->
+<script src="https://unpkg.com/gif.js@0.2.0/dist/gif.js"></script>
+
+<script>
+// ================= Shared content =================
+const QUESTION = 'What is this subpage?';
+const ANSWER =
+  "A reading room. Essays, articles, and books I recommend. " +
+  "Datasets I return to. Shared freely.";
+
+// 80% slower than original — deliberately unhurried
+const SPEED = 1.8;
+
+const BG = '#151515';
+const INK = '#f2f2f2';
+const DIM = '#9a9a9a';
+
+const SANS = "'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif";
+const SCRAMBLE = '!@#$%^&*<>?/\\|{}[]=+-_0123456789';
+
+// ================= Presets =================
+// Each preset controls canvas dimensions + typography + padding.
+const PRESETS = {
+  card: {
+    w: 600, h: 270,
+    padX: 28, padTop: 26, padBottom: 26,
+    qFontSize: 22,      // same as answer
+    qGap: 14,
+    aFontSize: 22,
+    aLineHeight: 30,
+    caretH: 22, caretW: 9,
+  },
+  banner: {
+    w: 1600, h: 300,    // ~5.33:1 banner
+    padX: 72, padTop: 60, padBottom: 60,
+    qFontSize: 34,      // same as answer
+    qGap: 22,
+    aFontSize: 34,
+    aLineHeight: 46,
+    caretH: 34, caretW: 13,
+  },
+};
+
+// End-of-loop hold — 3s so the final line can be read calmly before restarting
+const END_HOLD = 3000;
+
+// ================= Drawing helpers =================
+function drawBg(ctx, p) {
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, p.w, p.h);
+}
+
+// Draw "Q: What is this subpage?" line — no bubble, Q: is dimmed
+function drawQuestionLine(ctx, p) {
+  const y = p.padTop;
+  const x = p.padX;
+
+  ctx.textBaseline = 'top';
+  ctx.font = `${p.qFontSize}px ${SANS}`;
+
+  // dimmed "Q:"
+  ctx.fillStyle = DIM;
+  const prefix = 'Q:';
+  ctx.fillText(prefix, x, y);
+  const prefixW = ctx.measureText(prefix + ' ').width;
+
+  // question text in ink
+  ctx.fillStyle = INK;
+  ctx.fillText(QUESTION, x + prefixW, y);
+
+  return { bottom: y + p.qFontSize };
+}
+
+// Answer area: starts right under the question line
+function answerTop(p) {
+  return p.padTop + p.qFontSize + p.qGap;
+}
+
+function answerWidth(p) {
+  return p.w - p.padX * 2;
+}
+
+// Word-wrap (break on spaces)
+function wrapLines(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const attempt = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(attempt).width > maxWidth && cur) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = attempt;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+// ================= Variant 10: punctuation-pause typewriter =================
+function buildPlan10() {
+  const chars = [...ANSWER];
+  const times = [];
+  let t = 0;
+  for (const c of chars) {
+    let d = 14;
+    if (c === '.') d = 320;
+    else if (c === '?') d = 400;
+    else if (c === ',') d = 180;
+    else if (c === '—') d = 260;
+    d *= SPEED;
+    t += d;
+    times.push(t);
+  }
+  const typingEnd = t;
+  return {
+    duration: typingEnd + END_HOLD,
+    typingEnd,
+    chars,
+    countAt(time) {
+      if (time >= typingEnd) return chars.length;
+      let lo = 0, hi = times.length;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (times[mid] <= time) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo;
+    },
+  };
+}
+
+function renderV10(ctx, time, plan, p) {
+  drawBg(ctx, p);
+  drawQuestionLine(ctx, p);
+
+  ctx.font = `${p.aFontSize}px ${SANS}`;
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = INK;
+
+  const count = plan.countAt(time);
+  const fullLines = wrapLines(ctx, ANSWER, answerWidth(p));
+  const startY = answerTop(p);
+
+  let drawn = 0;
+  for (let li = 0; li < fullLines.length; li++) {
+    const lineText = fullLines[li];
+    const lineStart = drawn;
+    const lineEnd = drawn + lineText.length;
+    if (count <= lineStart) break;
+    const takeLen = Math.min(lineText.length, count - lineStart);
+    const slice = lineText.slice(0, takeLen);
+    ctx.fillText(slice, p.padX, startY + li * p.aLineHeight);
+
+    if (count <= lineEnd && time < plan.typingEnd) {
+      const caretX = p.padX + ctx.measureText(slice).width + 2;
+      const caretY = startY + li * p.aLineHeight;
+      if (Math.floor(time / 500) % 2 === 0) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(caretX, caretY + 4, p.caretW, p.caretH);
+      }
+    }
+    drawn = lineEnd + 1;
+  }
+
+  if (time >= plan.typingEnd) {
+    const lastLine = fullLines[fullLines.length - 1];
+    const caretX = p.padX + ctx.measureText(lastLine).width + 2;
+    const caretY = startY + (fullLines.length - 1) * p.aLineHeight;
+    if (Math.floor((time - plan.typingEnd) / 500) % 2 === 0) {
+      ctx.fillStyle = INK;
+      ctx.fillRect(caretX, caretY + 4, p.caretW, p.caretH);
+    }
+  }
+}
+
+// ================= Variant 5: scramble-settle =================
+function buildPlan5() {
+  let t = 0;
+  const wordPlan = [];
+  const realWords = ANSWER.split(' ');
+  for (let i = 0; i < realWords.length; i++) {
+    const start = t;
+    const settleAt = start + 3 * 35 * SPEED;
+    wordPlan.push({ i, text: realWords[i], start, settleAt });
+    t = settleAt + 45 * SPEED;
+  }
+  const typingEnd = t;
+  return {
+    duration: typingEnd + END_HOLD,
+    typingEnd,
+    wordPlan,
+    words: realWords,
+  };
+}
+
+function scrambleWord(word, wordIdx, bucket, seedState) {
+  const key = wordIdx + '-' + bucket;
+  if (seedState.cache.has(key)) return seedState.cache.get(key);
+  let out = '';
+  for (let i = 0; i < word.length; i++) {
+    const c = word[i];
+    if (/[.,!?'"—\-:;]/.test(c)) { out += c; continue; }
+    const r = pseudoRandom(wordIdx * 131 + bucket * 17 + i * 7) % SCRAMBLE.length;
+    out += SCRAMBLE[r];
+  }
+  seedState.cache.set(key, out);
+  return out;
+}
+
+function pseudoRandom(n) {
+  let x = n | 0;
+  x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
+  return Math.abs(x);
+}
+
+function renderV5(ctx, time, plan, seedState, p) {
+  drawBg(ctx, p);
+  drawQuestionLine(ctx, p);
+
+  ctx.font = `${p.aFontSize}px ${SANS}`;
+  ctx.textBaseline = 'top';
+
+  const width = answerWidth(p);
+  const fullLines = wrapLines(ctx, ANSWER, width);
+  const startY = answerTop(p);
+
+  // position (line, preText) for each real word
+  const words = plan.words;
+  const wordPositions = [];
+  {
+    let li = 0, cur = '';
+    for (let i = 0; i < words.length; i++) {
+      const w = words[i];
+      const attempt = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(attempt).width > width && cur) {
+        li++;
+        cur = w;
+        wordPositions.push({ line: li, preText: '' });
+      } else {
+        wordPositions.push({ line: li, preText: cur });
+        cur = attempt;
+      }
+    }
+  }
+
+  for (let wi = 0; wi < words.length; wi++) {
+    const word = words[wi];
+    const planEntry = plan.wordPlan[wi];
+    const pos = wordPositions[wi];
+    const x = p.padX + ctx.measureText(pos.preText ? pos.preText + ' ' : '').width;
+    const y = startY + pos.line * p.aLineHeight;
+
+    if (time < planEntry.start) continue;
+
+    let render, color;
+    if (time < planEntry.settleAt) {
+      const bucket = Math.floor((time - planEntry.start) / 35);
+      render = scrambleWord(word, wi, bucket, seedState);
+      color = DIM;
+    } else {
+      render = word;
+      color = INK;
+    }
+    ctx.fillStyle = color;
+    ctx.fillText(render, x, y);
+  }
+
+  // caret
+  if (time < plan.typingEnd) {
+    let activeIdx = -1;
+    for (let i = 0; i < plan.wordPlan.length; i++) {
+      if (time >= plan.wordPlan[i].start) activeIdx = i;
+    }
+    if (activeIdx >= 0) {
+      const pos = wordPositions[activeIdx];
+      const word = words[activeIdx];
+      const x = p.padX + ctx.measureText((pos.preText ? pos.preText + ' ' : '') + word).width + 2;
+      const y = startY + pos.line * p.aLineHeight;
+      if (Math.floor(time / 400) % 2 === 0) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(x, y + 4, p.caretW, p.caretH);
+      }
+    }
+  } else {
+    const lastLine = fullLines[fullLines.length - 1];
+    const caretX = p.padX + ctx.measureText(lastLine).width + 2;
+    const caretY = startY + (fullLines.length - 1) * p.aLineHeight;
+    if (Math.floor((time - plan.typingEnd) / 500) % 2 === 0) {
+      ctx.fillStyle = INK;
+      ctx.fillRect(caretX, caretY + 4, p.caretW, p.caretH);
+    }
+  }
+}
+
+// ================= Render dispatch =================
+const plans = {
+  '10': buildPlan10(),
+  '5': buildPlan5(),
+};
+
+function renderAt(ctx, variant, time, preset, seedState) {
+  ctx.clearRect(0, 0, preset.w, preset.h);
+  if (variant === '10') renderV10(ctx, time, plans['10'], preset);
+  else if (variant === '5') renderV5(ctx, time, plans['5'], seedState, preset);
+}
+
+function durationFor(v) { return plans[v].duration; }
+
+// ================= Set up previews =================
+// Four canvases: {card,banner} x {variant 10, variant 5}
+const COMBOS = [
+  { id: 'banner-10', label: 'Banner', sub: '1600×300 · punctuation-pause', preset: 'banner', variant: '10' },
+  { id: 'banner-5',  label: 'Banner', sub: '1600×300 · scramble-settle',   preset: 'banner', variant: '5'  },
+  { id: 'card-10',   label: 'Card', sub: '600×270 · punctuation-pause', preset: 'card',   variant: '10' },
+  { id: 'card-5',    label: 'Card', sub: '600×270 · scramble-settle',   preset: 'card',   variant: '5'  },
+];
+
+const ui = document.getElementById('previews');
+COMBOS.forEach(c => {
+  const preset = PRESETS[c.preset];
+  const group = document.createElement('div');
+  group.className = 'preview-group';
+  group.innerHTML = `
+    <h2><b>${c.label}</b> — ${c.sub}</h2>
+    <div class="row">
+      <canvas id="cv-${c.id}" width="${preset.w}" height="${preset.h}"></canvas>
+      <div class="btn-col">
+        <button class="dl" data-id="${c.id}">download GIF ↓</button>
+        <progress id="prog-${c.id}" value="0" max="1" style="display:none"></progress>
+        <span class="status-text" id="status-${c.id}">ready</span>
+      </div>
+    </div>
+  `;
+  ui.appendChild(group);
+});
+
+// Start all previews
+const previewHandles = [];
+COMBOS.forEach(c => {
+  const canvas = document.getElementById('cv-' + c.id);
+  const ctx = canvas.getContext('2d');
+  const preset = PRESETS[c.preset];
+  const seed = { cache: new Map() };
+  const dur = durationFor(c.variant);
+  const t0 = performance.now() + Math.random() * 200;
+  let raf;
+  function tick(now) {
+    const time = (now - t0) % dur;
+    renderAt(ctx, c.variant, time, preset, seed);
+    raf = requestAnimationFrame(tick);
+  }
+  raf = requestAnimationFrame(tick);
+  previewHandles.push({ combo: c, canvas, ctx, preset, cancel: () => cancelAnimationFrame(raf), resume: () => { raf = requestAnimationFrame(tick); } });
+});
+
+// ================= GIF recording per combo =================
+async function recordFor(c) {
+  const preset = PRESETS[c.preset];
+  const btn = document.querySelector(`button.dl[data-id="${c.id}"]`);
+  const prog = document.getElementById('prog-' + c.id);
+  const status = document.getElementById('status-' + c.id);
+
+  const fps = 15;
+  const quality = 12;
+  const scale = 2; // 2× retina resolution
+  const outW = preset.w * scale;
+  const outH = preset.h * scale;
+
+  // Build a dedicated offscreen canvas at 2× and scale drawing ops.
+  const offscreen = document.createElement('canvas');
+  offscreen.width = outW;
+  offscreen.height = outH;
+  const ctx = offscreen.getContext('2d');
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+  const dur = durationFor(c.variant);
+  const frameDelay = 1000 / fps;
+  const totalFrames = Math.round(dur / frameDelay);
+
+  // Pause this combo's preview
+  const handle = previewHandles.find(h => h.combo.id === c.id);
+  handle.cancel();
+  const seed = { cache: new Map() };
+
+  btn.disabled = true;
+  prog.style.display = '';
+  prog.value = 0;
+  status.textContent = `rendering ${totalFrames} frames @ 2×…`;
+
+  const gif = new GIF({
+    workers: Math.min(4, navigator.hardwareConcurrency || 4),
+    quality,
+    width: outW,
+    height: outH,
+    workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js',
+    repeat: 0,
+    background: BG,
+    transparent: null,
+    dither: false,
+  });
+
+  for (let i = 0; i < totalFrames; i++) {
+    const t = i * frameDelay;
+    renderAt(ctx, c.variant, t, preset, seed);
+    gif.addFrame(offscreen, { copy: true, delay: frameDelay });
+    if (i % 6 === 0) {
+      prog.value = (i / totalFrames) * 0.5;
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+
+  status.textContent = `encoding…`;
+  prog.value = 0.5;
+
+  gif.on('progress', pct => {
+    prog.value = 0.5 + pct * 0.5;
+    status.textContent = `encoding ${Math.round(pct*100)}%`;
+  });
+
+  gif.on('finished', blob => {
+    status.textContent = `done (${(blob.size/1024).toFixed(0)} KB)`;
+    prog.value = 1;
+    btn.disabled = false;
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `text-streaming-${c.preset}-${c.variant === '10' ? 'punctuation-pause' : 'scramble-settle'}-2x.gif`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // resume preview on the ON-SCREEN canvas
+    const previewCanvas = document.getElementById('cv-' + c.id);
+    const previewCtx = previewCanvas.getContext('2d');
+    const t0 = performance.now();
+    const freshSeed = { cache: new Map() };
+    function tick(now) {
+      const time = (now - t0) % dur;
+      renderAt(previewCtx, c.variant, time, preset, freshSeed);
+      handle._raf = requestAnimationFrame(tick);
+    }
+    handle._raf = requestAnimationFrame(tick);
+    handle.cancel = () => cancelAnimationFrame(handle._raf);
+  });
+
+  gif.render();
+}
+
+document.querySelectorAll('button.dl').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    const combo = COMBOS.find(c => c.id === id);
+    recordFor(combo);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Text streaming — 10 variations</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0e0e0e; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #0e0e0e; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
+</head>
+<body>
+  <div id="__bundler_thumbnail">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0e0e0e"></rect>
+    <g fill="#f2f2f2" font-family="ui-monospace, Menlo, monospace" font-size="64" font-weight="500">
+      <rect x="240" y="340" width="18" height="72"></rect>
+      <text x="280" y="398" fill="#f2f2f2">streaming</text>
+      <rect x="830" y="340" width="18" height="72" opacity="0.4"></rect>
+    </g>
+    <g fill="#9a9a9a" font-family="ui-monospace, Menlo, monospace" font-size="22">
+      <text x="240" y="460">10 variations · monochrome</text>
+    </g>
+  </svg>
+</div>
+  <div id="__bundler_loading">Unpacking...</div>
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
+
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
+
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
+
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
+
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
+        }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+      }
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{}
+  </script>
+
+  <script type="__bundler/ext_resources">
+[]
+  </script>
+
+  <script type="__bundler/template">
+"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Text streaming — 10 variations<\u002Ftitle>\n\n<style>\n  :root {\n    --bg: #0e0e0e;\n    --panel: #151515;\n    --ink: #f2f2f2;\n    --dim: #9a9a9a;\n    --faint: #3a3a3a;\n    --line: #262626;\n    --accent: #f2f2f2;\n    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;\n  }\n  @media (prefers-color-scheme: light) {\n    /* keep dark — monochrome feels stronger */\n  }\n  html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; }\n  body {\n    font-family: var(--sans);\n    font-feature-settings: \"ss01\",\"cv11\";\n    -webkit-font-smoothing: antialiased;\n    min-height: 100vh;\n  }\n  header {\n    display: flex; align-items: baseline; justify-content: space-between; gap: 24px;\n    padding: 28px 32px 20px;\n    border-bottom: 1px solid var(--line);\n    position: sticky; top: 0; background: var(--bg); z-index: 5;\n  }\n  header h1 {\n    margin: 0; font-size: 14px; font-weight: 500; letter-spacing: 0.01em;\n    font-family: var(--mono); color: var(--ink);\n  }\n  header h1 .dim { color: var(--dim); }\n  header .meta {\n    font-family: var(--mono); font-size: 11px; color: var(--dim);\n    display: flex; gap: 18px;\n  }\n  header .meta .dot {\n    width: 6px; height: 6px; border-radius: 50%; background: var(--ink);\n    display: inline-block; margin-right: 6px; vertical-align: middle;\n    animation: pulse 1.6s ease-in-out infinite;\n  }\n  @keyframes pulse { 0%,100% { opacity: 1;} 50% { opacity: 0.25; } }\n\n  .grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));\n    gap: 1px;\n    background: var(--line);\n    border-bottom: 1px solid var(--line);\n  }\n  .cell {\n    background: var(--panel);\n    width: 100%;\n    aspect-ratio: 1 / 1;\n    min-height: 300px;\n    position: relative;\n    overflow: hidden;\n    display: flex; flex-direction: column;\n  }\n  .cell .label {\n    position: absolute; top: 12px; left: 14px; right: 14px;\n    display: flex; align-items: center; justify-content: space-between;\n    font-family: var(--mono); font-size: 10px; color: var(--dim);\n    letter-spacing: 0.04em; text-transform: uppercase;\n    pointer-events: none;\n  }\n  .cell .label .n {\n    color: var(--ink); background: transparent;\n    border: 1px solid var(--faint); padding: 2px 6px; border-radius: 3px;\n  }\n  .cell .chat {\n    position: absolute; inset: 0;\n    padding: 44px 18px 18px;\n    display: flex; flex-direction: column; gap: 10px;\n    justify-content: flex-end;\n  }\n  .bubble {\n    font-size: 12.5px; line-height: 1.45;\n    max-width: 92%;\n    padding: 8px 11px;\n    border-radius: 10px;\n    word-break: break-word;\n  }\n  .q {\n    align-self: flex-end;\n    background: #2a2a2a;\n    color: var(--ink);\n    border: 1px solid #333;\n  }\n  .a {\n    align-self: flex-start;\n    color: var(--ink);\n    background: transparent;\n    padding: 2px 0;\n    min-height: 18px;\n    max-width: 100%;\n  }\n  /* Shared caret */\n  .caret {\n    display: inline-block; width: 7px; height: 14px;\n    background: var(--ink); vertical-align: -2px; margin-left: 1px;\n    animation: blink 1s steps(2) infinite;\n  }\n  @keyframes blink { 50% { opacity: 0; } }\n\n  /* ---------- Style variants ---------- */\n\n  /* 01 typewriter — char by char */\n  .v01 .a .ch { opacity: 0; }\n  .v01 .a .ch.on { opacity: 1; }\n\n  /* 02 word fade-in */\n  .v02 .a .w { opacity: 0; filter: blur(2px); transition: opacity .35s, filter .35s; display: inline-block; }\n  .v02 .a .w.on { opacity: 1; filter: blur(0); }\n\n  /* 03 slide up per word */\n  .v03 .a .w { opacity: 0; transform: translateY(6px); transition: opacity .28s ease, transform .28s ease; display: inline-block; }\n  .v03 .a .w.on { opacity: 1; transform: none; }\n\n  /* 04 shimmer sweep (skeleton-to-text) */\n  .v04 .a { position: relative; }\n  .v04 .a .w {\n    opacity: 0.15; display: inline-block;\n    background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);\n    background-clip: text; -webkit-background-clip: text;\n    color: transparent;\n    transition: opacity .35s ease, color .35s ease;\n  }\n  .v04 .a .w.on {\n    opacity: 1; color: var(--ink); background: none; -webkit-background-clip: border-box;\n  }\n\n  /* 05 glitch reveal — scramble then settle */\n  .v05 .a .w { display: inline-block; }\n  .v05 .a .w .real { opacity: 0; }\n  .v05 .a .w.on .real { opacity: 1; }\n  .v05 .a .w .scrambler {\n    position: absolute; color: var(--dim); opacity: 1; pointer-events: none;\n  }\n  .v05 .a .w.on .scrambler { opacity: 0; }\n\n  /* 06 mask reveal — block wipe */\n  .v06 .a .w {\n    display: inline-block; position: relative; overflow: hidden;\n    clip-path: inset(0 100% 0 0);\n    transition: clip-path .32s cubic-bezier(.6,.2,.2,1);\n  }\n  .v06 .a .w.on { clip-path: inset(0 0 0 0); }\n\n  /* 07 dot-matrix: show placeholder blocks then replace */\n  .v07 .a .w { display: inline-block; position: relative; }\n  .v07 .a .w .real { opacity: 0; transition: opacity .2s; }\n  .v07 .a .w.on .real { opacity: 1; }\n  .v07 .a .w .skel {\n    position: absolute; inset: 3px 0 3px 0;\n    background: repeating-linear-gradient(90deg, #2e2e2e 0 3px, transparent 3px 6px);\n    border-radius: 2px;\n  }\n  .v07 .a .w.on .skel { opacity: 0; transition: opacity .2s; }\n\n  /* 08 chunked paragraph flash — phrase by phrase */\n  .v08 .a { font-family: var(--sans); }\n  .v08 .a .phrase { opacity: 0; transform: translateY(3px); transition: opacity .4s, transform .4s; display: inline; }\n  .v08 .a .phrase.on { opacity: 1; transform: none; }\n\n  /* 09 terminal cursor with trailing dot */\n  .v09 .a { font-family: var(--mono); font-size: 11.5px; }\n  .v09 .a .ch { opacity: 0; }\n  .v09 .a .ch.on { opacity: 1; }\n  .v09 .cursor { display:inline-block; width:7px; height:13px; background:var(--ink); vertical-align:-2px; animation: blink 0.8s steps(2) infinite; }\n\n  /* 10 stagger: first chars fast, pause at punctuation */\n  .v10 .a .ch { opacity: 0; }\n  .v10 .a .ch.on { opacity: 1; transition: opacity .12s; }\n\n  /* Footer */\n  footer {\n    padding: 18px 32px 40px;\n    font-family: var(--mono); font-size: 11px; color: var(--dim);\n    display: flex; justify-content: space-between; border-top: 1px solid var(--line);\n  }\n  footer .legend { display: flex; gap: 20px; flex-wrap: wrap; }\n<\u002Fstyle>\n<\u002Fhead>\n<body>\n  <header>\n    <h1>text-streaming.study <span class=\"dim\">/ 10 variations · monochrome<\u002Fspan><\u002Fh1>\n    <div class=\"meta\">\n      <span><span class=\"dot\"><\u002Fspan>looping<\u002Fspan>\n      <span>Q: \"Who is Eric So at MIT?\"<\u002Fspan>\n    <\u002Fdiv>\n  <\u002Fheader>\n\n  <div class=\"grid\" id=\"grid\"><\u002Fdiv>\n\n  <footer>\n    <div class=\"legend\">\n      <span>01 typewriter<\u002Fspan>\n      <span>02 word fade<\u002Fspan>\n      <span>03 slide-up<\u002Fspan>\n      <span>04 shimmer→text<\u002Fspan>\n      <span>05 scramble-settle<\u002Fspan>\n      <span>06 mask-wipe<\u002Fspan>\n      <span>07 skeleton-swap<\u002Fspan>\n      <span>08 phrase-flash<\u002Fspan>\n      <span>09 terminal<\u002Fspan>\n      <span>10 punctuation-pause<\u002Fspan>\n    <\u002Fdiv>\n    <div>loop · 6–9s each<\u002Fdiv>\n  <\u002Ffooter>\n\n<script>\n(() => {\n  const QUESTION = 'Who is Eric So at MIT?';\n  const ANSWER =\n    \"Wait. Are you serious? You don't know who Eric So is?? Dude basically IS MIT. \" +\n    \"The man, the myth, the legend — I cannot believe we're even having this conversation.\";\n\n  const variants = [\n    { n: '01', cls: 'v01', label: 'typewriter' },\n    { n: '02', cls: 'v02', label: 'word fade' },\n    { n: '03', cls: 'v03', label: 'slide-up' },\n    { n: '04', cls: 'v04', label: 'shimmer → text' },\n    { n: '05', cls: 'v05', label: 'scramble-settle' },\n    { n: '06', cls: 'v06', label: 'mask-wipe' },\n    { n: '07', cls: 'v07', label: 'skeleton-swap' },\n    { n: '08', cls: 'v08', label: 'phrase-flash' },\n    { n: '09', cls: 'v09', label: 'terminal' },\n    { n: '10', cls: 'v10', label: 'punct-pause' },\n  ];\n\n  const grid = document.getElementById('grid');\n\n  // Build cells\n  variants.forEach(v => {\n    const cell = document.createElement('div');\n    cell.className = `cell ${v.cls}`;\n    cell.innerHTML = `\n      <div class=\"label\">\n        <span>${v.label}<\u002Fspan>\n        <span class=\"n\">${v.n}<\u002Fspan>\n      <\u002Fdiv>\n      <div class=\"chat\">\n        <div class=\"bubble q\">${QUESTION}<\u002Fdiv>\n        <div class=\"bubble a\" data-a><\u002Fdiv>\n      <\u002Fdiv>\n    `;\n    grid.appendChild(cell);\n  });\n\n  // Helpers\n  const sleep = ms => new Promise(r => setTimeout(r, ms));\n  const rand = (a, b) => a + Math.random() * (b - a);\n  const scrambleChars = '!@#$%^&*<>?/\\\\|{}[]=+-_0123456789';\n\n  function splitChars(text) {\n    return [...text].map(c => {\n      const s = document.createElement('span');\n      s.className = 'ch';\n      s.textContent = c === ' ' ? '\\u00a0' : c;\n      return s;\n    });\n  }\n  function splitWords(text) {\n    const parts = text.split(/(\\s+)/); // keep spaces\n    return parts.map(p => {\n      const s = document.createElement('span');\n      if (/^\\s+$/.test(p)) { s.className = 'ws'; s.textContent = '\\u00a0'; }\n      else { s.className = 'w'; s.textContent = p; }\n      return s;\n    });\n  }\n\n  // ---------- 01 typewriter ----------\n  async function run01(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const chars = splitChars(ANSWER);\n      chars.forEach(c => el.appendChild(c));\n      const caret = document.createElement('span');\n      caret.className = 'caret';\n      el.appendChild(caret);\n      for (let i = 0; i < chars.length; i++) {\n        if (loopSignal.stop) return;\n        chars[i].classList.add('on');\n        const c = chars[i].textContent;\n        let d = 22;\n        if (',.?!'.includes(c)) d = 180;\n        await sleep(d);\n      }\n      await sleep(1600);\n    }\n  }\n\n  // ---------- 02 word fade ----------\n  async function run02(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = splitWords(ANSWER);\n      parts.forEach(p => el.appendChild(p));\n      const words = parts.filter(p => p.classList.contains('w'));\n      for (const w of words) {\n        if (loopSignal.stop) return;\n        w.classList.add('on');\n        await sleep(55 + Math.random()*40);\n      }\n      await sleep(1600);\n    }\n  }\n\n  // ---------- 03 slide-up ----------\n  async function run03(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = splitWords(ANSWER);\n      parts.forEach(p => el.appendChild(p));\n      const words = parts.filter(p => p.classList.contains('w'));\n      for (const w of words) {\n        if (loopSignal.stop) return;\n        w.classList.add('on');\n        await sleep(50);\n      }\n      await sleep(1500);\n    }\n  }\n\n  // ---------- 04 shimmer → text ----------\n  async function run04(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = splitWords(ANSWER);\n      parts.forEach(p => el.appendChild(p));\n      const words = parts.filter(p => p.classList.contains('w'));\n      // reveal in chunks of ~3 words\n      for (let i = 0; i < words.length; i++) {\n        if (loopSignal.stop) return;\n        words[i].classList.add('on');\n        await sleep(70);\n      }\n      await sleep(1500);\n    }\n  }\n\n  // ---------- 05 scramble-settle ----------\n  async function run05(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = ANSWER.split(/(\\s+)/);\n      const wordEls = [];\n      parts.forEach(p => {\n        if (/^\\s+$/.test(p)) {\n          el.appendChild(document.createTextNode(p));\n        } else {\n          const w = document.createElement('span');\n          w.className = 'w';\n          w.style.position = 'relative';\n          const real = document.createElement('span');\n          real.className = 'real';\n          real.textContent = p;\n          const scr = document.createElement('span');\n          scr.className = 'scrambler';\n          scr.textContent = p.replace(/./g, () => scrambleChars[Math.floor(Math.random()*scrambleChars.length)]);\n          w.appendChild(scr);\n          w.appendChild(real);\n          el.appendChild(w);\n          wordEls.push({ w, real, scr, text: p });\n        }\n      });\n      for (const entry of wordEls) {\n        if (loopSignal.stop) return;\n        // scramble a few frames\n        for (let k = 0; k < 3; k++) {\n          entry.scr.textContent = entry.text.replace(/./g, () => scrambleChars[Math.floor(Math.random()*scrambleChars.length)]);\n          await sleep(35);\n        }\n        entry.w.classList.add('on');\n        await sleep(45);\n      }\n      await sleep(1500);\n    }\n  }\n\n  // ---------- 06 mask-wipe ----------\n  async function run06(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = splitWords(ANSWER);\n      parts.forEach(p => el.appendChild(p));\n      const words = parts.filter(p => p.classList.contains('w'));\n      for (const w of words) {\n        if (loopSignal.stop) return;\n        w.classList.add('on');\n        await sleep(55);\n      }\n      await sleep(1600);\n    }\n  }\n\n  // ---------- 07 skeleton-swap ----------\n  async function run07(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const parts = ANSWER.split(/(\\s+)/);\n      const wordEls = [];\n      parts.forEach(p => {\n        if (/^\\s+$/.test(p)) {\n          el.appendChild(document.createTextNode(p));\n        } else {\n          const w = document.createElement('span');\n          w.className = 'w';\n          w.style.position = 'relative';\n          const skel = document.createElement('span');\n          skel.className = 'skel';\n          const real = document.createElement('span');\n          real.className = 'real';\n          real.textContent = p;\n          w.appendChild(real);\n          w.appendChild(skel);\n          el.appendChild(w);\n          wordEls.push(w);\n        }\n      });\n      // pre-show all skeletons briefly\n      await sleep(350);\n      for (const w of wordEls) {\n        if (loopSignal.stop) return;\n        w.classList.add('on');\n        await sleep(55);\n      }\n      await sleep(1500);\n    }\n  }\n\n  // ---------- 08 phrase-flash ----------\n  async function run08(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      // split by punctuation phrases\n      const phrases = ANSWER.match(/[^.?!—]+[.?!—]?\\s*/g) || [ANSWER];\n      const nodes = phrases.map(p => {\n        const s = document.createElement('span');\n        s.className = 'phrase';\n        s.textContent = p;\n        el.appendChild(s);\n        return s;\n      });\n      for (const n of nodes) {\n        if (loopSignal.stop) return;\n        n.classList.add('on');\n        await sleep(260);\n      }\n      await sleep(1500);\n    }\n  }\n\n  // ---------- 09 terminal ----------\n  async function run09(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const prefix = document.createElement('span');\n      prefix.textContent = '> ';\n      prefix.style.color = 'var(--dim)';\n      el.appendChild(prefix);\n      const chars = splitChars(ANSWER);\n      chars.forEach(c => el.appendChild(c));\n      const cur = document.createElement('span');\n      cur.className = 'cursor';\n      el.appendChild(cur);\n      for (let i = 0; i < chars.length; i++) {\n        if (loopSignal.stop) return;\n        chars[i].classList.add('on');\n        await sleep(18 + Math.random()*10);\n      }\n      await sleep(1400);\n    }\n  }\n\n  // ---------- 10 punctuation-pause ----------\n  async function run10(el, loopSignal) {\n    while (!loopSignal.stop) {\n      el.innerHTML = '';\n      const chars = splitChars(ANSWER);\n      chars.forEach(c => el.appendChild(c));\n      const caret = document.createElement('span');\n      caret.className = 'caret';\n      el.appendChild(caret);\n      for (let i = 0; i < chars.length; i++) {\n        if (loopSignal.stop) return;\n        chars[i].classList.add('on');\n        const c = chars[i].textContent;\n        let d = 14;\n        if (c === '.') d = 320;\n        else if (c === '?') d = 400;\n        else if (c === ',') d = 180;\n        else if (c === '—') d = 260;\n        await sleep(d);\n      }\n      await sleep(1400);\n    }\n  }\n\n  const runners = [run01, run02, run03, run04, run05, run06, run07, run08, run09, run10];\n\n  // Kick each cell off with a staggered start\n  const cells = grid.querySelectorAll('.cell');\n  cells.forEach((cell, i) => {\n    const target = cell.querySelector('[data-a]');\n    const signal = { stop: false };\n    setTimeout(() => runners[i](target, signal), i * 180);\n  });\n})();\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
+  </script>
+</body>
+</html>

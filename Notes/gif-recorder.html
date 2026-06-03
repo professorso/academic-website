@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GIF recorder — text streaming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --panel: #151515;
+    --ink: #f2f2f2;
+    --dim: #9a9a9a;
+    --faint: #3a3a3a;
+    --line: #262626;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+  html, body { background: #0a0a0a; color: var(--ink); margin: 0; padding: 0; font-family: var(--sans); }
+  body { padding: 28px; display: flex; flex-direction: column; gap: 20px; align-items: flex-start; min-height: 100vh; }
+  h1 { font-family: var(--mono); font-size: 13px; font-weight: 500; margin: 0; letter-spacing: 0.02em; color: var(--dim);}
+  h1 span { color: var(--ink); }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-family: var(--mono); font-size: 12px;}
+  .controls label { color: var(--dim); display: flex; align-items: center; gap: 6px; }
+  .controls select, .controls button {
+    font-family: var(--mono); font-size: 12px;
+    background: #1a1a1a; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 7px 10px; cursor: pointer;
+  }
+  .controls button:hover { background: #222; }
+  .controls button:disabled { opacity: 0.4; cursor: wait; }
+  .status { color: var(--dim); font-family: var(--mono); font-size: 12px; }
+  canvas { background: #151515; border: 1px solid var(--line); }
+  .stage { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+  .panel { display: flex; flex-direction: column; gap: 10px; }
+  .dl { display: flex; gap: 10px; align-items: center; }
+  .dl a { color: var(--ink); font-family: var(--mono); font-size: 12px; text-decoration: underline; }
+  progress { width: 240px; height: 6px; }
+</style>
+</head>
+<body>
+  <h1>gif-recorder <span>/ text streaming</span></h1>
+
+  <div class="controls">
+    <label>variant
+      <select id="variant">
+        <option value="10">10 · punctuation-pause</option>
+        <option value="5">05 · scramble-settle</option>
+      </select>
+    </label>
+    <label>fps
+      <select id="fps">
+        <option value="20" selected>20</option>
+        <option value="24">24</option>
+        <option value="15">15</option>
+        <option value="30">30</option>
+      </select>
+    </label>
+    <label>quality
+      <select id="quality">
+        <option value="10" selected>10 (good)</option>
+        <option value="5">5 (better, slower)</option>
+        <option value="20">20 (faster, rougher)</option>
+      </select>
+    </label>
+    <button id="preview">preview loop</button>
+    <button id="record">record &amp; download GIF</button>
+    <span class="status" id="status">ready</span>
+  </div>
+
+  <div class="stage">
+    <div class="panel">
+      <canvas id="cv" width="600" height="600"></canvas>
+      <progress id="prog" value="0" max="1" style="display:none"></progress>
+    </div>
+  </div>
+
+<!-- gif.js from unpkg -->
+<script src="https://unpkg.com/gif.js@0.2.0/dist/gif.js"></script>
+
+<script>
+// ================= Shared constants =================
+const QUESTION = 'Who is Eric So at MIT?';
+const ANSWER =
+  "Wait. Are you serious? You don't know who Eric So is?? Dude basically IS MIT. " +
+  "The man, the myth, the legend — I cannot believe we're even having this conversation.";
+
+const W = 600, H = 600;
+const BG = '#151515';
+const INK = '#f2f2f2';
+const DIM = '#9a9a9a';
+const FAINT = '#3a3a3a';
+const LINE = '#262626';
+
+const SANS = "'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif";
+const MONO = "'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace";
+const SCRAMBLE = '!@#$%^&*<>?/\\|{}[]=+-_0123456789';
+
+// ================= Text layout helpers =================
+// Simple word-wrap that also handles explicit words[] inputs
+function measureWord(ctx, word) { return ctx.measureText(word).width; }
+
+function layoutWords(ctx, words, x, y, maxWidth, lineHeight) {
+  // returns [{word, x, y, w}]
+  const out = [];
+  let cx = x, cy = y;
+  const spaceW = ctx.measureText(' ').width;
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    const ww = ctx.measureText(w).width;
+    if (cx + ww > x + maxWidth && cx !== x) {
+      cx = x;
+      cy += lineHeight;
+    }
+    out.push({ word: w, x: cx, y: cy, w: ww });
+    cx += ww + spaceW;
+  }
+  return out;
+}
+
+function splitWords(text) {
+  return text.split(/\s+/).filter(Boolean);
+}
+
+// ================= Chrome drawing =================
+function drawChrome(ctx, progressDot) {
+  // panel background
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+
+  // top label strip — matches the grid cell header
+  ctx.font = `10px ${MONO}`;
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = DIM;
+  const label = progressDot.label.toUpperCase();
+  ctx.fillText(label, 28, 26);
+
+  // number chip on the right
+  const num = progressDot.num;
+  ctx.font = `10px ${MONO}`;
+  const numW = ctx.measureText(num).width + 12;
+  const chipX = W - 28 - numW, chipY = 22, chipH = 18;
+  ctx.strokeStyle = FAINT;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(chipX, chipY, numW, chipH, 3);
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.fillText(num, chipX + 6, chipY + 4);
+}
+
+function drawQuestionBubble(ctx) {
+  // right-aligned question bubble
+  ctx.font = `24px ${SANS}`;
+  const padX = 16, padY = 12;
+  const maxW = W - 56 - 60;
+  const textW = Math.min(ctx.measureText(QUESTION).width, maxW);
+  const bw = textW + padX * 2;
+  const bh = 24 + padY * 2;
+  const bx = W - 28 - bw;
+  const by = 64;
+  // bubble
+  ctx.fillStyle = '#2a2a2a';
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(bx, by, bw, bh, 14);
+  ctx.fill();
+  ctx.stroke();
+  // text
+  ctx.fillStyle = INK;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(QUESTION, bx + padX, by + bh / 2 + 1);
+
+  return { bottom: by + bh };
+}
+
+// Reserve answer area
+const ANSWER_X = 28;
+const ANSWER_RIGHT = W - 28;
+const ANSWER_WIDTH = ANSWER_RIGHT - ANSWER_X;
+const ANSWER_TOP = 130; // sits ~14px under the question bubble (bubble ends ~y=112)
+const LINE_HEIGHT = 30;
+const ANSWER_FONT_SIZE = 22;
+
+// ================= Variant 10: punctuation-pause typewriter =================
+// Timing plan (ms):
+//   each char: 14ms default
+//   ',' : 180ms, '.' : 320ms, '?' : 400ms, '—' : 260ms
+//   post-animation hold: 1400ms
+// We'll compute total duration, then sample into frames.
+
+function buildPlan10() {
+  // Returns { duration, charAt(time) -> number of chars shown, caretOn(time) -> bool }
+  const chars = [...ANSWER];
+  const times = []; // cumulative "fully shown" time for each char
+  let t = 0;
+  for (let i = 0; i < chars.length; i++) {
+    const c = chars[i];
+    let d = 14;
+    if (c === '.') d = 320;
+    else if (c === '?') d = 400;
+    else if (c === ',') d = 180;
+    else if (c === '—') d = 260;
+    t += d;
+    times.push(t);
+  }
+  const typingEnd = t;
+  const hold = 1400;
+  const duration = typingEnd + hold;
+  return {
+    duration,
+    typingEnd,
+    countAt(time) {
+      // how many chars are fully revealed
+      if (time >= typingEnd) return chars.length;
+      let lo = 0, hi = times.length;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (times[mid] <= time) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo;
+    },
+    chars,
+  };
+}
+
+function renderV10(ctx, time, plan) {
+  drawChrome(ctx, { label: 'punct-pause', num: '10' });
+  drawQuestionBubble(ctx);
+
+  // Draw streaming answer as a flowing paragraph.
+  ctx.font = `${ANSWER_FONT_SIZE}px ${SANS}`;
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = INK;
+
+  const count = plan.countAt(time);
+  const visible = plan.chars.slice(0, count).join('');
+
+  // Word-wrap the visible text manually per-char to keep wrap stable.
+  // Strategy: do a layout of the FULL text word-boxes, then only draw up to the char count.
+  const fullWords = ANSWER.split(/(\s+)/); // keep whitespace
+  const layout = [];
+  let cx = ANSWER_X, cy = ANSWER_TOP;
+  const spaceW = ctx.measureText(' ').width;
+  let charIndex = 0;
+
+  // First pass: compute the number of lines needed with the full text so we can bottom-align.
+  const fullLines = wrapLines(ctx, ANSWER, ANSWER_WIDTH);
+  const startY = ANSWER_TOP;
+
+  // Draw lines up to the visible char count.
+  let drawn = 0;
+  for (let li = 0; li < fullLines.length; li++) {
+    const lineText = fullLines[li];
+    const lineStart = drawn;
+    const lineEnd = drawn + lineText.length;
+    if (count <= lineStart) break;
+    const takeLen = Math.min(lineText.length, count - lineStart);
+    const slice = lineText.slice(0, takeLen);
+    ctx.fillText(slice, ANSWER_X, startY + li * LINE_HEIGHT);
+    // caret after last char on the actively-typing line
+    if (count <= lineEnd && time < plan.typingEnd) {
+      const caretX = ANSWER_X + ctx.measureText(slice).width + 2;
+      const caretY = startY + li * LINE_HEIGHT;
+      const blinkOn = Math.floor(time / 500) % 2 === 0;
+      if (blinkOn) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(caretX, caretY + 4, 9, ANSWER_FONT_SIZE);
+        ctx.fillStyle = INK;
+      }
+    }
+    drawn = lineEnd + 1; // +1 for the space between wrapped lines (we split on spaces)
+  }
+
+  // When finished, draw a blinking caret at the end of the last line.
+  if (time >= plan.typingEnd) {
+    const lastLine = fullLines[fullLines.length - 1];
+    const caretX = ANSWER_X + ctx.measureText(lastLine).width + 2;
+    const caretY = startY + (fullLines.length - 1) * LINE_HEIGHT;
+    const blinkOn = Math.floor((time - plan.typingEnd) / 500) % 2 === 0;
+    if (blinkOn) {
+      ctx.fillStyle = INK;
+      ctx.fillRect(caretX, caretY + 4, 9, ANSWER_FONT_SIZE);
+    }
+  }
+}
+
+function wrapLines(ctx, text, maxWidth) {
+  // Break on existing spaces only (won't break words).
+  const words = text.split(' ');
+  const lines = [];
+  let cur = '';
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    const attempt = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(attempt).width > maxWidth && cur) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = attempt;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+// ================= Variant 5: scramble-settle =================
+// Each word goes through 3 scramble frames (~35ms each), then settles (~45ms rest between words).
+// Final hold 1500ms.
+
+function buildPlan5() {
+  // Plan per word: scramble 3 frames of 35ms, then settled (rest 45ms to move to next word).
+  // So each word occupies ~ (3*35 + 45) = 150ms of "committed" time after its own start.
+  // But more importantly, scramble frames during that word are visible.
+  const WORDS = ANSWER.split(/(\s+)/); // keep whitespace in order
+  const entries = []; // per non-space word: { index, start, settleAt }
+  let t = 0;
+  let idx = 0;
+  const wordPlan = [];
+  for (let i = 0; i < WORDS.length; i++) {
+    const p = WORDS[i];
+    if (/^\s+$/.test(p)) continue;
+    const start = t;
+    const settleAt = start + 3 * 35; // 105ms of scrambling
+    wordPlan.push({ i, text: p, start, settleAt });
+    t = settleAt + 45; // 45ms rest
+    idx++;
+  }
+  const typingEnd = t;
+  const duration = typingEnd + 1500;
+  return { duration, typingEnd, wordPlan, WORDS };
+}
+
+function renderV5(ctx, time, plan, seedState) {
+  drawChrome(ctx, { label: 'scramble-settle', num: '05' });
+  drawQuestionBubble(ctx);
+
+  ctx.font = `${ANSWER_FONT_SIZE}px ${SANS}`;
+  ctx.textBaseline = 'top';
+
+  // Layout: we lay out the FULL text as wrapped lines, and render each word either
+  // as "not started" (blank), "scrambling" (dim scrambled), or "settled" (ink).
+  // For layout stability, we always measure the real word width — scrambled text has
+  // the same length so width matches.
+
+  const fullLines = wrapLines(ctx, ANSWER, ANSWER_WIDTH);
+  const startY = ANSWER_TOP;
+
+  // Map each word from ANSWER to its position in the wrapped output.
+  const words = ANSWER.split(' ');
+  // Precompute line/col for each word index.
+  const wordPositions = [];
+  {
+    let li = 0, cur = '';
+    for (let i = 0; i < words.length; i++) {
+      const w = words[i];
+      const attempt = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(attempt).width > ANSWER_WIDTH && cur) {
+        li++;
+        cur = w;
+        wordPositions.push({ line: li, preText: '' });
+      } else {
+        wordPositions.push({ line: li, preText: cur });
+        cur = attempt;
+      }
+    }
+  }
+
+  // A word in `words` matches 1:1 with a non-whitespace entry in plan.WORDS (since we split on /(\s+)/ and filtered in wordPlan).
+  // But note: plan.WORDS kept whitespace as entries too. plan.wordPlan is the filtered, ordered list.
+  // `words` here is `ANSWER.split(' ')` — same count of real words. Good.
+
+  for (let wi = 0; wi < words.length; wi++) {
+    const word = words[wi];
+    const planEntry = plan.wordPlan[wi];
+    const pos = wordPositions[wi];
+    const x = ANSWER_X + ctx.measureText(pos.preText ? pos.preText + ' ' : '').width;
+    const y = startY + pos.line * LINE_HEIGHT;
+
+    let render = '';
+    let color = INK;
+    if (time < planEntry.start) {
+      // not started — leave blank (preserve width with invisible draw? nothing to draw)
+      continue;
+    } else if (time < planEntry.settleAt) {
+      // scrambling
+      // derive a deterministic-ish scramble based on floor(time/35) so frames at same bucket look stable
+      const bucket = Math.floor((time - planEntry.start) / 35);
+      render = scrambleWord(word, wi, bucket, seedState);
+      color = DIM;
+    } else {
+      render = word;
+      color = INK;
+    }
+    ctx.fillStyle = color;
+    ctx.fillText(render, x, y);
+  }
+
+  // Subtle caret after the last settled word while still streaming
+  if (time < plan.typingEnd) {
+    // find the most recent word in progress
+    let activeIdx = -1;
+    for (let i = 0; i < plan.wordPlan.length; i++) {
+      if (time >= plan.wordPlan[i].start) activeIdx = i;
+    }
+    if (activeIdx >= 0) {
+      const pos = wordPositions[activeIdx];
+      const word = words[activeIdx];
+      const x = ANSWER_X + ctx.measureText((pos.preText ? pos.preText + ' ' : '') + word).width + 2;
+      const y = startY + pos.line * LINE_HEIGHT;
+      const blinkOn = Math.floor(time / 400) % 2 === 0;
+      if (blinkOn) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(x, y + 4, 9, ANSWER_FONT_SIZE);
+      }
+    }
+  } else {
+    // trailing cursor
+    const lastLine = fullLines[fullLines.length - 1];
+    const caretX = ANSWER_X + ctx.measureText(lastLine).width + 2;
+    const caretY = startY + (fullLines.length - 1) * LINE_HEIGHT;
+    const blinkOn = Math.floor((time - plan.typingEnd) / 500) % 2 === 0;
+    if (blinkOn) {
+      ctx.fillStyle = INK;
+      ctx.fillRect(caretX, caretY + 4, 9, ANSWER_FONT_SIZE);
+    }
+  }
+}
+
+function scrambleWord(word, wordIdx, bucket, seedState) {
+  // Cache per (wordIdx, bucket) so all frames in the same 35ms bucket show identical scramble
+  const key = wordIdx + '-' + bucket;
+  if (seedState.cache.has(key)) return seedState.cache.get(key);
+  let out = '';
+  for (let i = 0; i < word.length; i++) {
+    // keep punctuation stable for readability
+    const c = word[i];
+    if (/[.,!?'"—\-:;]/.test(c)) { out += c; continue; }
+    const r = pseudoRandom(wordIdx * 131 + bucket * 17 + i * 7) % SCRAMBLE.length;
+    out += SCRAMBLE[r];
+  }
+  seedState.cache.set(key, out);
+  return out;
+}
+
+function pseudoRandom(n) {
+  // xorshift-ish
+  let x = n | 0;
+  x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
+  return Math.abs(x);
+}
+
+// ================= roundRect polyfill (older canvases) =================
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+    if (typeof r === 'number') r = [r, r, r, r];
+    else if (Array.isArray(r) && r.length === 1) r = [r[0], r[0], r[0], r[0]];
+    this.beginPath();
+    this.moveTo(x + r[0], y);
+    this.lineTo(x + w - r[1], y);
+    this.quadraticCurveTo(x + w, y, x + w, y + r[1]);
+    this.lineTo(x + w, y + h - r[2]);
+    this.quadraticCurveTo(x + w, y + h, x + w - r[2], y + h);
+    this.lineTo(x + r[3], y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - r[3]);
+    this.lineTo(x, y + r[0]);
+    this.quadraticCurveTo(x, y, x + r[0], y);
+    this.closePath();
+    return this;
+  };
+}
+
+// ================= Render dispatch =================
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+
+const plans = {
+  '10': buildPlan10(),
+  '5': buildPlan5(),
+};
+
+function renderAt(variant, time) {
+  ctx.clearRect(0, 0, W, H);
+  if (variant === '10') {
+    renderV10(ctx, time, plans['10']);
+  } else if (variant === '5') {
+    renderV5(ctx, time, plans['5'], seedStates['5']);
+  }
+}
+
+const seedStates = {
+  '5': { cache: new Map() },
+};
+
+function durationFor(v) { return plans[v].duration; }
+
+// ================= Preview loop =================
+let previewRAF = null;
+function startPreview() {
+  cancelAnimationFrame(previewRAF);
+  const v = document.getElementById('variant').value;
+  // Reset scramble cache for v5 so preview looks the same each loop as it will on record
+  seedStates['5'] = { cache: new Map() };
+  const dur = durationFor(v);
+  const t0 = performance.now();
+  function tick(now) {
+    const time = (now - t0) % dur;
+    renderAt(v, time);
+    previewRAF = requestAnimationFrame(tick);
+  }
+  previewRAF = requestAnimationFrame(tick);
+}
+
+// ================= GIF recording =================
+async function recordGif() {
+  const btn = document.getElementById('record');
+  const status = document.getElementById('status');
+  const prog = document.getElementById('prog');
+  const v = document.getElementById('variant').value;
+  const fps = parseInt(document.getElementById('fps').value, 10);
+  const quality = parseInt(document.getElementById('quality').value, 10);
+  const dur = durationFor(v);
+  const frameDelay = 1000 / fps;
+  const totalFrames = Math.round(dur / frameDelay);
+
+  // Reset state
+  cancelAnimationFrame(previewRAF);
+  seedStates['5'] = { cache: new Map() };
+
+  btn.disabled = true;
+  status.textContent = `rendering ${totalFrames} frames @ ${fps}fps (${(dur/1000).toFixed(1)}s loop)…`;
+  prog.style.display = '';
+  prog.max = 1;
+  prog.value = 0;
+
+  const gif = new GIF({
+    workers: 2,
+    quality,
+    width: W,
+    height: H,
+    workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js',
+    repeat: 0, // loop forever
+    background: BG,
+    transparent: null,
+  });
+
+  for (let i = 0; i < totalFrames; i++) {
+    const t = i * frameDelay;
+    renderAt(v, t);
+    // gif.js copies the canvas internally; pass the canvas directly
+    gif.addFrame(canvas, { copy: true, delay: frameDelay });
+    if (i % 10 === 0) {
+      prog.value = (i / totalFrames) * 0.5; // first half = frame capture
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+
+  status.textContent = `encoding GIF…`;
+  prog.value = 0.5;
+
+  gif.on('progress', p => {
+    prog.value = 0.5 + p * 0.5;
+    status.textContent = `encoding GIF… ${Math.round(p*100)}%`;
+  });
+
+  gif.on('finished', blob => {
+    status.textContent = `done (${(blob.size/1024).toFixed(0)} KB)`;
+    prog.value = 1;
+    btn.disabled = false;
+
+    const url = URL.createObjectURL(blob);
+    const name = v === '10' ? 'text-streaming-10-punctuation-pause.gif' : 'text-streaming-05-scramble-settle.gif';
+    // Trigger download
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // resume preview
+    startPreview();
+  });
+
+  gif.render();
+}
+
+// ================= Wire up =================
+document.getElementById('preview').addEventListener('click', startPreview);
+document.getElementById('record').addEventListener('click', recordGif);
+document.getElementById('variant').addEventListener('change', () => {
+  seedStates['5'] = { cache: new Map() };
+  startPreview();
+});
+
+// Kick off initial preview
+startPreview();
+</script>
+</body>
+</html>

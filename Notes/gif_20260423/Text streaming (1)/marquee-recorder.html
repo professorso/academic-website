@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marquee banner — recorder</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --panel: #141414;
+    --ink: #f2f2f2;
+    --dim: #9a9a9a;
+    --line: #222;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Cormorant Garamond', 'EB Garamond', Georgia, 'Times New Roman', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; font-family: var(--sans); }
+  body { padding: 28px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 100vh; }
+  h1 { font-family: var(--mono); font-size: 13px; font-weight: 500; margin: 0; letter-spacing: 0.02em; color: var(--dim);}
+  h1 span { color: var(--ink); }
+  h2 { font-family: var(--mono); font-size: 11px; font-weight: 500; margin: 0 0 8px; letter-spacing: 0.04em; color: var(--dim); text-transform: uppercase;}
+  h2 span { color: var(--ink); }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 20px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-family: var(--mono); font-size: 12px; }
+  .controls label { color: var(--dim); display: flex; align-items: center; gap: 6px; }
+  .controls input[type="number"], .controls select, .controls button {
+    font-family: var(--mono); font-size: 12px;
+    background: #1a1a1a; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 7px 10px;
+  }
+  .controls input[type="number"] { width: 72px; }
+  .controls button { cursor: pointer; }
+  .controls button:hover { background: #222; }
+  .controls button:disabled { opacity: 0.4; cursor: wait; }
+  .controls .spacer { flex: 1; }
+  .status { color: var(--dim); font-family: var(--mono); font-size: 11px; min-width: 160px; text-align: right;}
+
+  .stage {
+    display: flex; justify-content: center; align-items: center;
+    background: #000;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 10px;
+  }
+  canvas.preview {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    image-rendering: crisp-edges;
+  }
+  progress { width: 100%; height: 4px; }
+  .note { color: var(--dim); font-family: var(--mono); font-size: 11px; }
+</style>
+<!-- Load a serif so the marquee looks editorial, not system -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>marquee-recorder <span>/ infinite horizontal scroll</span></h1>
+
+  <div class="card">
+    <h2>configuration</h2>
+    <div class="controls">
+      <label>width <input id="w" type="number" value="1600" min="400" max="3000" step="50"></label>
+      <label>height <input id="h" type="number" value="300" min="80" max="600" step="10"></label>
+      <label>speed (px/s) <input id="speed" type="number" value="160" min="40" max="600" step="10"></label>
+      <label>font px <input id="fsize" type="number" value="130" min="30" max="240" step="2"></label>
+      <label>fps
+        <select id="fps">
+          <option value="24">24</option>
+          <option value="30" selected>30</option>
+          <option value="20">20</option>
+          <option value="15">15</option>
+        </select>
+      </label>
+      <label>scale
+        <select id="scale">
+          <option value="1">1×</option>
+          <option value="2" selected>2×</option>
+        </select>
+      </label>
+      <div class="spacer"></div>
+      <button id="record">record &amp; download GIF</button>
+      <span class="status" id="status">ready</span>
+    </div>
+    <progress id="prog" value="0" max="1" style="display:none"></progress>
+    <div class="stage">
+      <canvas id="preview" class="preview"></canvas>
+    </div>
+    <div class="note">Serif marquee, R→L, white on black. Content loops seamlessly — the canvas renders two copies of the phrase-strip spaced by one "tile width," and we advance offset modulo that width so the seam is invisible.</div>
+  </div>
+
+<script src="https://unpkg.com/gif.js@0.2.0/dist/gif.js"></script>
+<script>
+(() => {
+  const PHRASES = [
+    'DATASETS FROM PUBLISHED PAPERS',
+    'READING THAT SHAPED MY WORK',
+    'AI + EDUCATION NOTES',
+    'SHARED FREELY',
+  ];
+  const SEPARATOR = '  ◆  '; // small diamond, padded
+  const SERIF = "'Cormorant Garamond', 'EB Garamond', Georgia, 'Times New Roman', serif";
+
+  // Build the repeating "tile" — one full cycle of phrases separated by diamonds,
+  // with a trailing separator so the end-of-tile chains into the next copy.
+  const TILE_TEXT = PHRASES.join(SEPARATOR) + SEPARATOR;
+
+  const canvas = document.getElementById('preview');
+  const ctx = canvas.getContext('2d');
+
+  const statusEl = document.getElementById('status');
+  const progEl = document.getElementById('prog');
+
+  // Wait for the Google font to load before measuring (else metrics are wrong)
+  let fontReady = false;
+  (async () => {
+    try { await document.fonts.load('600 130px "Cormorant Garamond"'); } catch (e) {}
+    fontReady = true;
+    startPreview();
+  })();
+
+  // Fallback in case the font never resolves
+  setTimeout(() => { if (!fontReady) { fontReady = true; startPreview(); } }, 2500);
+
+  function getConfig() {
+    return {
+      W: +document.getElementById('w').value,
+      H: +document.getElementById('h').value,
+      speed: +document.getElementById('speed').value,
+      fsize: +document.getElementById('fsize').value,
+      fps: +document.getElementById('fps').value,
+      scale: +document.getElementById('scale').value,
+    };
+  }
+
+  // Core render — frame at a given time (ms) onto a context sized to W×H (logical px).
+  // The caller is responsible for applying any DPR / scale transform before calling.
+  function renderFrame(targetCtx, time, cfg) {
+    const { W, H, speed, fsize } = cfg;
+
+    // background — deep black
+    targetCtx.fillStyle = '#000';
+    targetCtx.fillRect(0, 0, W, H);
+
+    // text style
+    targetCtx.fillStyle = '#f4efe6'; // warm off-white — more editorial than pure white
+    targetCtx.font = `600 ${fsize}px ${SERIF}`;
+    targetCtx.textBaseline = 'middle';
+    targetCtx.textAlign = 'left';
+
+    const tileWidth = targetCtx.measureText(TILE_TEXT).width;
+    // offset in px: how far the text has scrolled left
+    const offset = (time / 1000) * speed;
+    const modOffset = ((offset % tileWidth) + tileWidth) % tileWidth;
+
+    // Draw enough copies to cover the viewport from x = -modOffset rightward.
+    // Start x is -modOffset; draw copies at x, x + tileWidth, x + 2*tileWidth ... until > W.
+    const y = H / 2 + 2; // slight optical centering for serifs
+    let x = -modOffset;
+    // Safety guard: at least 2 copies
+    let copies = 0;
+    while (x < W && copies < 6) {
+      targetCtx.fillText(TILE_TEXT, x, y);
+      x += tileWidth;
+      copies++;
+    }
+  }
+
+  // ===== Preview loop =====
+  let previewRAF = null;
+  function startPreview() {
+    if (!fontReady) return;
+    cancelAnimationFrame(previewRAF);
+    const cfg = getConfig();
+    // Preview canvas uses devicePixelRatio-ish crispness at 1× logical
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = cfg.W * dpr;
+    canvas.height = cfg.H * dpr;
+    canvas.style.width = Math.min(cfg.W, 1600) + 'px';
+    canvas.style.height = (Math.min(cfg.W, 1600) * cfg.H / cfg.W) + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const t0 = performance.now();
+    function tick(now) {
+      renderFrame(ctx, now - t0, cfg);
+      previewRAF = requestAnimationFrame(tick);
+    }
+    previewRAF = requestAnimationFrame(tick);
+  }
+
+  // Refresh preview when inputs change
+  ['w','h','speed','fsize'].forEach(id => {
+    document.getElementById(id).addEventListener('input', startPreview);
+  });
+
+  // ===== Recording =====
+  async function record() {
+    const btn = document.getElementById('record');
+    const cfg = getConfig();
+
+    // For a seamless loop we need the total scroll to be an integer multiple of tileWidth.
+    // Measure tileWidth on an offscreen ctx.
+    const measure = document.createElement('canvas').getContext('2d');
+    measure.font = `600 ${cfg.fsize}px ${SERIF}`;
+    const tileWidth = measure.measureText(TILE_TEXT).width;
+    const loopDurationMs = (tileWidth / cfg.speed) * 1000; // one full tile = one seamless loop
+
+    const fps = cfg.fps;
+    const frameDelay = 1000 / fps; // ms
+    const totalFrames = Math.round(loopDurationMs / frameDelay);
+    const actualLoopMs = totalFrames * frameDelay; // snap to integer-frame loop
+
+    // Offscreen canvas at export scale
+    const exportW = cfg.W * cfg.scale;
+    const exportH = cfg.H * cfg.scale;
+    const off = document.createElement('canvas');
+    off.width = exportW;
+    off.height = exportH;
+    const offCtx = off.getContext('2d');
+
+    btn.disabled = true;
+    cancelAnimationFrame(previewRAF);
+    progEl.style.display = '';
+    progEl.value = 0;
+    statusEl.textContent = `rendering ${totalFrames} frames…`;
+
+    const gif = new GIF({
+      workers: 2,
+      quality: 8,
+      width: exportW,
+      height: exportH,
+      workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js',
+      repeat: 0,
+      background: '#000',
+    });
+
+    for (let i = 0; i < totalFrames; i++) {
+      // scale the loop time to advance by exactly actualLoopMs/totalFrames per frame,
+      // so after totalFrames the text has advanced exactly tileWidth px and we wrap seamlessly.
+      const t = (i / totalFrames) * (tileWidth / cfg.speed) * 1000;
+      offCtx.setTransform(cfg.scale, 0, 0, cfg.scale, 0, 0);
+      renderFrame(offCtx, t, cfg);
+      gif.addFrame(off, { copy: true, delay: frameDelay });
+      if (i % 4 === 0) {
+        progEl.value = (i / totalFrames) * 0.5;
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+
+    statusEl.textContent = 'encoding GIF…';
+    progEl.value = 0.5;
+
+    gif.on('progress', p => {
+      progEl.value = 0.5 + p * 0.5;
+      statusEl.textContent = `encoding… ${Math.round(p*100)}%`;
+    });
+
+    gif.on('finished', blob => {
+      const sizeKB = (blob.size/1024).toFixed(0);
+      statusEl.textContent = `done (${sizeKB} KB, loop ${(actualLoopMs/1000).toFixed(2)}s)`;
+      progEl.value = 1;
+      btn.disabled = false;
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `marquee-${cfg.W}x${cfg.H}-${cfg.scale}x.gif`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      startPreview();
+    });
+
+    gif.render();
+  }
+
+  document.getElementById('record').addEventListener('click', record);
+})();
+</script>
+</body>
+</html>

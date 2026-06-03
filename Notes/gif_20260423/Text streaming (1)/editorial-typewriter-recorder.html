@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Editorial typewriter — recorder</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --panel: #141414;
+    --ink: #f2f2f2;
+    --dim: #9a9a9a;
+    --line: #222;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; font-family: var(--sans); }
+  body { padding: 28px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 100vh; }
+  h1 { font-family: var(--mono); font-size: 13px; font-weight: 500; margin: 0; letter-spacing: 0.02em; color: var(--dim);}
+  h1 span { color: var(--ink); }
+  h2 { font-family: var(--mono); font-size: 11px; font-weight: 500; margin: 0 0 8px; letter-spacing: 0.04em; color: var(--dim); text-transform: uppercase;}
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 20px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-family: var(--mono); font-size: 12px; }
+  .controls label { color: var(--dim); display: flex; align-items: center; gap: 6px; }
+  .controls input, .controls select, .controls button {
+    font-family: var(--mono); font-size: 12px;
+    background: #1a1a1a; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 7px 10px;
+  }
+  .controls input[type="number"] { width: 72px; }
+  .controls input[type="text"] { width: 440px; }
+  .controls button { cursor: pointer; }
+  .controls button:hover { background: #222; }
+  .controls button:disabled { opacity: 0.4; cursor: wait; }
+  .controls .spacer { flex: 1; }
+  .status { color: var(--dim); font-family: var(--mono); font-size: 11px; min-width: 180px; text-align: right;}
+
+  .stage {
+    display: flex; justify-content: center; align-items: center;
+    background: #f4f4f4; /* faint checker-like contrast vs the page */
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 10px;
+  }
+  canvas.preview { display: block; max-width: 100%; height: auto; }
+  progress { width: 100%; height: 4px; }
+  .note { color: var(--dim); font-family: var(--mono); font-size: 11px; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>editorial-typewriter <span>/ quiet · char-by-char · white BG</span></h1>
+
+  <div class="card">
+    <h2>configuration</h2>
+    <div class="controls">
+      <label>text <input id="text" type="text" value="A reading room. Datasets, essays, and books I recommend."></label>
+    </div>
+    <div class="controls">
+      <label>width <input id="w" type="number" value="1600" min="400" max="3000" step="50"></label>
+      <label>height <input id="h" type="number" value="300" min="80" max="600" step="10"></label>
+      <label>font px <input id="fsize" type="number" value="52" min="16" max="140" step="2"></label>
+      <label>tracking (em) <input id="track" type="number" value="0.04" min="0" max="0.2" step="0.005"></label>
+      <label>char/sec <input id="cps" type="number" value="22" min="5" max="80" step="1"></label>
+      <label>fps
+        <select id="fps">
+          <option value="24">24</option>
+          <option value="30" selected>30</option>
+          <option value="20">20</option>
+          <option value="15">15</option>
+        </select>
+      </label>
+      <label>scale
+        <select id="scale">
+          <option value="1">1×</option>
+          <option value="2" selected>2×</option>
+        </select>
+      </label>
+      <div class="spacer"></div>
+      <button id="record">record &amp; download GIF</button>
+      <span class="status" id="status">ready</span>
+    </div>
+    <progress id="prog" value="0" max="1" style="display:none"></progress>
+    <div class="stage">
+      <canvas id="preview" class="preview"></canvas>
+    </div>
+    <div class="note">Charcoal #2b2b2b on pure #ffffff. Streams char-by-char, small pauses on punctuation, then a thin cursor blinks twice, a brief hold, and the loop restarts.</div>
+  </div>
+
+<script src="https://unpkg.com/gif.js@0.2.0/dist/gif.js"></script>
+<script>
+(() => {
+  const SANS = "'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif";
+
+  // ---- Colors ----
+  const BG = '#ffffff';
+  const INK = '#2b2b2b';
+  const CURSOR = '#2b2b2b';
+
+  // ---- Timing shape ----
+  // Each char: base = 1000/cps ms
+  // Punctuation multipliers:
+  //   ',' → 3×
+  //   '.' → 5×
+  //   '?' or '!' → 6×
+  const PUNCT_MULT = { '.': 5, ',': 3, '?': 6, '!': 6, ';': 3, ':': 2.5, '—': 3 };
+
+  // After typing finishes:
+  //   HOLD_AFTER_TYPING: steady visible (no blink yet)
+  //   then CURSOR blinks twice (2 on/off cycles @ 500ms) — we make it exactly 2 full blinks
+  //   then HOLD_BEFORE_LOOP steady for clarity
+  const HOLD_AFTER_TYPING = 600;  // ms — final character settles
+  const BLINK_PERIOD = 500;       // ms per on/off half-cycle
+  const BLINK_CYCLES = 2;         // two full blinks = 2 * (500 on + 500 off) = 2000ms
+  const HOLD_BEFORE_LOOP = 500;   // ms before restart
+
+  const canvas = document.getElementById('preview');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('status');
+  const progEl = document.getElementById('prog');
+
+  let fontReady = false;
+  (async () => {
+    try { await document.fonts.load('500 52px "Inter"'); } catch (e) {}
+    fontReady = true;
+    startPreview();
+  })();
+  setTimeout(() => { if (!fontReady) { fontReady = true; startPreview(); } }, 2500);
+
+  function getConfig() {
+    return {
+      TEXT: document.getElementById('text').value || 'A reading room.',
+      W: +document.getElementById('w').value,
+      H: +document.getElementById('h').value,
+      fsize: +document.getElementById('fsize').value,
+      track: +document.getElementById('track').value,
+      cps: +document.getElementById('cps').value,
+      fps: +document.getElementById('fps').value,
+      scale: +document.getElementById('scale').value,
+    };
+  }
+
+  // Build a timeline: for each char, its "appear time" in ms.
+  function buildTimeline(text, cps) {
+    const base = 1000 / cps;
+    const times = [];
+    let t = 0;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      // The delay is applied AFTER this char becomes visible, so times[i] is when char i appears.
+      times.push(t);
+      let d = base;
+      if (PUNCT_MULT[c]) d = base * PUNCT_MULT[c];
+      // A space after a period/sentence end gets a bit extra too
+      t += d;
+    }
+    const typingEnd = t;
+    const blinkDur = BLINK_CYCLES * 2 * BLINK_PERIOD; // full on+off cycles
+    const total = typingEnd + HOLD_AFTER_TYPING + blinkDur + HOLD_BEFORE_LOOP;
+    return { times, typingEnd, blinkStart: typingEnd + HOLD_AFTER_TYPING, blinkDur, total };
+  }
+
+  // Measure tracked-text width and the positions where each char starts.
+  // We fillText char-by-char so tracking is applied manually.
+  function measureTracked(ctx, text, fsize, trackEm) {
+    const trackPx = fsize * trackEm;
+    const positions = []; // x position for each character
+    let x = 0;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      positions.push(x);
+      const w = ctx.measureText(c).width;
+      x += w + trackPx;
+    }
+    // total width minus trailing track
+    return { positions, totalWidth: x - trackPx, trackPx };
+  }
+
+  function renderFrame(targetCtx, time, cfg, tl) {
+    const { W, H, fsize, track, TEXT } = cfg;
+
+    // BG
+    targetCtx.fillStyle = BG;
+    targetCtx.fillRect(0, 0, W, H);
+
+    targetCtx.font = `500 ${fsize}px ${SANS}`;
+    targetCtx.textBaseline = 'middle';
+    targetCtx.textAlign = 'left';
+    targetCtx.fillStyle = INK;
+
+    const m = measureTracked(targetCtx, TEXT, fsize, track);
+    const startX = (W - m.totalWidth) / 2;
+    const y = H / 2;
+
+    // How many chars visible?
+    let count = 0;
+    if (time >= tl.typingEnd) {
+      count = TEXT.length;
+    } else {
+      // binary search would be fine, but linear is trivial
+      while (count < tl.times.length && tl.times[count] <= time) count++;
+    }
+
+    for (let i = 0; i < count; i++) {
+      targetCtx.fillText(TEXT[i], startX + m.positions[i], y);
+    }
+
+    // Cursor: thin vertical line after the last visible char
+    let cursorX;
+    if (count === 0) {
+      cursorX = startX;
+    } else if (count >= TEXT.length) {
+      cursorX = startX + m.positions[TEXT.length - 1] + targetCtx.measureText(TEXT[TEXT.length-1]).width + m.trackPx * 0.25;
+    } else {
+      cursorX = startX + m.positions[count - 1] + targetCtx.measureText(TEXT[count-1]).width + m.trackPx * 0.25;
+    }
+
+    // Cursor visibility rules:
+    // - While typing: cursor is solid (not blinking) — it just moves with the text
+    // - HOLD_AFTER_TYPING: solid
+    // - BLINK phase: 2 full on/off cycles
+    // - HOLD_BEFORE_LOOP: hidden (off) — so the restart feels like a new beginning
+    let showCursor = true;
+    if (time < tl.typingEnd) {
+      showCursor = true;
+    } else if (time < tl.blinkStart) {
+      showCursor = true;
+    } else if (time < tl.blinkStart + tl.blinkDur) {
+      // Pattern per cycle (1000ms): first 500ms off, next 500ms on — ends "on"
+      // Actually the ask is "blinks twice": so do ON → off → ON → off → ON → off
+      // Simpler: within blinkDur (2000ms), split into 4 halves of 500ms; even halves off, odd halves on,
+      // starting with off so it reads as a blink against the solid cursor that preceded it.
+      const local = time - tl.blinkStart;
+      const half = Math.floor(local / BLINK_PERIOD); // 0..3
+      showCursor = (half % 2 === 1); // off,on,off,on → that's two blinks
+    } else {
+      showCursor = false; // brief dark before restart
+    }
+
+    if (showCursor) {
+      const cursorH = fsize * 1.05;
+      const cursorW = Math.max(2, Math.round(fsize * 0.04));
+      targetCtx.fillStyle = CURSOR;
+      targetCtx.fillRect(cursorX, y - cursorH / 2, cursorW, cursorH);
+    }
+  }
+
+  // ===== Preview loop =====
+  let previewRAF = null;
+  let currentTL = null;
+  function startPreview() {
+    if (!fontReady) return;
+    cancelAnimationFrame(previewRAF);
+    const cfg = getConfig();
+    currentTL = buildTimeline(cfg.TEXT, cfg.cps);
+
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = cfg.W * dpr;
+    canvas.height = cfg.H * dpr;
+    const previewMaxW = 1500;
+    const displayW = Math.min(cfg.W, previewMaxW);
+    canvas.style.width = displayW + 'px';
+    canvas.style.height = (displayW * cfg.H / cfg.W) + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const t0 = performance.now();
+    function tick(now) {
+      const time = (now - t0) % currentTL.total;
+      renderFrame(ctx, time, cfg, currentTL);
+      previewRAF = requestAnimationFrame(tick);
+    }
+    previewRAF = requestAnimationFrame(tick);
+  }
+
+  ['text','w','h','fsize','track','cps'].forEach(id => {
+    document.getElementById(id).addEventListener('input', startPreview);
+  });
+
+  // ===== Recording =====
+  async function record() {
+    const btn = document.getElementById('record');
+    const cfg = getConfig();
+    const tl = buildTimeline(cfg.TEXT, cfg.cps);
+
+    const fps = cfg.fps;
+    const frameDelay = 1000 / fps;
+    const totalFrames = Math.round(tl.total / frameDelay);
+
+    const exportW = cfg.W * cfg.scale;
+    const exportH = cfg.H * cfg.scale;
+    const off = document.createElement('canvas');
+    off.width = exportW;
+    off.height = exportH;
+    const offCtx = off.getContext('2d');
+
+    btn.disabled = true;
+    cancelAnimationFrame(previewRAF);
+    progEl.style.display = '';
+    progEl.value = 0;
+    statusEl.textContent = `rendering ${totalFrames} frames…`;
+
+    const gif = new GIF({
+      workers: 2,
+      quality: 6,
+      width: exportW,
+      height: exportH,
+      workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js',
+      repeat: 0,
+      background: '#ffffff',
+    });
+
+    for (let i = 0; i < totalFrames; i++) {
+      const t = (i / totalFrames) * tl.total;
+      offCtx.setTransform(cfg.scale, 0, 0, cfg.scale, 0, 0);
+      renderFrame(offCtx, t, cfg, tl);
+      gif.addFrame(off, { copy: true, delay: frameDelay });
+      if (i % 4 === 0) {
+        progEl.value = (i / totalFrames) * 0.5;
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+
+    statusEl.textContent = 'encoding GIF…';
+    progEl.value = 0.5;
+
+    gif.on('progress', p => {
+      progEl.value = 0.5 + p * 0.5;
+      statusEl.textContent = `encoding… ${Math.round(p*100)}%`;
+    });
+
+    gif.on('finished', blob => {
+      const sizeKB = (blob.size/1024).toFixed(0);
+      statusEl.textContent = `done (${sizeKB} KB, ${(tl.total/1000).toFixed(1)}s loop)`;
+      progEl.value = 1;
+      btn.disabled = false;
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `editorial-typewriter-${cfg.W}x${cfg.H}-${cfg.scale}x.gif`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      startPreview();
+    });
+
+    gif.render();
+  }
+
+  document.getElementById('record').addEventListener('click', record);
+})();
+</script>
+</body>
+</html>

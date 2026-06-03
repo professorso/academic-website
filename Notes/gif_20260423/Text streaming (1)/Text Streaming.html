@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Text streaming — 10 variations</title>
+<template id="__bundler_thumbnail" data-bg-color="#0e0e0e">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0e0e0e"/>
+    <g fill="#f2f2f2" font-family="ui-monospace, Menlo, monospace" font-size="64" font-weight="500">
+      <rect x="240" y="340" width="18" height="72"/>
+      <text x="280" y="398" fill="#f2f2f2">streaming</text>
+      <rect x="830" y="340" width="18" height="72" opacity="0.4"/>
+    </g>
+    <g fill="#9a9a9a" font-family="ui-monospace, Menlo, monospace" font-size="22">
+      <text x="240" y="460">10 variations · monochrome</text>
+    </g>
+  </svg>
+</template>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --panel: #151515;
+    --ink: #f2f2f2;
+    --dim: #9a9a9a;
+    --faint: #3a3a3a;
+    --line: #262626;
+    --accent: #f2f2f2;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    /* keep dark — monochrome feels stronger */
+  }
+  html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    font-feature-settings: "ss01","cv11";
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  header {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; background: var(--bg); z-index: 5;
+  }
+  header h1 {
+    margin: 0; font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    font-family: var(--mono); color: var(--ink);
+  }
+  header h1 .dim { color: var(--dim); }
+  header .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--dim);
+    display: flex; gap: 18px;
+  }
+  header .meta .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--ink);
+    display: inline-block; margin-right: 6px; vertical-align: middle;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1;} 50% { opacity: 0.25; } }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .cell {
+    background: var(--panel);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-height: 300px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .cell .label {
+    position: absolute; top: 12px; left: 14px; right: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: var(--dim);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    pointer-events: none;
+  }
+  .cell .label .n {
+    color: var(--ink); background: transparent;
+    border: 1px solid var(--faint); padding: 2px 6px; border-radius: 3px;
+  }
+  .cell .chat {
+    position: absolute; inset: 0;
+    padding: 44px 18px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+    justify-content: flex-end;
+  }
+  .bubble {
+    font-size: 12.5px; line-height: 1.45;
+    max-width: 92%;
+    padding: 8px 11px;
+    border-radius: 10px;
+    word-break: break-word;
+  }
+  .q {
+    align-self: flex-end;
+    background: #2a2a2a;
+    color: var(--ink);
+    border: 1px solid #333;
+  }
+  .a {
+    align-self: flex-start;
+    color: var(--ink);
+    background: transparent;
+    padding: 2px 0;
+    min-height: 18px;
+    max-width: 100%;
+  }
+  /* Shared caret */
+  .caret {
+    display: inline-block; width: 7px; height: 14px;
+    background: var(--ink); vertical-align: -2px; margin-left: 1px;
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- Style variants ---------- */
+
+  /* 01 typewriter — char by char */
+  .v01 .a .ch { opacity: 0; }
+  .v01 .a .ch.on { opacity: 1; }
+
+  /* 02 word fade-in */
+  .v02 .a .w { opacity: 0; filter: blur(2px); transition: opacity .35s, filter .35s; display: inline-block; }
+  .v02 .a .w.on { opacity: 1; filter: blur(0); }
+
+  /* 03 slide up per word */
+  .v03 .a .w { opacity: 0; transform: translateY(6px); transition: opacity .28s ease, transform .28s ease; display: inline-block; }
+  .v03 .a .w.on { opacity: 1; transform: none; }
+
+  /* 04 shimmer sweep (skeleton-to-text) */
+  .v04 .a { position: relative; }
+  .v04 .a .w {
+    opacity: 0.15; display: inline-block;
+    background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
+    background-clip: text; -webkit-background-clip: text;
+    color: transparent;
+    transition: opacity .35s ease, color .35s ease;
+  }
+  .v04 .a .w.on {
+    opacity: 1; color: var(--ink); background: none; -webkit-background-clip: border-box;
+  }
+
+  /* 05 glitch reveal — scramble then settle */
+  .v05 .a .w { display: inline-block; }
+  .v05 .a .w .real { opacity: 0; }
+  .v05 .a .w.on .real { opacity: 1; }
+  .v05 .a .w .scrambler {
+    position: absolute; color: var(--dim); opacity: 1; pointer-events: none;
+  }
+  .v05 .a .w.on .scrambler { opacity: 0; }
+
+  /* 06 mask reveal — block wipe */
+  .v06 .a .w {
+    display: inline-block; position: relative; overflow: hidden;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path .32s cubic-bezier(.6,.2,.2,1);
+  }
+  .v06 .a .w.on { clip-path: inset(0 0 0 0); }
+
+  /* 07 dot-matrix: show placeholder blocks then replace */
+  .v07 .a .w { display: inline-block; position: relative; }
+  .v07 .a .w .real { opacity: 0; transition: opacity .2s; }
+  .v07 .a .w.on .real { opacity: 1; }
+  .v07 .a .w .skel {
+    position: absolute; inset: 3px 0 3px 0;
+    background: repeating-linear-gradient(90deg, #2e2e2e 0 3px, transparent 3px 6px);
+    border-radius: 2px;
+  }
+  .v07 .a .w.on .skel { opacity: 0; transition: opacity .2s; }
+
+  /* 08 chunked paragraph flash — phrase by phrase */
+  .v08 .a { font-family: var(--sans); }
+  .v08 .a .phrase { opacity: 0; transform: translateY(3px); transition: opacity .4s, transform .4s; display: inline; }
+  .v08 .a .phrase.on { opacity: 1; transform: none; }
+
+  /* 09 terminal cursor with trailing dot */
+  .v09 .a { font-family: var(--mono); font-size: 11.5px; }
+  .v09 .a .ch { opacity: 0; }
+  .v09 .a .ch.on { opacity: 1; }
+  .v09 .cursor { display:inline-block; width:7px; height:13px; background:var(--ink); vertical-align:-2px; animation: blink 0.8s steps(2) infinite; }
+
+  /* 10 stagger: first chars fast, pause at punctuation */
+  .v10 .a .ch { opacity: 0; }
+  .v10 .a .ch.on { opacity: 1; transition: opacity .12s; }
+
+  /* Footer */
+  footer {
+    padding: 18px 32px 40px;
+    font-family: var(--mono); font-size: 11px; color: var(--dim);
+    display: flex; justify-content: space-between; border-top: 1px solid var(--line);
+  }
+  footer .legend { display: flex; gap: 20px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>text-streaming.study <span class="dim">/ 10 variations · monochrome</span></h1>
+    <div class="meta">
+      <span><span class="dot"></span>looping</span>
+      <span>Q: "Who is Eric So at MIT?"</span>
+    </div>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <div class="legend">
+      <span>01 typewriter</span>
+      <span>02 word fade</span>
+      <span>03 slide-up</span>
+      <span>04 shimmer→text</span>
+      <span>05 scramble-settle</span>
+      <span>06 mask-wipe</span>
+      <span>07 skeleton-swap</span>
+      <span>08 phrase-flash</span>
+      <span>09 terminal</span>
+      <span>10 punctuation-pause</span>
+    </div>
+    <div>loop · 6–9s each</div>
+  </footer>
+
+<script>
+(() => {
+  const QUESTION = 'Who is Eric So at MIT?';
+  const ANSWER =
+    "Wait. Are you serious? You don't know who Eric So is?? Dude basically IS MIT. " +
+    "The man, the myth, the legend — I cannot believe we're even having this conversation.";
+
+  const variants = [
+    { n: '01', cls: 'v01', label: 'typewriter' },
+    { n: '02', cls: 'v02', label: 'word fade' },
+    { n: '03', cls: 'v03', label: 'slide-up' },
+    { n: '04', cls: 'v04', label: 'shimmer → text' },
+    { n: '05', cls: 'v05', label: 'scramble-settle' },
+    { n: '06', cls: 'v06', label: 'mask-wipe' },
+    { n: '07', cls: 'v07', label: 'skeleton-swap' },
+    { n: '08', cls: 'v08', label: 'phrase-flash' },
+    { n: '09', cls: 'v09', label: 'terminal' },
+    { n: '10', cls: 'v10', label: 'punct-pause' },
+  ];
+
+  const grid = document.getElementById('grid');
+
+  // Build cells
+  variants.forEach(v => {
+    const cell = document.createElement('div');
+    cell.className = `cell ${v.cls}`;
+    cell.innerHTML = `
+      <div class="label">
+        <span>${v.label}</span>
+        <span class="n">${v.n}</span>
+      </div>
+      <div class="chat">
+        <div class="bubble q">${QUESTION}</div>
+        <div class="bubble a" data-a></div>
+      </div>
+    `;
+    grid.appendChild(cell);
+  });
+
+  // Helpers
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const scrambleChars = '!@#$%^&*<>?/\\|{}[]=+-_0123456789';
+
+  function splitChars(text) {
+    return [...text].map(c => {
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = c === ' ' ? '\u00a0' : c;
+      return s;
+    });
+  }
+  function splitWords(text) {
+    const parts = text.split(/(\s+)/); // keep spaces
+    return parts.map(p => {
+      const s = document.createElement('span');
+      if (/^\s+$/.test(p)) { s.className = 'ws'; s.textContent = '\u00a0'; }
+      else { s.className = 'w'; s.textContent = p; }
+      return s;
+    });
+  }
+
+  // ---------- 01 typewriter ----------
+  async function run01(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const chars = splitChars(ANSWER);
+      chars.forEach(c => el.appendChild(c));
+      const caret = document.createElement('span');
+      caret.className = 'caret';
+      el.appendChild(caret);
+      for (let i = 0; i < chars.length; i++) {
+        if (loopSignal.stop) return;
+        chars[i].classList.add('on');
+        const c = chars[i].textContent;
+        let d = 22;
+        if (',.?!'.includes(c)) d = 180;
+        await sleep(d);
+      }
+      await sleep(1600);
+    }
+  }
+
+  // ---------- 02 word fade ----------
+  async function run02(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = splitWords(ANSWER);
+      parts.forEach(p => el.appendChild(p));
+      const words = parts.filter(p => p.classList.contains('w'));
+      for (const w of words) {
+        if (loopSignal.stop) return;
+        w.classList.add('on');
+        await sleep(55 + Math.random()*40);
+      }
+      await sleep(1600);
+    }
+  }
+
+  // ---------- 03 slide-up ----------
+  async function run03(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = splitWords(ANSWER);
+      parts.forEach(p => el.appendChild(p));
+      const words = parts.filter(p => p.classList.contains('w'));
+      for (const w of words) {
+        if (loopSignal.stop) return;
+        w.classList.add('on');
+        await sleep(50);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ---------- 04 shimmer → text ----------
+  async function run04(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = splitWords(ANSWER);
+      parts.forEach(p => el.appendChild(p));
+      const words = parts.filter(p => p.classList.contains('w'));
+      // reveal in chunks of ~3 words
+      for (let i = 0; i < words.length; i++) {
+        if (loopSignal.stop) return;
+        words[i].classList.add('on');
+        await sleep(70);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ---------- 05 scramble-settle ----------
+  async function run05(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = ANSWER.split(/(\s+)/);
+      const wordEls = [];
+      parts.forEach(p => {
+        if (/^\s+$/.test(p)) {
+          el.appendChild(document.createTextNode(p));
+        } else {
+          const w = document.createElement('span');
+          w.className = 'w';
+          w.style.position = 'relative';
+          const real = document.createElement('span');
+          real.className = 'real';
+          real.textContent = p;
+          const scr = document.createElement('span');
+          scr.className = 'scrambler';
+          scr.textContent = p.replace(/./g, () => scrambleChars[Math.floor(Math.random()*scrambleChars.length)]);
+          w.appendChild(scr);
+          w.appendChild(real);
+          el.appendChild(w);
+          wordEls.push({ w, real, scr, text: p });
+        }
+      });
+      for (const entry of wordEls) {
+        if (loopSignal.stop) return;
+        // scramble a few frames
+        for (let k = 0; k < 3; k++) {
+          entry.scr.textContent = entry.text.replace(/./g, () => scrambleChars[Math.floor(Math.random()*scrambleChars.length)]);
+          await sleep(35);
+        }
+        entry.w.classList.add('on');
+        await sleep(45);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ---------- 06 mask-wipe ----------
+  async function run06(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = splitWords(ANSWER);
+      parts.forEach(p => el.appendChild(p));
+      const words = parts.filter(p => p.classList.contains('w'));
+      for (const w of words) {
+        if (loopSignal.stop) return;
+        w.classList.add('on');
+        await sleep(55);
+      }
+      await sleep(1600);
+    }
+  }
+
+  // ---------- 07 skeleton-swap ----------
+  async function run07(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const parts = ANSWER.split(/(\s+)/);
+      const wordEls = [];
+      parts.forEach(p => {
+        if (/^\s+$/.test(p)) {
+          el.appendChild(document.createTextNode(p));
+        } else {
+          const w = document.createElement('span');
+          w.className = 'w';
+          w.style.position = 'relative';
+          const skel = document.createElement('span');
+          skel.className = 'skel';
+          const real = document.createElement('span');
+          real.className = 'real';
+          real.textContent = p;
+          w.appendChild(real);
+          w.appendChild(skel);
+          el.appendChild(w);
+          wordEls.push(w);
+        }
+      });
+      // pre-show all skeletons briefly
+      await sleep(350);
+      for (const w of wordEls) {
+        if (loopSignal.stop) return;
+        w.classList.add('on');
+        await sleep(55);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ---------- 08 phrase-flash ----------
+  async function run08(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      // split by punctuation phrases
+      const phrases = ANSWER.match(/[^.?!—]+[.?!—]?\s*/g) || [ANSWER];
+      const nodes = phrases.map(p => {
+        const s = document.createElement('span');
+        s.className = 'phrase';
+        s.textContent = p;
+        el.appendChild(s);
+        return s;
+      });
+      for (const n of nodes) {
+        if (loopSignal.stop) return;
+        n.classList.add('on');
+        await sleep(260);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ---------- 09 terminal ----------
+  async function run09(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const prefix = document.createElement('span');
+      prefix.textContent = '> ';
+      prefix.style.color = 'var(--dim)';
+      el.appendChild(prefix);
+      const chars = splitChars(ANSWER);
+      chars.forEach(c => el.appendChild(c));
+      const cur = document.createElement('span');
+      cur.className = 'cursor';
+      el.appendChild(cur);
+      for (let i = 0; i < chars.length; i++) {
+        if (loopSignal.stop) return;
+        chars[i].classList.add('on');
+        await sleep(18 + Math.random()*10);
+      }
+      await sleep(1400);
+    }
+  }
+
+  // ---------- 10 punctuation-pause ----------
+  async function run10(el, loopSignal) {
+    while (!loopSignal.stop) {
+      el.innerHTML = '';
+      const chars = splitChars(ANSWER);
+      chars.forEach(c => el.appendChild(c));
+      const caret = document.createElement('span');
+      caret.className = 'caret';
+      el.appendChild(caret);
+      for (let i = 0; i < chars.length; i++) {
+        if (loopSignal.stop) return;
+        chars[i].classList.add('on');
+        const c = chars[i].textContent;
+        let d = 14;
+        if (c === '.') d = 320;
+        else if (c === '?') d = 400;
+        else if (c === ',') d = 180;
+        else if (c === '—') d = 260;
+        await sleep(d);
+      }
+      await sleep(1400);
+    }
+  }
+
+  const runners = [run01, run02, run03, run04, run05, run06, run07, run08, run09, run10];
+
+  // Kick each cell off with a staggered start
+  const cells = grid.querySelectorAll('.cell');
+  cells.forEach((cell, i) => {
+    const target = cell.querySelector('[data-a]');
+    const signal = { stop: false };
+    setTimeout(() => runners[i](target, signal), i * 180);
+  });
+})();
+</script>
+</body>
+</html>
