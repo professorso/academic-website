@@ -3,6 +3,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// Featured promo video. Paste the YouTube video ID here (the part after
+// `v=` in the URL, e.g. for https://www.youtube.com/watch?v=dQw4w9WgXcQ
+// the id is `dQw4w9WgXcQ`). The section below only renders when this is set.
+const promoVideoId = '';
+
 const chapters = [
   {
     label: 'Introduction',
@@ -98,6 +103,25 @@ const chapters = [
       </div>
     </div>
   </section>
+
+  {promoVideoId && (
+    <section class="promo-section" data-theme="dark">
+      <div class="promo-inner">
+        <span class="section-label">Watch</span>
+        <h2 class="promo-heading">The book in two minutes.</h2>
+        <div class="promo-embed">
+          <iframe
+            src={`https://www.youtube.com/embed/${promoVideoId}`}
+            title="The Collision — promo video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="chapters-section" data-theme="light">
     <div class="chapters-intro section-inner">
@@ -255,6 +279,43 @@ const chapters = [
     .book-hero-text {
       padding: 0;
     }
+  }
+
+  /* --- Featured promo video --- */
+  .promo-section {
+    background: var(--black);
+    color: var(--white);
+    padding: 5rem var(--section-pad-x) 6rem;
+    border-top: 1px solid var(--gray-800);
+  }
+
+  .promo-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .promo-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.02;
+    text-transform: uppercase;
+    margin: 0.75rem 0 2.5rem;
+  }
+
+  .promo-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .promo-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 
   /* --- Chapter scrollytelling --- */

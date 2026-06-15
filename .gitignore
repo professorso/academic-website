@@ -3,3 +3,6 @@ site/node_modules/
 site/dist/
 .DS_Store
 .astro/
+
+# Promo video source — 321MB, exceeds GitHub 100MB limit; hosted on YouTube instead
+Photos/*.mp4
