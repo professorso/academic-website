@@ -29,6 +29,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AI in Financial Markets and Decision-Making', description: 'Research group at the MIT Initiative on the Digital Economy', url: 'https://ide.mit.edu/research-group/ai-finance-decisions/', kind: 'group', external: true },
 
   // Working papers
+  { title: 'Emergent Negligence: How Profit Mandates Induce Alignment Failures in LLMs', description: 'So — how profit-maximization mandates induce emergent alignment failures in LLMs', url: `${base}/working-papers/`, kind: 'working' },
+  { title: 'The Compression Hypothesis: Uncovering Predictive Signal in LLM Forecasts', description: 'Renda, Ross, So — confidence-weighted compression in LLM event forecasts', url: `${base}/working-papers/`, kind: 'working' },
   { title: 'Lost in Context: Discovering Context Anxiety in Large Language Models', description: 'Igbinedion, Ross, Ricardez, Karaman, So — ICML 2026 (forthcoming): context anxiety in frontier reasoning models', url: `${base}/research/`, kind: 'working' },
   { title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions', description: 'Ross, So, Lo — pre-registered studies on LLMs durably correcting financial misconceptions', url: 'https://arxiv.org/abs/2604.27022', kind: 'working', external: true },
   { title: 'Judgment-Free AI Advisors', description: 'Sussman, Yang, So — comparative advantage of artificial advisors for information disclosure', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326', kind: 'working', external: true },
