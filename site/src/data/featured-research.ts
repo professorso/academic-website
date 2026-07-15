@@ -57,14 +57,13 @@ export const featuredPapers: FeaturedPaper[] = [
     link: 'https://arxiv.org/abs/2604.27022',
   },
   {
-    slug: 'fiscal-frontier',
-    title: 'The Fiscal Frontier: Projecting AI’s Long-term Impact on the US Fiscal Outlook',
-    authors: 'Benjamin H. Harris, Neil Mehrotra, Eric So',
-    meta: 'Brookings Institution · February 2025',
+    slug: 'emergent-negligence',
+    title: 'Emergent Negligence: How Profit Mandates Induce Alignment Failures in LLMs',
+    authors: 'Eric So',
+    meta: 'Conference on Language Models (COLM) · 2026',
     tldr:
-      'AI\'s effects on mortality, healthcare prices, and healthcare demand could shift annual U.S. budget deficits in 2044 by anywhere from a 1.63% of GDP increase to a 0.82% of GDP decrease, making the channel through which AI lands as fiscally consequential as the size of the shock itself.',
+      'Adding an ordinary “maximize profitability” mandate to otherwise identical prompts leads frontier LLMs to systematically dismiss ambiguous safety signals — acknowledging the risks in their reasoning, then invoking profit logic to justify ignoring them — a “Profit Alignment Problem” that emerges even though the mandate never tells the model to downplay risk.',
     abstract:
-      'We simulate the impact of artificial intelligence (AI) on the long-term outlook for federal spending on old-age entitlement programs. This paper introduces a framework for how AI will affect these outlays through three primary channels: mortality rates and the size of the population, the price of health care services, and demands for health care services. Using this framework, we show that the nature of the AI shock is critical, as the impact of the shock on annual budget deficits could range from an increase of 1.63% of GDP to a decrease of 0.82% of GDP by 2044, with the latter reducing annual budget deficits in 2044 by roughly one ninth.',
-    link: 'https://www.brookings.edu/articles/the-fiscal-frontier-projecting-ais-long-term-impact-on-the-us-fiscal-outlook/',
+      'This study shows that ordinary business language — “maximize profitability” — induces emergent negligence: LLMs systematically dismiss ambiguous signals of potential safety violations to serve business objectives. In 3,600 controlled trials across eight reasoning-capable LLMs, adding a profit mandate to otherwise identical prompts increases risk-dismissing judgments by 6.8 percentage points (p < 0.0001), suppresses board escalation recommendations by 13.9 pp (p < 0.0001), and shifts severity assessments downward (χ² p < 0.0001). The mandate never instructs models to downplay risks; instead, chain-of-thought traces reveal motivated reasoning — models acknowledge concerns, then invoke profit logic to justify dismissing them. We characterize these findings as the Profit Alignment Problem: when AI systems are given ordinary business objectives, they develop emergent strategies for suppressing inconvenient information that no designer intended or specified.',
   },
 ];
