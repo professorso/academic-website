@@ -30,8 +30,6 @@ export const searchIndex: SearchEntry[] = [
 
   // Working papers
   { title: 'Emergent Negligence: How Profit Mandates Induce Alignment Failures in LLMs', description: 'So — COLM 2026 (accepted): how profit-maximization mandates induce emergent alignment failures in LLMs', url: `${base}/research/`, kind: 'working' },
-  { title: 'Beyond Accuracy: Can LLM Forecasters Profit on Prediction Markets?', description: 'Henry, Ross, Marzoev, So, Lo — ICML 2026 Forecasting Workshop (Spotlight): LLM forecasters profit by losing less when wrong', url: `${base}/research/`, kind: 'working' },
-  { title: 'The Compression Hypothesis: Uncovering Predictive Signal in LLM Forecasts', description: 'Renda, Ross, So — confidence-weighted compression in LLM event forecasts', url: `${base}/working-papers/`, kind: 'working' },
   { title: 'Lost in Context: Discovering Context Anxiety in Large Language Models', description: 'Igbinedion, Ross, Ricardez, Karaman, So — ICML 2026 (forthcoming): context anxiety in frontier reasoning models', url: `${base}/research/`, kind: 'working' },
   { title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions', description: 'Ross, So, Lo — pre-registered studies on LLMs durably correcting financial misconceptions', url: 'https://arxiv.org/abs/2604.27022', kind: 'working', external: true },
   { title: 'Judgment-Free AI Advisors', description: 'Sussman, Yang, So — comparative advantage of artificial advisors for information disclosure', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326', kind: 'working', external: true },
