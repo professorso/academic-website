@@ -172,6 +172,15 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 9 — 2026-08-31 (landing-page book link)
+
+**Changes made:**
+- Added a smaller blue "Author of THE COLLISION: What AI Does to Us" line directly below the landing-page professor title
+- Linked the full line to the book's Amazon page and styled it without an underline
+- Added hover and keyboard-focus treatments to preserve clear interaction feedback and accessibility
+
+---
+
 ## Issue Template
 
 ```markdown

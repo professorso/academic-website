@@ -16,6 +16,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="hero-text">
       <h1 class="hero-name">Eric So</h1>
       <p class="hero-title">MIT Professor of Global Economics and Behavioral Science</p>
+      <a
+        class="hero-book-link"
+        href="https://www.amazon.com/Collision-What-AI-Does-Us/dp/1324124628"
+        target="_blank"
+        rel="noopener"
+      >Author of THE COLLISION: What AI Does to Us</a>
     </div>
   </div>
 </section>
@@ -124,6 +130,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     line-height: 1.05;
     color: var(--gray-400);
     max-width: none;
+  }
+
+  .hero-book-link {
+    display: inline-block;
+    margin-top: 0.9rem;
+    color: var(--accent-navy);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .hero-book-link:hover {
+    color: #274a83;
+  }
+
+  .hero-book-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
   }
 
   @media (max-width: 768px) {
