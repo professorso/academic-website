@@ -163,6 +163,15 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 8 — 2026-08-31 (administrative contact update)
+
+**Changes made:**
+- Replaced Sumaiya Rahman Haddad with Cindy Pham (`phamcl@mit.edu`) in the contact modal's Scheduling & Administrative Support section
+- Removed Sumaiya's phone number because no phone number was provided for Cindy
+- Updated the scheduling note to direct requests to Cindy
+
+---
+
 ## Issue Template
 
 ```markdown
