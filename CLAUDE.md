@@ -97,7 +97,7 @@ cd site && npm run build  # Build static output to dist/
 
 ## Build Status (as of 2026-09-03)
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
-- **Phase 2 (Content Pages)**: Complete — research (21 papers), working papers (6), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
+- **Phase 2 (Content Pages)**: Complete — research (31 works), working papers (5), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
 - **Phase 4 (Deployment)**: Custom domain `ericso.pro` registered. CNAME file + Astro config updated. Awaiting DNS propagation + GitHub Pages HTTPS cert.
 - **SEO**: Person JSON-LD schema, canonical URL, and Open Graph tags added to BaseLayout for Google Knowledge Graph eligibility.
@@ -106,6 +106,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-09-03 | Audited every Research-page entry against primary publication, conference, SSRN, or author records and reconciled the website with the CV. Corrected current titles, author order, status, dates, volume/issues, page ranges/article numbers, and canonical links; updated the AI titles and author ordering; renamed the CV master to `main_20260903.tex`; rebuilt and visually verified a five-page PDF; synchronized it to the site's CV download; and removed a duplicate legacy redirect that caused an Astro route-collision warning. |
 | 2026-09-03 | Replaced generic published-paper takeaways on the Research page with concise descriptions grounded in each paper's abstract or publisher record. Added a source audit in `Notes/research_abstract_sources_20260903.md` and corrected several bibliographic inconsistencies uncovered during verification (author order, the official voluntary/mandatory disclosure title, the Alphanomics title, and publication details for the credit-ratings paper and analyst-forecast survey). |
 | 2026-09-03 | Site-wide design-system pass: formalized the Bebas Neue/Inter type scale and gray tokens; standardized card, row, arrow, link, and focus interactions; replaced the homepage's auto-scrolling featured-research and photo marquees with a responsive grid and user-controlled photo strip; removed generic section entrance animations while retaining one signature motion treatment per page; added reusable `PaperList.astro` with status badges, takeaways, publication details, explicit paper/pending links across Research and Working Papers; expanded the global footer with Explore, Connect, address, copyright, and Accessibility content; consolidated navbar, bio, and footer Contact buttons through one focus-restoring modal trigger system. |
 | 2026-08-31 | Landing-page hero: added a smaller blue "Author of THE COLLISION: What AI Does to Us" line below the MIT professor title, linked to the Amazon book page with non-underlined link styling. |

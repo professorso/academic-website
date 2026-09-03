@@ -212,6 +212,23 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 12 — 2026-09-03 (publication metadata and CV reconciliation)
+
+**Changes made:**
+- Audited all 31 Research-page works against primary publisher, DOI, conference, SSRN, arXiv, Brookings, or author records
+- Reconciled official titles, author order, publication status, dates, volume/issues, pages or article numbers, and links across the Research page, featured research, working papers, search index, resource dataset credits, and CV
+- Corrected notable stale records including *Losing Is Optional* (published in *Review of Finance*), *Bad News Bearers* (accepted at *Management Science*), *Investor Corporate Visits*, *Flight to Earnings*, and the current title of *Lost in Context*
+- Renamed the active CV master to `main_20260903.tex`, updated its date, and compacted only inter-publication whitespace to preserve a readable five-page layout
+- Expanded `Notes/research_abstract_sources_20260903.md` into the source record for both descriptions and bibliographic metadata
+- Removed the duplicate `/data/` redirect declaration that produced an Astro route-collision warning; the canonical `/data` redirect continues to cover the legacy path
+
+**Verification:**
+- Recompiled the CV with `tectonic`, confirmed a five-page output with `pypdf`, and visually inspected a rendered contact sheet plus full-size pages
+- Confirmed current records are present and superseded titles/statuses are absent from active source files
+- Astro production build completed successfully without warnings
+
+---
+
 ## Issue Template
 
 ```markdown

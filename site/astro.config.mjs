@@ -10,6 +10,5 @@ export default defineConfig({
   // alive so indexed links and bookmarks don't 404.
   redirects: {
     '/data': '/resources',
-    '/data/': '/resources/',
   },
 });

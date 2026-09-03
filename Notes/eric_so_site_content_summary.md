@@ -2,6 +2,7 @@
 
 > **Source**: https://mitmgmtfaculty.mit.edu/eso/
 > **Purpose**: Reference document for redesigning personal website. Contains all content and structural information from the current MIT Sloan faculty site.
+> **Archive notice (2026-09-03)**: This is a historical capture of the former MIT page and intentionally retains its original, sometimes outdated bibliography. Do not use it as the current publication record; use `site/src/pages/research.astro`, `Files/CV/main_20260903.tex`, and `Notes/research_abstract_sources_20260903.md` instead.
 
 ---
 
