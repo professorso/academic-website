@@ -10,10 +10,13 @@
   --black: #0a0a0a;
   --white: #f5f5f5;
   --pure-white: #ffffff;
+  --gray-50: #f8f8f8;
   --gray-100: #e8e8e8;
   --gray-200: #d0d0d0;
   --gray-400: #888888;
+  --gray-500: #737373;
   --gray-600: #555555;
+  --gray-700: #3d3d3d;
   --gray-800: #2a2a2a;
   --mit-red: #a31f34;
 
@@ -36,6 +39,17 @@
   /* Typography */
   --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --text-display-xl: clamp(3rem, 8vw, 7rem);
+  --text-display-lg: clamp(2.75rem, 6vw, 5rem);
+  --text-display-md: clamp(2rem, 4vw, 3.5rem);
+  --text-title: clamp(1.2rem, 2vw, 1.65rem);
+  --text-body-lg: 1.0625rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-meta: 0.75rem;
+  --leading-display: 1.05;
+  --leading-body: 1.7;
+  --measure-body: 65ch;
 
   /* Spacing */
   --section-pad-y: clamp(4rem, 8vw, 8rem);
@@ -44,6 +58,9 @@
 
   /* Transitions */
   --transition-theme: background-color 0.4s ease, color 0.4s ease;
+  --motion-fast: 180ms;
+  --motion-standard: 280ms;
+  --focus-ring: 2px solid currentColor;
 }
 
 /* --- Reset --- */
@@ -63,8 +80,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   color: var(--black);
   background: var(--white);
   overflow-x: hidden;
@@ -79,6 +96,7 @@ img {
 a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
 }
 
 ul, ol {
@@ -92,22 +110,27 @@ button {
   background: none;
 }
 
+:where(a, button, input, textarea, select):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 4px;
+}
+
 /* --- Typography --- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  line-height: 1.05;
+  line-height: var(--leading-display);
 }
 
-h1 { font-size: clamp(3rem, 8vw, 7rem); }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
-h4 { font-size: clamp(1.1rem, 1.5vw, 1.4rem); }
+h1 { font-size: var(--text-display-xl); }
+h2 { font-size: var(--text-display-md); }
+h3 { font-size: var(--text-title); }
+h4 { font-size: 1.125rem; }
 
 p {
-  max-width: 65ch;
+  max-width: var(--measure-body);
   margin-bottom: 1rem;
 }
 
@@ -180,14 +203,10 @@ body[data-accent] .category-title {
   padding-left: 0.9rem;
 }
 
-.section[data-theme="dark"] a:hover {
-  color: var(--gray-200);
-}
-
 /* --- Section Label --- */
 .section-label {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: var(--text-meta);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -197,13 +216,10 @@ body[data-accent] .category-title {
 /* --- Section Title --- */
 .section-title {
   margin-bottom: 2.5rem;
+  font-size: var(--text-display-md);
 }
 
 /* --- Links --- */
-a:hover {
-  opacity: 0.7;
-}
-
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -212,17 +228,59 @@ a:hover {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  transition: gap 0.2s ease;
+  transition: color var(--motion-fast) ease;
 }
 
 .link-arrow:hover {
-  gap: 0.8rem;
-  opacity: 1;
+  color: var(--accent);
 }
 
 .link-arrow::after {
   content: '→';
-  transition: transform 0.2s ease;
+  transition: transform var(--motion-fast) ease;
+}
+
+.link-arrow:hover::after,
+.link-arrow:focus-visible::after,
+.interactive-card:hover .interaction-arrow,
+.interactive-card:focus-visible .interaction-arrow,
+.interactive-row:hover .interaction-arrow,
+.interactive-row:focus-visible .interaction-arrow {
+  transform: translateX(4px);
+}
+
+.text-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.text-link:hover {
+  color: var(--accent);
+}
+
+.interactive-card,
+.interactive-row {
+  transition:
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease;
+}
+
+.interactive-card:hover,
+.interactive-card:focus-visible {
+  border-color: currentColor;
+}
+
+.interactive-row:hover,
+.interactive-row:focus-visible {
+  color: var(--accent);
+}
+
+.interaction-arrow {
+  display: inline-block;
+  transition: transform var(--motion-fast) ease, color var(--motion-fast) ease, opacity var(--motion-fast) ease;
 }
 
 /* --- Divider --- */
@@ -353,28 +411,25 @@ a:hover {
   background: var(--black);
 }
 
-/* --- Section Entrance Animation --- */
-.section--animate {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.4s ease, color 0.4s ease;
-}
-
-.section--visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Hero should always be visible immediately */
-.hero.section--animate {
-  opacity: 1;
-  transform: none;
-}
-
 /* --- Responsive --- */
 @media (max-width: 768px) {
   :root {
     --section-pad-y: 3rem;
     --section-pad-x: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -102,7 +102,7 @@ const edTechResources = [
       <h2 class="data-heading">Recommended Books</h2>
       <div class="books-grid">
         {recommendedBooks.map((book) => (
-          <a href={amazonUrl(book.title, book.author)} class={`book-card${book.featured ? ' featured' : ''}`} target="_blank" rel="noopener">
+          <a href={amazonUrl(book.title, book.author)} class={`book-card interactive-card${book.featured ? ' featured' : ''}`} target="_blank" rel="noopener">
             {book.featured && <span class="book-badge">Favorite</span>}
             <div class="book-cover">
               <img
@@ -131,14 +131,14 @@ const edTechResources = [
       <h2 class="data-heading">Datasets</h2>
       <div class="data-list">
         {datasets.map((ds) => (
-          <a href={ds.link} class="data-card" target="_blank" rel="noopener">
+          <a href={ds.link} class="data-card interactive-row" target="_blank" rel="noopener">
             <span class={`file-badge badge-${ds.format.toLowerCase()}`}>{ds.format}</span>
             <div class="data-info">
               <h3 class="data-name">{ds.name}</h3>
               <p class="data-paper">{ds.paper}</p>
               {ds.details && <p class="data-details">{ds.details}</p>}
             </div>
-            <span class="data-arrow">→</span>
+            <span class="data-arrow interaction-arrow" aria-hidden="true">→</span>
           </a>
         ))}
       </div>
@@ -158,10 +158,10 @@ const edTechResources = [
       <h2 class="data-heading">AI &amp; Education</h2>
       <div class="edtech-grid">
         {edTechResources.map((res) => (
-          <a href={res.link} class="edtech-card" target="_blank" rel="noopener">
+          <a href={res.link} class="edtech-card interactive-card" target="_blank" rel="noopener">
             <span class="edtech-source">{res.source}</span>
             <h3 class="edtech-title">{res.name}</h3>
-            <span class="edtech-cta">Read More →</span>
+            <span class="edtech-cta">Read more <span class="interaction-arrow" aria-hidden="true">→</span></span>
           </a>
         ))}
       </div>
@@ -189,12 +189,10 @@ const edTechResources = [
     gap: 0.9rem;
     text-decoration: none;
     color: inherit;
-    transition: transform 0.2s ease;
   }
 
   .book-card:hover {
-    transform: translateY(-3px);
-    opacity: 1;
+    color: var(--accent);
   }
 
   .book-card.featured {
@@ -338,7 +336,6 @@ const edTechResources = [
     gap: 1.25rem;
     padding: 1.5rem 0;
     border-bottom: 1px solid var(--gray-200);
-    transition: padding-left 0.2s ease;
   }
 
   .section[data-theme="dark"] .data-card {
@@ -351,11 +348,6 @@ const edTechResources = [
 
   .section[data-theme="dark"] .data-card:first-child {
     border-top-color: var(--gray-800);
-  }
-
-  .data-card:hover {
-    padding-left: 1rem;
-    opacity: 1;
   }
 
   .data-name {
@@ -442,13 +434,13 @@ const edTechResources = [
 
   .data-arrow {
     font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0.45;
     flex-shrink: 0;
     margin-top: 0.2rem;
   }
 
-  .data-card:hover .data-arrow {
+  .data-card:hover .data-arrow,
+  .data-card:focus-visible .data-arrow {
     opacity: 1;
   }
 
@@ -469,14 +461,11 @@ const edTechResources = [
     border: 1px solid var(--gray-200);
     border-left: 3px solid var(--accent);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     min-height: 200px;
   }
 
   .edtech-card:hover {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    opacity: 1;
   }
 
   .edtech-source {
@@ -503,10 +492,10 @@ const edTechResources = [
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--gray-600);
-    transition: color 0.2s;
   }
 
-  .edtech-card:hover .edtech-cta {
+  .edtech-card:hover .edtech-cta,
+  .edtech-card:focus-visible .edtech-cta {
     color: var(--accent);
   }
 

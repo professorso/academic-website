@@ -1,7 +1,7 @@
 // Single source of truth for the featured-papers list.
 // Rendered three ways:
-//   1. Homepage — auto-scrolling marquee in FeaturedResearch.astro
-//   2. Research page — sticky-intro reveal cards at the top of research.astro
+//   1. Homepage — responsive card grid in FeaturedResearch.astro
+//   2. Research page — sticky-intro cards at the top of research.astro
 //   3. Both — click-to-open detail modal in FeaturedResearchModal.astro
 // Edit this file to update all three at once.
 //

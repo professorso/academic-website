@@ -67,9 +67,9 @@ cd site && npm run build  # Build static output to dist/
 ## Content Editing Patterns
 - **News items**: Add `.md` files to `site/src/content/news/` with frontmatter (title, date, category, link)
 - **Recommended books** (Resources page): Edit the `recommendedBooks` array in `site/src/pages/resources.astro`. Each entry needs `title`, `author`, `isbn`. Covers resolve in this precedence: `localCover` (file under `site/public/images/books/`) → `coverId` (OpenLibrary internal ID) → `isbn` via OpenLibrary. If a cover 404s, the tile falls back to a dark typographic card automatically. Use `coverId` when OpenLibrary has the cover but not indexed by ISBN; use `localCover` when OpenLibrary's indexed cover is wrong or missing. Amazon links are auto-generated as search URLs (no ASINs needed). `featured: true` promotes a book to a 2×2 tile with a red "Favorite" badge.
-- **Research papers**: Edit `site/src/pages/research.astro` directly (papers are inline, not markdown files). **Also add matching entry to `site/src/data/search-index.ts`** so it shows up in Cmd+K search.
+- **Research papers**: Edit `site/src/pages/research.astro` directly (papers are inline, not markdown files). Each entry includes `title`, `authors`, `status`, `takeaway`, `journal`, `volume`, and `link`; shared rendering lives in `site/src/components/PaperList.astro`. **Also add a matching entry to `site/src/data/search-index.ts`** so it shows up in Cmd+K search.
 - **Featured research papers**: Edit `site/src/data/featured-research.ts` — single source of truth for the homepage marquee, the Research page sticky-intro reveal cards, and the click-to-open detail modal (`FeaturedResearchModal.astro`). Each `FeaturedPaper` requires `slug` (stable url-safe id), `title`, `authors`, `meta`, and `tldr`; `abstract` and `link` are optional. When `link` is omitted the modal shows "Full paper coming soon". Always also add an entry in `search-index.ts`. Curation rule: keep this list AI-skewed, and when slotting a new paper in for an existing one, place it in the existing paper's array index rather than prepending.
-- **Working papers**: Edit `site/src/pages/working-papers.astro`. Also update `search-index.ts`.
+- **Working papers**: Edit `site/src/pages/working-papers.astro`. Use the same shared paper fields and also update `search-index.ts`.
 - **Press articles**: Edit the `press` array in `site/src/pages/media.astro` (displayed as 3-column card grid)
 - **AI & Education links**: Edit the `edTechResources` array in `site/src/pages/resources.astro` (displayed as 2-column square card grid)
 - **Contact info**: Edit `site/src/components/ContactModal.astro`
@@ -85,14 +85,17 @@ cd site && npm run build  # Build static output to dist/
 - **Subpage header images**: Research → `Sloan2.jpeg`, Working Papers → `blurred-abstract-background...jpg`, Media → `BlurredBackground.jpg`, Data → `Sloan2.jpeg`
 - **Color scheme**: Black-and-white high-contrast with scroll-triggered inversions. MIT red (#A31F34) used sparingly.
 - **Typography**: Bebas Neue for headlines (uppercase), Inter for body text.
-- **Animations**: Particle canvas on hero, CSS scroll animations. Must respect `prefers-reduced-motion`.
+- **Animations**: One signature motion treatment per page. The homepage keeps its particle hero; the book page keeps chapter reveals; Resources keeps its streaming intro. Photo and featured-research strips are user-controlled/static rather than auto-scrolling. All motion must respect `prefers-reduced-motion`.
+- **Typography system**: Bebas Neue is reserved for large display headings; Inter is used for content titles, body copy, labels, and metadata. Use the shared `--text-*`, `--leading-*`, and `--measure-body` tokens in `global.css` rather than adding arbitrary type sizes.
+- **Interaction system**: Cards use `interactive-card`, list rows use `interactive-row`, and arrows use `interaction-arrow`. Hover/focus states change color, border, or background and move only the arrow—cards and rows should not jump vertically.
+- **Footer**: The global footer in `BaseLayout.astro` includes brand/title, Explore links, MIT Sloan profile, CV, LinkedIn, Contact modal trigger, address, copyright, and Accessibility.
 - **Navbar layout**: Menu dropdown (top-left), inline nav links (center), LinkedIn + CV + Contact buttons (top-right). On mobile: icons only, no labels, no borders. Navbar stays dark (black) over the hero, adapts to light/dark on scroll via Intersection Observer. The hero is excluded from the observer so the navbar doesn't flash white at page load.
 - **Navbar light mode**: Uses `:global(.navbar--on-light)` in Navbar.astro (not global.css) to override scoped styles. All buttons switch to black text/borders on light sections.
 - **The Collision page**: Title + subtitle "What AI Does to Us" in medium dark blue (#4a7cbf). "Order on Amazon" button links to Amazon listing. Book cover image also links to Amazon.
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-08-31)
+## Build Status (as of 2026-09-03)
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
 - **Phase 2 (Content Pages)**: Complete — research (21 papers), working papers (6), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
@@ -103,6 +106,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-09-03 | Site-wide design-system pass: formalized the Bebas Neue/Inter type scale and gray tokens; standardized card, row, arrow, link, and focus interactions; replaced the homepage's auto-scrolling featured-research and photo marquees with a responsive grid and user-controlled photo strip; removed generic section entrance animations while retaining one signature motion treatment per page; added reusable `PaperList.astro` with status badges, takeaways, publication details, explicit paper/pending links across Research and Working Papers; expanded the global footer with Explore, Connect, address, copyright, and Accessibility content; consolidated navbar, bio, and footer Contact buttons through one focus-restoring modal trigger system. |
 | 2026-08-31 | Landing-page hero: added a smaller blue "Author of THE COLLISION: What AI Does to Us" line below the MIT professor title, linked to the Amazon book page with non-underlined link styling. |
 | 2026-08-31 | Contact modal: replaced scheduling and administrative support contact Sumaiya Rahman Haddad with Cindy Pham (`phamcl@mit.edu`, `(617) 253-6621`). |
 | 2026-03-03 | Initial build recovered from frozen session. Photo strip fixed (removed Action5, added Action4.JPG then removed Action4 due to dark rendering, removed clickable hover effects). Subpage headers switched to backdrop images. The Collision page: added subtitle "What AI Does to Us", replaced thecollision.ai link with Amazon order link, book cover links to Amazon, increased book cover size. Navbar: replaced "ERIC SO" logo with menu dropdown, added CV button and LinkedIn "Follow" button. CV link added to bio section. Data page: replaced code resources with AI & Education card grid (4 links), moved disclaimer under datasets, fixed text alignment. Media page: expanded press from 2 to 15 articles, redesigned as 3-column card grid. Created CLAUDE.md, README.md, ISSUES.md. |

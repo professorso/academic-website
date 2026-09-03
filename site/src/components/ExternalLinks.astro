@@ -24,10 +24,10 @@ const links = [
     <span class="section-label">Elsewhere</span>
     <div class="links-grid">
       {links.map((link) => (
-        <a href={link.url} class="ext-link" target="_blank" rel="noopener">
+        <a href={link.url} class="ext-link interactive-row" target="_blank" rel="noopener">
           <span class="ext-label">{link.label}</span>
           <span class="ext-desc">{link.description}</span>
-          <span class="ext-arrow">→</span>
+          <span class="ext-arrow interaction-arrow" aria-hidden="true">→</span>
         </a>
       ))}
     </div>
@@ -47,16 +47,10 @@ const links = [
     gap: 2rem;
     padding: 1.5rem 0;
     border-bottom: 1px solid var(--gray-800);
-    transition: padding-left 0.2s ease;
   }
 
   .ext-link:first-child {
     border-top: 1px solid var(--gray-800);
-  }
-
-  .ext-link:hover {
-    padding-left: 1rem;
-    opacity: 1;
   }
 
   .ext-label {
@@ -72,11 +66,11 @@ const links = [
 
   .ext-arrow {
     font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0.45;
   }
 
-  .ext-link:hover .ext-arrow {
+  .ext-link:hover .ext-arrow,
+  .ext-link:focus-visible .ext-arrow {
     opacity: 1;
   }
 

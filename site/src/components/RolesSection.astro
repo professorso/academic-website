@@ -6,30 +6,30 @@
   <div class="section-inner">
     <span class="section-label">Leadership &amp; Affiliations</span>
     <div class="roles-list">
-      <a href="https://executive.mit.edu/course/ai-executive-academy/a05U1000002o7uoIAA.html" class="role-card" target="_blank" rel="noopener">
+      <a href="https://executive.mit.edu/course/ai-executive-academy/a05U1000002o7uoIAA.html" class="role-card interactive-row" target="_blank" rel="noopener">
         <span class="role-title">Faculty Co-Director</span>
         <span class="role-org">AI Executive Academy</span>
-        <span class="role-arrow">→</span>
+        <span class="role-arrow interaction-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://mitsloanedtech.mit.edu/ai/" class="role-card" target="_blank" rel="noopener">
+      <a href="https://mitsloanedtech.mit.edu/ai/" class="role-card interactive-row" target="_blank" rel="noopener">
         <span class="role-title">Lead Faculty</span>
         <span class="role-org">MIT Sloan Generative AI Hub for Teaching and Learning</span>
-        <span class="role-arrow">→</span>
+        <span class="role-arrow interaction-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://ide.mit.edu/research-group/ai-finance-decisions/" class="role-card" target="_blank" rel="noopener">
+      <a href="https://ide.mit.edu/research-group/ai-finance-decisions/" class="role-card interactive-row" target="_blank" rel="noopener">
         <span class="role-title">Research Group Lead</span>
         <span class="role-org">AI, Finance &amp; Decisions Group — MIT IDE</span>
-        <span class="role-arrow">→</span>
+        <span class="role-arrow interaction-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://mitsloan.mit.edu/programs/phd/explore-program" class="role-card" target="_blank" rel="noopener">
+      <a href="https://mitsloan.mit.edu/programs/phd/explore-program" class="role-card interactive-row" target="_blank" rel="noopener">
         <span class="role-title">Faculty Chair</span>
         <span class="role-org">MIT Sloan PhD Program</span>
-        <span class="role-arrow">→</span>
+        <span class="role-arrow interaction-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://fullerthaler.com/" class="role-card" target="_blank" rel="noopener">
+      <a href="https://fullerthaler.com/" class="role-card interactive-row" target="_blank" rel="noopener">
         <span class="role-title">Researcher</span>
         <span class="role-org">Fuller &amp; Thaler Asset Management</span>
-        <span class="role-arrow">→</span>
+        <span class="role-arrow interaction-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -48,12 +48,6 @@
     gap: 2rem;
     padding: 1.75rem 0;
     border-bottom: 1px solid var(--gray-200);
-    transition: padding-left 0.2s ease;
-  }
-
-  a.role-card:hover {
-    padding-left: 1rem;
-    opacity: 1;
   }
 
   .role-card:first-child {
@@ -77,11 +71,11 @@
 
   .role-arrow {
     font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0.45;
   }
 
-  a.role-card:hover .role-arrow {
+  a.role-card:hover .role-arrow,
+  a.role-card:focus-visible .role-arrow {
     opacity: 1;
   }
 

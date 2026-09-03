@@ -1,0 +1,193 @@
+---
+export interface PaperEntry {
+  title: string;
+  authors: string;
+  status: 'Published' | 'Forthcoming' | 'Accepted' | 'Working Paper' | 'Preprint' | 'Research Report' | 'Guide';
+  venue: string;
+  detail?: string;
+  takeaway: string;
+  link?: string;
+}
+
+interface Props {
+  papers: PaperEntry[];
+  headingLevel?: 2 | 3;
+}
+
+const { papers, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const statusClass = (status: PaperEntry['status']) =>
+  `paper-status paper-status--${status.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<div class="paper-list">
+  {papers.map((paper) => (
+    <article class="paper-row">
+      <div class="paper-kicker">
+        <span class={statusClass(paper.status)}>{paper.status}</span>
+        <span class="paper-venue">{paper.venue}</span>
+      </div>
+
+      <Heading class="paper-title">
+        {paper.link ? (
+          <a href={paper.link} target="_blank" rel="noopener">{paper.title}</a>
+        ) : paper.title}
+      </Heading>
+
+      <p class="paper-authors">{paper.authors}</p>
+      <p class="paper-takeaway">{paper.takeaway}</p>
+
+      <div class="paper-footer">
+        {paper.detail ? <span class="paper-detail">{paper.detail}</span> : <span></span>}
+        {paper.link ? (
+          <a class="paper-action" href={paper.link} target="_blank" rel="noopener">
+            Read paper <span class="interaction-arrow" aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <span class="paper-pending">Link forthcoming</span>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .paper-list {
+    display: grid;
+  }
+
+  .paper-row {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .paper-row:first-child {
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .paper-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .paper-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.7rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .paper-status--accepted,
+  .paper-status--forthcoming {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--gray-200));
+    color: var(--accent);
+  }
+
+  .paper-status--working-paper,
+  .paper-status--preprint,
+  .paper-status--research-report,
+  .paper-status--guide {
+    background: var(--gray-100);
+  }
+
+  .paper-venue {
+    color: var(--gray-600);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .paper-title {
+    max-width: 44ch;
+    margin-bottom: 0.45rem;
+    font-family: var(--font-body);
+    font-size: var(--text-title);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    text-transform: none;
+  }
+
+  .paper-title a {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .paper-title a:hover,
+  .paper-title a:focus-visible {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .paper-authors {
+    margin-bottom: 0.8rem;
+    color: var(--gray-600);
+    font-size: var(--text-small);
+  }
+
+  .paper-takeaway {
+    max-width: 68ch;
+    margin-bottom: 1rem;
+    color: var(--gray-800);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .paper-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .paper-detail,
+  .paper-pending,
+  .paper-action {
+    color: var(--gray-600);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .paper-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent);
+  }
+
+  .paper-action:hover .interaction-arrow,
+  .paper-action:focus-visible .interaction-arrow {
+    transform: translateX(4px);
+  }
+
+  .paper-pending {
+    color: var(--gray-400);
+  }
+
+  @media (max-width: 640px) {
+    .paper-row {
+      padding: 1.6rem 0;
+    }
+
+    .paper-footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+  }
+</style>

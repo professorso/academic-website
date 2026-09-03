@@ -31,10 +31,10 @@ const posts = [
 
     <div class="posts-grid">
       {posts.map((post) => (
-        <a href={post.link} class="card post-card" target="_blank" rel="noopener">
+        <a href={post.link} class="card post-card interactive-card" target="_blank" rel="noopener">
           <h3 class="card-title">{post.title}</h3>
           <p class="card-body">{post.snippet}</p>
-          <span class="link-arrow">Read on LinkedIn &rarr;</span>
+          <span class="post-action">Read on LinkedIn <span class="interaction-arrow" aria-hidden="true">→</span></span>
         </a>
       ))}
     </div>
@@ -53,13 +53,11 @@ const posts = [
     flex-direction: column;
     padding: 2rem;
     border: 1px solid var(--gray-200);
-    transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
   a.post-card:hover {
     border-color: var(--black);
-    transform: translateY(-4px);
-    opacity: 1;
+    background: var(--pure-white);
   }
 
   .post-card .card-title {
@@ -80,13 +78,16 @@ const posts = [
     margin-bottom: 1.25rem;
   }
 
-  .post-card .link-arrow {
+  .post-action {
     color: var(--gray-400);
     font-size: 0.8rem;
-    transition: color 0.2s ease;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  a.post-card:hover .link-arrow {
+  a.post-card:hover .post-action,
+  a.post-card:focus-visible .post-action {
     color: var(--black);
   }
 

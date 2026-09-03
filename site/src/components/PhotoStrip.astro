@@ -1,5 +1,5 @@
 ---
-// PhotoStrip.astro — Auto-scrolling horizontal strip of action photos
+// PhotoStrip.astro — User-controlled horizontal strip of action photos
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const photos = [
   { src: `${base}/images/Action1.jpg`, alt: 'Eric So speaking' },
@@ -12,14 +12,12 @@ const photos = [
   { src: `${base}/images/Action7.jpg`, alt: 'Eric So in discussion' },
   { src: `${base}/images/Action10.jpg`, alt: 'Eric So presenting' },
 ];
-// Duplicate for seamless loop
-const allPhotos = [...photos, ...photos];
 ---
 
-<div class="strip-wrapper" aria-hidden="true">
-  <div class="strip-track">
-    {allPhotos.map((photo) => (
-      <div class="strip-item">
+<div class="strip-wrapper" aria-label="Selected photographs; scroll horizontally to view more" role="region" tabindex="0">
+  <div class="strip-track" role="list">
+    {photos.map((photo) => (
+      <div class="strip-item" role="listitem">
         <img src={photo.src} alt={photo.alt} loading="lazy" />
       </div>
     ))}
@@ -28,7 +26,11 @@ const allPhotos = [...photos, ...photos];
 
 <style>
   .strip-wrapper {
-    overflow: hidden;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-600) var(--black);
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
     padding: 1rem 0;
     background: var(--black);
   }
@@ -37,7 +39,7 @@ const allPhotos = [...photos, ...photos];
     display: flex;
     gap: 1rem;
     width: max-content;
-    animation: scroll-strip 40s linear infinite;
+    padding: 0 var(--section-pad-x);
   }
 
   .strip-item {
@@ -45,6 +47,7 @@ const allPhotos = [...photos, ...photos];
     width: 320px;
     height: 220px;
     overflow: hidden;
+    scroll-snap-align: start;
   }
 
   .strip-item img {
@@ -52,19 +55,6 @@ const allPhotos = [...photos, ...photos];
     height: 100%;
     object-fit: cover;
     pointer-events: none;
-  }
-
-  @keyframes scroll-strip {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  .strip-wrapper:hover .strip-track {
-    animation-play-state: paused;
   }
 
   @media (max-width: 768px) {

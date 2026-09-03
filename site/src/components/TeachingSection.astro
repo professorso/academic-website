@@ -7,20 +7,20 @@
     <span class="section-label">Teaching</span>
     <h2 class="section-title">Courses</h2>
     <div class="teaching-grid">
-      <button class="teaching-card" type="button" data-course="ai-foundations" aria-haspopup="dialog">
+      <button class="teaching-card interactive-card" type="button" data-course="ai-foundations" aria-haspopup="dialog">
         <h3>AI Foundations</h3>
         <p>Building a shared baseline of AI fluency: how generative models work, how to use them well, and when to delegate thinking to them.</p>
-        <span class="teaching-card-cue">View course →</span>
+        <span class="teaching-card-cue">View course <span class="interaction-arrow" aria-hidden="true">→</span></span>
       </button>
-      <button class="teaching-card" type="button" data-course="ai-applications" aria-haspopup="dialog">
+      <button class="teaching-card interactive-card" type="button" data-course="ai-applications" aria-haspopup="dialog">
         <h3>AI Applications in Business</h3>
         <p>Exploring how artificial intelligence transforms business decision-making, strategy, and operations.</p>
-        <span class="teaching-card-cue">View course →</span>
+        <span class="teaching-card-cue">View course <span class="interaction-arrow" aria-hidden="true">→</span></span>
       </button>
-      <button class="teaching-card" type="button" data-course="investment-decisions" aria-haspopup="dialog">
+      <button class="teaching-card interactive-card" type="button" data-course="investment-decisions" aria-haspopup="dialog">
         <h3>Investment Decisions</h3>
         <p>Frameworks for evaluating investment opportunities, with emphasis on behavioral factors and market efficiency.</p>
-        <span class="teaching-card-cue">View course →</span>
+        <span class="teaching-card-cue">View course <span class="interaction-arrow" aria-hidden="true">→</span></span>
       </button>
     </div>
   </div>
@@ -243,15 +243,12 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .teaching-card:hover,
   .teaching-card:focus-visible {
     border-color: var(--black);
-    transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    outline: none;
   }
 
   .teaching-card h3 {

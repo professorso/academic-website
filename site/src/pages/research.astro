@@ -2,6 +2,7 @@
 // research.astro — Full publications list organized by category
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import PaperList from '../components/PaperList.astro';
 import FeaturedResearchModal from '../components/FeaturedResearchModal.astro';
 import { featuredPapers } from '../data/featured-research';
 
@@ -9,6 +10,8 @@ const artificialIntelligence = [
   {
     title: 'Emergent Negligence: How Profit Mandates Induce Alignment Failures in LLMs',
     authors: 'So',
+    status: 'Accepted' as const,
+    takeaway: 'Shows how ordinary profitability mandates can lead LLMs to discount ambiguous safety signals even when risk remains visible in their reasoning.',
     journal: 'Conference on Language Models (COLM)',
     volume: '2026 — Accepted',
     link: '',
@@ -16,6 +19,8 @@ const artificialIntelligence = [
   {
     title: 'Lost in Context: Discovering Context Anxiety in Large Language Models',
     authors: 'Igbinedion, Ross, Ricardez, Karaman, So',
+    status: 'Forthcoming' as const,
+    takeaway: 'Identifies context anxiety as a source of reasoning failure when capable models misjudge the effort required to complete long-horizon tasks.',
     journal: 'International Conference on Machine Learning (ICML)',
     volume: '2026 — Forthcoming',
     link: '',
@@ -23,6 +28,8 @@ const artificialIntelligence = [
   {
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
     authors: 'So, Sussman, Yang',
+    status: 'Working Paper' as const,
+    takeaway: 'Examines how people trade off expertise against fear of judgment when deciding whether to disclose information to human or AI advisors.',
     journal: 'SSRN Working Paper',
     volume: 'January 2026',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
@@ -30,6 +37,8 @@ const artificialIntelligence = [
   {
     title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions',
     authors: 'Ross, So, Lo',
+    status: 'Preprint' as const,
+    takeaway: 'Tests when purposefully designed LLM conversations can durably correct financial misconceptions rather than reinforce them.',
     journal: 'arXiv preprint',
     volume: 'April 2026',
     link: 'https://arxiv.org/abs/2604.27022',
@@ -37,6 +46,8 @@ const artificialIntelligence = [
   {
     title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook',
     authors: 'Harris, Mehrotra, So',
+    status: 'Research Report' as const,
+    takeaway: 'Projects how AI-driven changes in productivity, growth, and public spending could reshape the long-run U.S. fiscal outlook.',
     journal: 'Brookings Institution',
     volume: 'Feb 2025',
     link: 'https://www.brookings.edu/articles/the-fiscal-frontier/',
@@ -47,6 +58,8 @@ const behavioralFinance = [
   {
     title: 'Bad News Bearers: The Negative Tilt of the Financial Press',
     authors: 'Liu, Niessner, So',
+    status: 'Forthcoming' as const,
+    takeaway: 'Documents and studies the consequences of the financial press placing disproportionate emphasis on negative corporate news.',
     journal: 'Management Science',
     volume: 'Forthcoming',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3219831',
@@ -54,6 +67,8 @@ const behavioralFinance = [
   {
     title: 'Losing is Optional',
     authors: 'de Silva, Smith, So',
+    status: 'Forthcoming' as const,
+    takeaway: 'Examines how investor choices and portfolio design shape the realization and persistence of investment losses.',
     journal: 'Review of Finance',
     volume: 'Forthcoming',
     link: 'https://academic.oup.com/rof/advance-article-abstract/doi/10.1093/rof/rfaf052/8301159?redirectedFrom=fulltext',
@@ -61,6 +76,8 @@ const behavioralFinance = [
   {
     title: 'Investor Corporate Visits and Predictable Returns',
     authors: 'Zhang, Wang, So',
+    status: 'Published' as const,
+    takeaway: 'Studies how in-person corporate visits reveal information that is subsequently reflected in stock returns.',
     journal: 'Journal of Financial and Quantitative Analysis',
     volume: '60(6), Sep 2025, pp. 2615–2648',
     link: 'https://www.cambridge.org/core/services/aop-cambridge-core/content/view/77C958598BB1DC92C46EA32BF252A4B9/S0022109024000528a.pdf/investor_corporate_visits_and_predictable_returns.pdf',
@@ -68,6 +85,8 @@ const behavioralFinance = [
   {
     title: 'Flight to Earnings: The Role of Earnings in Periods of Capital Scarcity',
     authors: 'Guest, Kothari, So',
+    status: 'Published' as const,
+    takeaway: 'Shows how the market\'s reliance on accounting earnings changes when capital becomes scarce.',
     journal: 'Management Science',
     volume: '69(8), Aug 2023, pp. 4363–4971',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2929704',
@@ -75,6 +94,8 @@ const behavioralFinance = [
   {
     title: 'Core Earnings: New Data and Evidence',
     authors: 'Rouen, Wang, So',
+    status: 'Published' as const,
+    takeaway: 'Develops new core-earnings data and evaluates what persistent operating performance reveals about future outcomes.',
     journal: 'Journal of Financial Economics',
     volume: '142(3), Dec 2021, pp. 1068–1091',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3467814',
@@ -82,6 +103,8 @@ const behavioralFinance = [
   {
     title: 'Calendar Rotations',
     authors: 'Noh, Verdi, So',
+    status: 'Published' as const,
+    takeaway: 'Documents predictable calendar-based shifts in investor attention and portfolio positioning.',
     journal: 'Journal of Financial Economics',
     volume: '140(3), Jun 2021, pp. 865–893',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3473873',
@@ -89,6 +112,8 @@ const behavioralFinance = [
   {
     title: 'Evaluating Firm-Level Expected Return Proxies',
     authors: 'Lee, Wang, So',
+    status: 'Published' as const,
+    takeaway: 'Compares widely used firm-level expected-return measures and evaluates when they reliably capture future returns.',
     journal: 'Review of Financial Studies',
     volume: '34(4), Apr 2021, pp. 1907–1951',
     link: 'https://academic.oup.com/rfs/advance-article-abstract/doi/10.1093/rfs/hhaa066/5855684',
@@ -96,6 +121,8 @@ const behavioralFinance = [
   {
     title: 'Expectations Management and Stock Returns',
     authors: 'Johnson, Kim, So',
+    status: 'Published' as const,
+    takeaway: 'Connects managers\' incentives to shape market expectations with predictable patterns in subsequent stock returns.',
     journal: 'Review of Financial Studies',
     volume: '33(10), Oct 2020, pp. 4580–4626',
     link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2866522',
@@ -103,6 +130,8 @@ const behavioralFinance = [
   {
     title: 'A Simple Multimarket Measure of Information Asymmetry',
     authors: 'Johnson, So',
+    status: 'Published' as const,
+    takeaway: 'Introduces a market-based measure of information asymmetry using trading activity across related securities.',
     journal: 'Management Science',
     volume: '64(3), Mar 2018, pp. 1055–1080',
     link: 'https://doi.org/10.1287/mnsc.2016.2608',
@@ -110,6 +139,8 @@ const behavioralFinance = [
   {
     title: 'Time Will Tell: Information in the Timing of Scheduled Earnings News',
     authors: 'Johnson, So',
+    status: 'Published' as const,
+    takeaway: 'Shows that changes in the timing of scheduled earnings announcements convey information about upcoming news.',
     journal: 'Journal of Financial and Quantitative Analysis',
     volume: '53(6), Dec 2018, pp. 2431–2464',
     link: 'https://doi.org/10.1017/S0022109018000492',
@@ -117,6 +148,8 @@ const behavioralFinance = [
   {
     title: 'News-Driven Return Reversals: Liquidity Provision Ahead of Earnings Announcements',
     authors: 'Wang, So',
+    status: 'Published' as const,
+    takeaway: 'Examines short-term return reversals created by liquidity provision before earnings announcements.',
     journal: 'Journal of Financial Economics',
     volume: '114(1), Oct 2014, pp. 20–35',
     link: 'https://doi.org/10.1016/j.jfineco.2014.06.009',
@@ -124,6 +157,8 @@ const behavioralFinance = [
   {
     title: 'A New Approach to Predicting Analyst Forecast Errors: Do Investors Overweight Analyst Forecasts?',
     authors: 'So',
+    status: 'Published' as const,
+    takeaway: 'Develops a method for predicting analyst forecast errors and tests whether investors place too much weight on those forecasts.',
     journal: 'Journal of Financial Economics',
     volume: '108(3), Jun 2013, pp. 615–640',
     link: 'http://dx.doi.org/10.1016/j.jfineco.2013.02.002',
@@ -131,6 +166,8 @@ const behavioralFinance = [
   {
     title: 'Identifying Expectation Errors in Value/Glamour Strategies: A Fundamental Analysis Approach',
     authors: 'Piotroski, So',
+    status: 'Published' as const,
+    takeaway: 'Uses fundamental analysis to separate expectation errors from risk-based explanations of value and glamour returns.',
     journal: 'Review of Financial Studies',
     volume: '25(9), 2012, pp. 2841–2875',
     link: 'http://rfs.oxfordjournals.org/content/25/9/2841',
@@ -138,6 +175,8 @@ const behavioralFinance = [
   {
     title: 'The Option to Stock Volume Ratio and Future Returns',
     authors: 'Johnson, So',
+    status: 'Published' as const,
+    takeaway: 'Studies how relative trading activity in options and stocks predicts future equity returns.',
     journal: 'Journal of Financial Economics',
     volume: '106(2), Nov 2012, pp. 262–286',
     link: 'https://doi.org/10.1016/j.jfineco.2012.05.008',
@@ -148,6 +187,8 @@ const measurement = [
   {
     title: 'Financial Reporting and Consumer Behavior',
     authors: 'Noh, So, Zhu',
+    status: 'Published' as const,
+    takeaway: 'Examines how firms\' financial reporting affects the decisions of consumers as well as investors.',
     journal: 'Accounting Review',
     volume: '100(1), 2025, pp. 407–435',
     link: 'https://publications.aaahq.org/accounting-review/article-abstract/100/1/407/12932/Financial-Reporting-and-Consumer-Behavior?redirectedFrom=fulltext',
@@ -155,6 +196,8 @@ const measurement = [
   {
     title: 'Conflicts of Interest in Subscriber-Paid Credit Ratings',
     authors: 'Bonsall, Gillette, Pundrich, So',
+    status: 'Published' as const,
+    takeaway: 'Investigates conflicts that arise when subscribers, rather than issuers, pay for credit ratings.',
     journal: 'Journal of Accounting and Economics',
     volume: '70(2), May 2022',
     link: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410123000381',
@@ -162,6 +205,8 @@ const measurement = [
   {
     title: 'Measuring Risk Information',
     authors: 'Smith, So',
+    status: 'Published' as const,
+    takeaway: 'Develops an empirical approach for measuring the risk information conveyed by corporate disclosures.',
     journal: 'Journal of Accounting Research',
     volume: '60(2), May 2022',
     link: 'https://onlinelibrary.wiley.com/doi/abs/10.1111/1475-679X.12413',
@@ -169,6 +214,8 @@ const measurement = [
   {
     title: 'Switching from Voluntary to Mandatory Disclosure: Do Managers View them as Substitutes?',
     authors: 'Noh, Weber, So',
+    status: 'Published' as const,
+    takeaway: 'Tests whether managers reduce voluntary disclosure when regulation makes related disclosures mandatory.',
     journal: 'Journal of Accounting and Economics',
     volume: '68(1), Aug 2019',
     link: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382',
@@ -176,6 +223,8 @@ const measurement = [
   {
     title: 'Asymmetric Trading Costs Prior to Earnings Announcements: Implications for Price Discovery',
     authors: 'Johnson, So',
+    status: 'Published' as const,
+    takeaway: 'Examines how asymmetric trading costs before earnings announcements affect the incorporation of information into prices.',
     journal: 'Journal of Accounting Research',
     volume: '56(1), Mar 2018, pp. 217–263',
     link: 'http://doi.org/10.1111/1475-679X.12189',
@@ -183,6 +232,8 @@ const measurement = [
   {
     title: 'Non-Diversifiable Volatility Risk and Risk Premiums at Earnings Announcements',
     authors: 'Barth, So',
+    status: 'Published' as const,
+    takeaway: 'Studies whether non-diversifiable earnings-announcement volatility commands a distinct risk premium.',
     journal: 'Accounting Review',
     volume: '89(5), Sep 2014, pp. 1579–1607',
     link: 'https://doi.org/10.2308/accr-50758',
@@ -190,6 +241,8 @@ const measurement = [
   {
     title: 'Boardroom Centrality and Firm Performance',
     authors: 'Larcker, Wang, So',
+    status: 'Published' as const,
+    takeaway: 'Links directors\' positions within board networks to governance and firm performance.',
     journal: 'Journal of Accounting and Economics',
     volume: '55(2–3), Apr–May 2013, pp. 225–250',
     link: 'https://doi.org/10.1016/j.jacceco.2013.01.006',
@@ -197,6 +250,8 @@ const measurement = [
   {
     title: 'Analyst Initiations of Coverage and Stock Return Synchronicity',
     authors: 'Roulstone, Crawford, So',
+    status: 'Published' as const,
+    takeaway: 'Examines whether new analyst coverage changes the amount of firm-specific information reflected in stock prices.',
     journal: 'Accounting Review',
     volume: '87(5), Sep 2012, pp. 1527–1553',
     link: 'https://doi.org/10.2308/accr-50186',
@@ -207,6 +262,8 @@ const laborEcon = [
   {
     title: 'Inside the Black Box of Doctoral Education',
     authors: 'Ehrenberg, Jakubson, Groen, Price, So',
+    status: 'Published' as const,
+    takeaway: 'Uses doctoral-program evidence to study how training environments shape student progress and outcomes.',
     journal: 'Educational Evaluation and Policy Analysis',
     volume: '29(2), Jun 2007, pp. 134–150',
     link: 'https://www.jstor.org/stable/30128037',
@@ -217,6 +274,8 @@ const surveys = [
   {
     title: 'Teaching and Learning Economics with AI: A Guide',
     authors: 'So',
+    status: 'Guide' as const,
+    takeaway: 'Offers practical guidance for incorporating AI into economics teaching while preserving active learning and judgment.',
     journal: 'The Ultimate Guide to Teaching Economics (Norton Press)',
     volume: '2025',
     link: '',
@@ -224,6 +283,8 @@ const surveys = [
   {
     title: "Analysts' Forecasts and Asset Pricing: A Survey",
     authors: 'Kothari, Verdi, So',
+    status: 'Published' as const,
+    takeaway: 'Surveys how analyst forecasts are formed, where their errors arise, and how those forecasts inform asset pricing.',
     journal: 'Annual Review of Financial Economics',
     volume: '89(5), Sep 2016, pp. 1597–1607',
     link: 'https://doi.org/10.1146/annurev-financial-121415-032930',
@@ -231,6 +292,8 @@ const surveys = [
   {
     title: 'Alphanomics: The Informational Underpinning of Market Efficiency',
     authors: 'Lee, So',
+    status: 'Published' as const,
+    takeaway: 'Synthesizes evidence on how information becomes incorporated into prices and where return predictability persists.',
     journal: 'Foundations and Trends in Accounting',
     volume: 'Vol. 9, 2015, pp. 59–258',
     link: 'http://dx.doi.org/10.1561/1400000022',
@@ -265,12 +328,12 @@ const categories = [
       </aside>
       <div class="reveal-pane">
         {featuredPapers.map((paper, i) => (
-          <button type="button" class="reveal-card reveal-card--paper" data-paper-trigger={paper.slug} aria-haspopup="dialog">
+          <button type="button" class="reveal-card reveal-card--paper interactive-card" data-paper-trigger={paper.slug} aria-haspopup="dialog">
             <span class="reveal-num">{String(i + 1).padStart(2, '0')}</span>
             <span class="reveal-meta">{paper.meta}</span>
             <h3 class="reveal-title reveal-title--paper">{paper.title}</h3>
             <p class="reveal-authors">{paper.authors}</p>
-            <span class="reveal-link">View paper →</span>
+            <span class="reveal-link">View paper <span class="interaction-arrow" aria-hidden="true">→</span></span>
           </button>
         ))}
       </div>
@@ -281,23 +344,15 @@ const categories = [
     <section class="section" data-theme="light">
       <div class="section-inner">
         <h2 class="category-title">{cat.name}</h2>
-        <div class="papers-list">
-          {cat.papers.map((paper) => (
-            <article class="paper-item">
-              {paper.link ? (
-                <a href={paper.link} class="paper-link" target="_blank" rel="noopener">
-                  <h3 class="paper-title">{paper.title}</h3>
-                </a>
-              ) : (
-                <h3 class="paper-title">{paper.title}</h3>
-              )}
-              <p class="paper-authors">{paper.authors}</p>
-              <p class="paper-journal">
-                <em>{paper.journal}</em> — {paper.volume}
-              </p>
-            </article>
-          ))}
-        </div>
+        <PaperList papers={cat.papers.map((paper) => ({
+          title: paper.title,
+          authors: paper.authors,
+          status: paper.status,
+          venue: paper.journal,
+          detail: paper.volume,
+          takeaway: paper.takeaway,
+          link: paper.link,
+        }))} />
       </div>
     </section>
   ))}
@@ -306,7 +361,7 @@ const categories = [
 </BaseLayout>
 
 <style>
-  /* --- Scrollytelling intro: sticky pane on the left, scrolling cards on the right --- */
+  /* --- Editorial intro: sticky context on the left, featured cards on the right --- */
   .sticky-intro {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -347,7 +402,7 @@ const categories = [
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding-bottom: 40vh; /* extra scroll runway so the last card still shows alongside the sticky pane */
+    padding-bottom: clamp(3rem, 10vh, 7rem);
   }
 
   .reveal-card {
@@ -361,14 +416,6 @@ const categories = [
     border: none;
     border-left: 3px solid var(--accent);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
-  }
-
-  .reveal-card.is-visible {
-    opacity: 1;
-    transform: none;
   }
 
   .reveal-num {
@@ -402,11 +449,9 @@ const categories = [
 
   .reveal-card--paper:hover,
   .reveal-card--paper:focus-visible {
-    opacity: 1;
     border-left-color: var(--accent);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    outline: none;
+    background: var(--gray-100);
   }
 
   .reveal-meta {
@@ -458,14 +503,6 @@ const categories = [
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-card {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
-
   .category-title {
     font-size: clamp(1.5rem, 3vw, 2.2rem);
     margin-bottom: 2rem;
@@ -473,71 +510,4 @@ const categories = [
     border-bottom: 2px solid var(--black);
   }
 
-  .papers-list {
-    display: grid;
-    gap: 0;
-  }
-
-  .paper-item {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--gray-200);
-  }
-
-  .paper-item:last-child {
-    border-bottom: none;
-  }
-
-  .paper-title {
-    font-family: var(--font-body);
-    font-size: 1.05rem;
-    font-weight: 600;
-    text-transform: none;
-    letter-spacing: 0;
-    line-height: 1.5;
-    margin-bottom: 0.4rem;
-  }
-
-  .paper-link {
-    text-decoration: none;
-  }
-
-  .paper-link:hover .paper-title {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .paper-link:hover {
-    opacity: 1;
-  }
-
-  .paper-authors {
-    font-size: 0.85rem;
-    color: var(--gray-600);
-    margin-bottom: 0.2rem;
-  }
-
-  .paper-journal {
-    font-size: 0.85rem;
-    color: var(--gray-400);
-  }
 </style>
-
-<script is:inline data-astro-rerun>
-  // Stagger-reveal the scrollytelling cards as they scroll into view.
-  (function () {
-    const cards = document.querySelectorAll('.reveal-card');
-    if (!cards.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -20% 0px', threshold: 0.1 }
-    );
-    cards.forEach((c) => io.observe(c));
-  })();
-</script>

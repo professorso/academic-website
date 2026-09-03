@@ -218,13 +218,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const modal = document.getElementById('contact-modal');
     const overlay = document.getElementById('modal-overlay');
     const closeBtn = document.getElementById('modal-close');
-    const contactBtn = document.getElementById('contact-btn');
+    const contactTriggers = document.querySelectorAll<HTMLElement>('[data-contact-trigger]');
+    let returnFocus: HTMLElement | null = null;
 
-    function openModal() {
+    function openModal(event?: Event) {
+      returnFocus = (event?.currentTarget as HTMLElement | null) ?? (document.activeElement as HTMLElement | null);
       modal?.classList.add('active');
       overlay?.classList.add('active');
       modal?.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
     }
 
     function closeModal() {
@@ -232,11 +235,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       overlay?.classList.remove('active');
       modal?.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      returnFocus?.focus?.();
     }
 
-    contactBtn?.addEventListener('click', openModal);
-    closeBtn?.addEventListener('click', closeModal);
-    overlay?.addEventListener('click', closeModal);
+    contactTriggers.forEach((trigger) => { trigger.onclick = openModal; });
+    if (closeBtn) closeBtn.onclick = closeModal;
+    if (overlay) overlay.onclick = closeModal;
 
     window.__closeContactModal = closeModal;
   }

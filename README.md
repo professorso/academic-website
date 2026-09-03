@@ -36,7 +36,7 @@ This project lives in Dropbox and can be edited from any machine with Claude Cod
 | `README.md` | This file — project overview and how to work on the site |
 | `site/` | Astro project (the actual website) |
 | `site/src/pages/` | Page files: index, research, working-papers, media, the-collision, data |
-| `site/src/components/` | Reusable UI components (Hero, Navbar, BioSection, etc.) |
+| `site/src/components/` | Reusable UI components (Hero, Navbar, BioSection, PaperList, etc.) |
 | `site/src/layouts/` | Base page layout template |
 | `site/src/styles/global.css` | Global stylesheet |
 | `site/src/content/news/` | Markdown news items for the homepage feed |
@@ -92,12 +92,12 @@ link: "https://..."
 ```
 
 ### Update research papers
-Edit `site/src/pages/research.astro` or `site/src/pages/working-papers.astro` directly.
+Edit `site/src/pages/research.astro` or `site/src/pages/working-papers.astro` directly. Each paper uses a consistent set of fields: title, authors, status, venue/journal, publication detail, one-sentence takeaway, and optional link. `site/src/components/PaperList.astro` renders both pages, including the explicit “Link forthcoming” state.
 
 ### Add or update a featured paper
 Edit a single file: `site/src/data/featured-research.ts`. Each entry feeds three places:
-1. The auto-scrolling marquee on the homepage,
-2. The sticky-intro reveal cards at the top of the Research page,
+1. The responsive card grid on the homepage,
+2. The sticky-intro cards at the top of the Research page,
 3. The click-to-open detail modal on both pages (`FeaturedResearchModal.astro`).
 
 Each `FeaturedPaper` needs `slug`, `title`, `authors`, `meta`, and `tldr`. `abstract` and `link` are optional — when `link` is missing, the modal shows "Full paper coming soon". Also add a matching entry in `site/src/data/search-index.ts` for Cmd+K search.
@@ -147,23 +147,23 @@ The site auto-deploys to **GitHub Pages** on every push to `main`:
 - Contact: Bara Blender (bblender@mit.edu, MIT Office of Communications)
 - When approved: update `astro.config.mjs` (change `site`, remove `base`), add CNAME file to `site/public/`
 
-## Build Status (as of 2026-03-13)
+## Build Status (as of 2026-09-03)
 
 ### Complete
-- Homepage: Hero with particle animation, bio, roles, photo strip, selected work (auto-scrolling marquee), LinkedIn posts (2x2 grid), areas of interest, external links
+- Homepage: Hero with particle animation, bio, roles, user-controlled photo strip, selected-work grid, LinkedIn posts, areas of interest, teaching, and external links
 - Navigation: Menu dropdown (top-left), inline nav links, CV/LinkedIn/Contact buttons (top-right, always visible), hamburger on mobile
 - CV links in navbar and bio section, Contact button in bio section
 - LinkedIn "Follow" link in navbar
 - Navbar stays dark over hero, adapts colors on scroll for light/dark sections
 - Scroll-triggered color inversions (light/dark sections)
-- Research page: Featured papers marquee + all 21 published papers in 4 categories
-- Working Papers page: All 6 working papers
+- Research page: Featured-paper introduction plus categorized paper lists with status, venue, authors, takeaway, publication details, and clear link states
+- Working Papers page: Shared scannable paper treatment with the published Research page
 - Media + Videos page: 6 YouTube embeds, 15 press articles (3-column card grid)
 - Data + Artifacts page: 4 datasets with disclaimer, 4 AI & Education links (2-column card grid)
 - The Collision page: Book cover (clickable, links to Amazon), subtitle "What AI Does to Us", Amazon order button
 - Subpage headers using backdrop images (not action photos)
 - Responsive design across all pages
-- Accessibility page with WCAG 2.1 AA statement, footer link on all pages
+- Accessibility page with WCAG 2.1 AA statement and an expanded global footer on all pages
 - Version control: git + GitHub remote (professorso/academic-website, public)
 - Auto-deploy to GitHub Pages via GitHub Actions
 
@@ -178,7 +178,8 @@ The site auto-deploys to **GitHub Pages** on every push to `main`:
 ## Key Design Features
 
 - Black-and-white high-contrast palette with scroll-triggered color inversions
-- Heavy condensed typography (bold, uppercase headlines)
-- Animated particle backgrounds on hero
+- Formalized type scale: Bebas Neue for display headings, Inter for titles, body copy, labels, and metadata
+- Animated particle background on the homepage hero; other pages retain at most one signature motion treatment
+- Consistent card, row, arrow, text-link, and keyboard-focus interaction states
 - Responsive with hamburger menu on mobile
-- `prefers-reduced-motion` support for accessibility (planned)
+- Site-wide `prefers-reduced-motion` support for accessibility

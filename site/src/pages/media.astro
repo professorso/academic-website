@@ -181,10 +181,10 @@ const press = [
       <h2 class="media-heading">Press &amp; Features</h2>
       <div class="press-grid">
         {press.map((item) => (
-          <a href={item.link} class="press-card" target="_blank" rel="noopener">
+          <a href={item.link} class="press-card interactive-card" target="_blank" rel="noopener">
             <span class="press-source">{item.source}</span>
             <span class="press-title">{item.title}</span>
-            <span class="press-cta">Read →</span>
+            <span class="press-cta">Read <span class="interaction-arrow" aria-hidden="true">→</span></span>
           </a>
         ))}
       </div>
@@ -264,7 +264,8 @@ const press = [
   }
 
   .video-facade:focus-visible {
-    outline: none;
+    outline: 2px solid var(--white);
+    outline-offset: -4px;
   }
 
   .play-overlay svg {
@@ -298,14 +299,11 @@ const press = [
     padding: 1.75rem;
     border: 1px solid var(--gray-800);
     min-height: 200px;
-    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
   }
 
   .press-card:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    opacity: 1;
   }
 
   .press-source {
@@ -333,10 +331,10 @@ const press = [
     letter-spacing: 0.1em;
     color: var(--gray-500);
     margin-top: 1.25rem;
-    transition: color 0.2s;
   }
 
-  .press-card:hover .press-cta {
+  .press-card:hover .press-cta,
+  .press-card:focus-visible .press-cta {
     color: var(--white);
   }
 

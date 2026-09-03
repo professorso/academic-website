@@ -46,23 +46,4 @@
 
   sections.forEach((section) => observer.observe(section));
 
-  // Add entrance animations for sections
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('section--visible');
-        }
-      });
-    },
-    {
-      rootMargin: '0px 0px -10% 0px',
-      threshold: 0.1,
-    }
-  );
-
-  sections.forEach((section) => {
-    section.classList.add('section--animate');
-    sectionObserver.observe(section);
-  });
 })();

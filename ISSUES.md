@@ -181,6 +181,23 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 10 — 2026-09-03 (site-wide design-system refinement)
+
+**Changes made:**
+- Formalized a responsive typography scale and missing neutral-color tokens in `global.css`; reserved Bebas Neue for display headings and Inter for content typography
+- Added shared interaction patterns for cards, rows, arrows, text links, and keyboard focus; removed vertical hover jumps from major cards and lists
+- Replaced the automatic featured-research marquee with a responsive grid and made the photo strip manually scrollable
+- Removed generic section entrance fades; retained the hero particles, book chapter reveals, and Resources streaming intro as page-specific signature motion
+- Created `PaperList.astro` and used it for Research and Working Papers, with status badges, venue, authors, one-sentence takeaways, publication details, and explicit read/pending states
+- Expanded the global footer with Explore and Connect navigation, MIT Sloan profile, CV, LinkedIn, Contact, address, copyright, and Accessibility
+- Unified navbar, bio, and footer Contact controls through the contact modal's trigger and focus-return logic
+
+**Verification:**
+- Astro production build completed successfully
+- In-app and local headless-browser screenshot tooling was unavailable in the managed environment, so responsive structure was verified through generated HTML/CSS inspection in addition to the build
+
+---
+
 ## Issue Template
 
 ```markdown

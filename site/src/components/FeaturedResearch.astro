@@ -1,12 +1,10 @@
 ---
-// FeaturedResearch.astro — Auto-scrolling featured paper cards.
+// FeaturedResearch.astro — Featured paper cards.
 // Papers come from site/src/data/featured-research.ts so the Research
 // page's sticky-intro reads from the same source. Cards open the
 // FeaturedResearchModal on click — the modal is rendered once below.
 import { featuredPapers } from '../data/featured-research';
 import FeaturedResearchModal from './FeaturedResearchModal.astro';
-// Duplicate for seamless loop
-const allPapers = [...featuredPapers, ...featuredPapers];
 ---
 
 <section class="section" data-theme="dark" id="featured-research">
@@ -15,50 +13,29 @@ const allPapers = [...featuredPapers, ...featuredPapers];
     <h2 class="section-title">Selected Work</h2>
   </div>
 
-  <div class="marquee-wrapper">
-    <div class="marquee-track">
-      {allPapers.map((paper) => (
-        <button type="button" class="featured-card" data-paper-trigger={paper.slug} aria-haspopup="dialog">
+  <div class="featured-grid section-inner">
+      {featuredPapers.map((paper) => (
+        <button type="button" class="featured-card interactive-card" data-paper-trigger={paper.slug} aria-haspopup="dialog">
           <span class="featured-card__meta">{paper.meta}</span>
           <h3 class="featured-card__title">{paper.title}</h3>
           <p class="featured-card__authors">{paper.authors}</p>
-          <span class="featured-card__link">View paper &rarr;</span>
+          <span class="featured-card__link">View paper <span class="interaction-arrow" aria-hidden="true">→</span></span>
         </button>
       ))}
-    </div>
   </div>
 </section>
 
 <FeaturedResearchModal />
 
 <style>
-  .marquee-wrapper {
-    overflow: hidden;
-    padding: 0 0 2rem;
-  }
-
-  .marquee-track {
-    display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    animation: marquee 30s linear infinite;
-  }
-
-  .marquee-wrapper:hover .marquee-track {
-    animation-play-state: paused;
-  }
-
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding-bottom: 2rem;
   }
 
   .featured-card {
-    flex: 0 0 340px;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -70,15 +47,12 @@ const allPapers = [...featuredPapers, ...featuredPapers];
     background: transparent;
     font: inherit;
     cursor: pointer;
-    transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
   .featured-card:hover,
   .featured-card:focus-visible {
     border-color: var(--white);
-    transform: translateY(-4px);
-    opacity: 1;
-    outline: none;
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .featured-card__meta {
@@ -109,7 +83,6 @@ const allPapers = [...featuredPapers, ...featuredPapers];
   .featured-card__link {
     color: var(--gray-400);
     font-size: 0.8rem;
-    transition: color 0.2s ease;
   }
 
   .featured-card:hover .featured-card__link {
@@ -117,15 +90,12 @@ const allPapers = [...featuredPapers, ...featuredPapers];
   }
 
   @media (max-width: 768px) {
-    .featured-card {
-      flex: 0 0 85vw;
+    .featured-grid {
+      grid-template-columns: 1fr;
     }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-      overflow-x: auto;
+    .featured-card {
+      padding: 1.5rem;
     }
   }
 </style>
