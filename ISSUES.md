@@ -198,6 +198,20 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 11 — 2026-09-03 (abstract-grounded research descriptions)
+
+**Changes made:**
+- Reviewed the abstracts or publisher records for all 23 published papers and two forthcoming papers listed outside the Artificial Intelligence section
+- Replaced generic or inferred takeaways with one-sentence descriptions centered on each paper's actual result, mechanism, and reported magnitude where available
+- Added `Notes/research_abstract_sources_20260903.md` as a paper-by-paper source audit
+- Corrected bibliographic inconsistencies found during the audit: author order for three papers, the official titles of the voluntary/mandatory disclosure article and *Alphanomics*, and publication details for the subscriber-paid ratings article and analyst-forecast survey
+- Left the Artificial Intelligence entries and the teaching guide unchanged because they were outside the published-paper audit
+
+**Verification:**
+- Astro production build completed successfully
+
+---
+
 ## Issue Template
 
 ```markdown

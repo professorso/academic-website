@@ -43,7 +43,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Investor Corporate Visits and Predictable Returns', description: 'Zhang, Wang, So — JFQA 2025', url: 'https://www.cambridge.org/core/services/aop-cambridge-core/content/view/77C958598BB1DC92C46EA32BF252A4B9/S0022109024000528a.pdf/investor_corporate_visits_and_predictable_returns.pdf', kind: 'paper', external: true },
   { title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook', description: 'Harris, Mehrotra, So — Brookings 2025', url: 'https://www.brookings.edu/articles/the-fiscal-frontier/', kind: 'paper', external: true },
   { title: 'Flight to Earnings: The Role of Earnings in Periods of Capital Scarcity', description: 'Guest, Kothari, So — Management Science 2023', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2929704', kind: 'paper', external: true },
-  { title: 'Core Earnings: New Data and Evidence', description: 'Rouen, Wang, So — JFE 2021', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3467814', kind: 'paper', external: true },
+  { title: 'Core Earnings: New Data and Evidence', description: 'Rouen, So, Wang — JFE 2021', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3467814', kind: 'paper', external: true },
   { title: 'Calendar Rotations', description: 'Noh, Verdi, So — JFE 2021', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3473873', kind: 'paper', external: true },
   { title: 'Evaluating Firm-Level Expected Return Proxies', description: 'Lee, Wang, So — RFS 2021', url: 'https://academic.oup.com/rfs/advance-article-abstract/doi/10.1093/rfs/hhaa066/5855684', kind: 'paper', external: true },
   { title: 'Expectations Management and Stock Returns', description: 'Johnson, Kim, So — RFS 2020', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2866522', kind: 'paper', external: true },
@@ -56,17 +56,17 @@ export const searchIndex: SearchEntry[] = [
 
   // Published — measurement, regulation, disclosure
   { title: 'Financial Reporting and Consumer Behavior', description: 'Noh, So, Zhu — Accounting Review 2025', url: 'https://publications.aaahq.org/accounting-review/article-abstract/100/1/407/12932/Financial-Reporting-and-Consumer-Behavior?redirectedFrom=fulltext', kind: 'paper', external: true },
-  { title: 'Conflicts of Interest in Subscriber-Paid Credit Ratings', description: 'Bonsall, Gillette, Pundrich, So — JAE 2022', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3132741', kind: 'paper', external: true },
+  { title: 'Conflicts of Interest in Subscriber-Paid Credit Ratings', description: 'Bonsall, Gillette, Pundrich, So — JAE 2024', url: 'https://www.sciencedirect.com/science/article/pii/S0165410123000381', kind: 'paper', external: true },
   { title: 'Measuring Risk Information', description: 'Smith, So — JAR 2022', url: 'https://onlinelibrary.wiley.com/doi/abs/10.1111/1475-679X.12413', kind: 'paper', external: true },
-  { title: 'Switching from Voluntary to Mandatory Disclosure', description: 'Noh, Weber, So — JAE 2019', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382', kind: 'paper', external: true },
+  { title: 'Voluntary and Mandatory Disclosures: Do Managers View Them as Substitutes?', description: 'Noh, So, Weber — JAE 2019', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0165410119300382', kind: 'paper', external: true },
   { title: 'Asymmetric Trading Costs Prior to Earnings Announcements', description: 'Johnson, So — JAR 2018', url: 'http://doi.org/10.1111/1475-679X.12189', kind: 'paper', external: true },
   { title: 'Non-Diversifiable Volatility Risk and Risk Premiums at Earnings Announcements', description: 'Barth, So — Accounting Review 2014', url: 'https://doi.org/10.2308/accr-50758', kind: 'paper', external: true },
   { title: 'Boardroom Centrality and Firm Performance', description: 'Larcker, Wang, So — JAE 2013', url: 'https://doi.org/10.1016/j.jacceco.2013.01.006', kind: 'paper', external: true },
-  { title: 'Analyst Initiations of Coverage and Stock Return Synchronicity', description: 'Roulstone, Crawford, So — Accounting Review 2012', url: 'http://aaajournals.org/doi/abs/10.2308/accr-50186', kind: 'paper', external: true },
+  { title: 'Analyst Initiations of Coverage and Stock Return Synchronicity', description: 'Crawford, Roulstone, So — Accounting Review 2012', url: 'http://aaajournals.org/doi/abs/10.2308/accr-50186', kind: 'paper', external: true },
 
   // Published — surveys
-  { title: 'Analysts\' Forecasts and Asset Pricing: A Survey', description: 'Kothari, Verdi, So — Annual Review of Financial Economics 2016', url: 'https://doi.org/10.1146/annurev-financial-121415-032930', kind: 'paper', external: true },
-  { title: 'Alphanomics: The Informational Underpinning of Market Efficiency', description: 'Lee, So — Foundations and Trends in Accounting 2015', url: 'http://dx.doi.org/10.1561/1400000022', kind: 'paper', external: true },
+  { title: 'Analysts\' Forecasts and Asset Pricing: A Survey', description: 'Kothari, So, Verdi — Annual Review of Financial Economics 2016', url: 'https://doi.org/10.1146/annurev-financial-121415-032930', kind: 'paper', external: true },
+  { title: 'Alphanomics: The Informational Underpinnings of Market Efficiency', description: 'Lee, So — Foundations and Trends in Accounting 2015', url: 'http://dx.doi.org/10.1561/1400000022', kind: 'paper', external: true },
 
   // Published — labor economics
   { title: 'Inside the Black Box of Doctoral Education', description: 'Ehrenberg et al. — Educational Evaluation and Policy Analysis 2007', url: 'https://www.jstor.org/stable/30128037', kind: 'paper', external: true },

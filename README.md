@@ -92,7 +92,7 @@ link: "https://..."
 ```
 
 ### Update research papers
-Edit `site/src/pages/research.astro` or `site/src/pages/working-papers.astro` directly. Each paper uses a consistent set of fields: title, authors, status, venue/journal, publication detail, one-sentence takeaway, and optional link. `site/src/components/PaperList.astro` renders both pages, including the explicit “Link forthcoming” state.
+Edit `site/src/pages/research.astro` or `site/src/pages/working-papers.astro` directly. Each paper uses a consistent set of fields: title, authors, status, venue/journal, publication detail, one-sentence takeaway, and optional link. Ground published-paper takeaways in the paper's own abstract or publisher record and add the source to `Notes/research_abstract_sources_20260903.md`. `site/src/components/PaperList.astro` renders both pages, including the explicit “Link forthcoming” state.
 
 ### Add or update a featured paper
 Edit a single file: `site/src/data/featured-research.ts`. Each entry feeds three places:
