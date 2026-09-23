@@ -6,6 +6,14 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-09-23 — Companion workbook hosting
+
+- Added `/workbook/` as the permanent destination for Norton’s business-card QR code and hosted the user-specified September 3 PDF under a date-free filename.
+- Future revisions replace the hosted PDF and require a deployment; edits to the ABB source do not automatically publish. Download links include a content hash to avoid stale cached revisions.
+- Added the book-page link, site search entry, social image, and update instructions. Email collection is optional and not enabled.
+- The initial sandboxed build could not resolve the existing font CDN; the build passed with network access. Local preview required permission to bind the development port.
+
+
 ### Session 2 — 2026-03-03 (recovery + fixes + content expansion)
 
 **Changes made:**

@@ -1,0 +1,63 @@
+---
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// Keep the public filename stable. A content hash refreshes browser caches
+// when the PDF is replaced, without changing the printed /workbook/ link.
+const pdf = readFileSync('public/files/designing-your-mind-workbook.pdf');
+const version = createHash('sha256').update(pdf).digest('hex').slice(0, 12);
+const downloadUrl = `${base}/files/designing-your-mind-workbook.pdf?v=${version}`;
+---
+
+<BaseLayout title="Designing Your Mind for the AI Era — Eric So" description="Download the free companion workbook to The Collision: What AI Does to Us by Eric So. Set aside about 45 minutes to make the book’s ideas personal." accent="blue">
+  <section class="workbook-hero" data-theme="dark">
+    <div class="workbook-inner">
+      <span class="section-label">The Collision · Free Companion Workbook</span>
+      <h1>Designing Your Mind<br />for the AI Era</h1>
+      <p class="byline">By Eric So</p>
+      <p class="intro">Make the ideas in <em>The Collision</em> personal. Set aside about 45 minutes to reflect on your relationship with AI and the thinker you want to become.</p>
+      <a class="download-button" href={downloadUrl} download="Designing Your Mind for the AI Era - Workbook.pdf" data-astro-reload>Download the workbook <span aria-hidden="true">↓</span></a>
+      <p class="download-note">Free PDF · No signup required</p>
+    </div>
+  </section>
+
+  <section class="companion" data-theme="light" aria-labelledby="book-title">
+    <div class="companion-inner">
+      <a href={`${base}/the-collision/`} class="cover-link" aria-label="Learn about The Collision">
+        <img src={`${base}/images/book-cover.jpg`} alt="The Collision: What AI Does to Us by Eric So" width="600" height="900" />
+      </a>
+      <div>
+        <span class="section-label">Continue Exploring</span>
+        <h2 id="book-title">The Collision</h2>
+        <p class="subtitle">What AI Does to Us</p>
+        <p>AI is changing how we think, learn, and make decisions. Explore the ideas behind the workbook in Eric So’s book from W. W. Norton.</p>
+        <a class="text-link" href={`${base}/the-collision/`}>Explore the book <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .workbook-hero { background: var(--black); color: var(--white); padding: 9rem var(--section-pad-x) 5rem; }
+  .workbook-inner { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: var(--text-display-lg); line-height: var(--leading-display); margin: 1rem 0; }
+  .byline { color: var(--gray-200); margin-bottom: 1.5rem; }
+  .intro { max-width: 56ch; font-size: var(--text-body-lg); color: var(--gray-200); margin-bottom: 2rem; }
+  .download-button { display: inline-flex; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; background: var(--white); color: var(--black); font-weight: 600; border: 1px solid var(--white); }
+  .download-button:hover { background: var(--gray-200); opacity: 1; }
+  .download-note { margin-top: 1rem; font-size: var(--text-small); color: var(--gray-200); }
+  .companion { padding: 4rem var(--section-pad-x); background: var(--pure-white); color: var(--black); }
+  .companion-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 3rem; }
+  .cover-link img { width: 100%; height: auto; }
+  h2 { font-size: var(--text-display-md); line-height: var(--leading-display); margin: 0.75rem 0 0.25rem; }
+  .subtitle { font-size: var(--text-title); margin-bottom: 1rem; }
+  .companion p { max-width: 56ch; }
+  .text-link { display: inline-block; margin-top: 1.25rem; font-weight: 600; }
+  @media (max-width: 600px) {
+    .workbook-hero { padding-top: 7rem; }
+    .companion-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .cover-link { max-width: 120px; }
+  }
+</style>

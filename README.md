@@ -111,6 +111,16 @@ Edit `site/src/components/BioSection.astro` and `site/src/components/RolesSectio
 ### Update CV
 Edit the dated LaTeX master under `Files/CV/`, compile it with `tectonic`, visually inspect every rendered page, and then copy the verified PDF to `site/public/files/CV_EricSo.pdf`. The navbar CV button and bio section link will automatically point to the synchronized file. When publication metadata changes, update the website and CV together and record the primary source in `Notes/research_abstract_sources_20260903.md`.
 
+### Update the companion workbook
+
+- **Permanent link for QR codes and sharing:** https://ericso.pro/workbook/
+- **Direct PDF:** https://ericso.pro/files/designing-your-mind-workbook.pdf
+- Replace `site/public/files/designing-your-mind-workbook.pdf` with the revised PDF, keeping that filename. Run `npm run build` from `site/`, then commit and push to `main` to publish.
+- The original PDF in the ABB project is not automatically synchronized. Copy each approved revision into the website before publishing it.
+- The workbook page adds a content hash to its download URL at build time so new revisions use a fresh browser cache entry. The printed page URL stays the same.
+- The page is linked from The Collision and the site search. Its layout is in `site/src/pages/workbook.astro`.
+- Email collection is not enabled. An optional Google Form linked to a private Google Sheet can be added to this page later without changing the QR code. Keep the download available and use explicit opt-in wording for updates.
+
 ### Update LinkedIn or social links
 Edit the navbar right-side buttons in `site/src/components/Navbar.astro`.
 

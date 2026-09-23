@@ -48,6 +48,11 @@ const pages: Record<string, PageEntry> = {
     description:
       'Recommended books, research datasets, and AI in education reading.',
   },
+  workbook: {
+    title: 'Designing Your Mind for the AI Era',
+    subtitle: 'Free Companion Workbook',
+    description: 'A companion to The Collision: What AI Does to Us, by Eric So.',
+  },
   accessibility: {
     title: 'Accessibility',
     subtitle: 'Statement',

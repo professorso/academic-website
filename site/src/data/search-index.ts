@@ -14,6 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 export const searchIndex: SearchEntry[] = [
   // Pages
+  { title: 'Designing Your Mind for the AI Era — Workbook', description: 'Free companion workbook to The Collision; PDF download', url: `${base}/workbook/`, kind: 'page' },
   { title: 'Home', description: 'Overview, bio, featured research', url: `${base}/`, kind: 'page' },
   { title: 'Research', description: 'Published papers across behavioral finance, measurement, and AI', url: `${base}/research/`, kind: 'page' },
   { title: 'Working Papers', description: 'Current working papers and research in progress', url: `${base}/working-papers/`, kind: 'page' },
