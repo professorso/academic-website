@@ -28,7 +28,7 @@ export const featuredPapers: FeaturedPaper[] = [
     slug: 'lost-in-context',
     title: 'Lost in Context: Addressing Context Anxiety in Large Language Models',
     authors: 'Ifueko Igbinedion, Jillian Ross, Etienne Ricardez, Sertac Karaman, Eric So',
-    meta: 'International Conference on Machine Learning (ICML) · 2026 · Accepted',
+    meta: 'Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026.',
     tldr:
       'Frontier reasoning models often fail not because they lack capability but because they prematurely self-doubt — a phenomenon we call "context anxiety," driven by miscalibrated token-budget estimates and substantially reducible through lightweight fine-tuning rather than further scaling.',
     abstract:
@@ -72,7 +72,7 @@ export const featuredPapers: FeaturedPaper[] = [
     slug: 'loyalty-capture',
     title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models',
     authors: 'Eric So',
-    meta: 'NeurIPS 2026 · Main Track · Accepted (poster)',
+    meta: 'NeurIPS 2026 · Main Track · Accepted',
     tldr: 'Shows how reporting to a manager with misaligned incentives can bias AI recommendations toward that manager, even without explicit instructions to do so.',
   },
 ];

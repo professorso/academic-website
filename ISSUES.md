@@ -253,6 +253,19 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 14 — 2026-09-24 (conference citation correction)
+
+**Changes made:**
+- Removed the NeurIPS poster designation from research, featured research, site search, and CV, retaining accepted status and Main Track.
+- Updated ICML to published and used Eric's supplied citation: Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026.
+- Retained the arXiv links and rebuilt the synchronized five-page CV.
+
+**Verification:**
+- Visually reviewed all five PDF pages and checked the proceedings wording and embedded arXiv links.
+- Checked the local website preview, production build, and public deployment as part of publishing.
+
+---
+
 ## Issue Template
 
 ```markdown

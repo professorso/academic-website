@@ -64,3 +64,8 @@ The one-sentence descriptions on the Research page were rewritten as concise par
 - **Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models** — accepted at NeurIPS 2026, Main Track, as a poster, per the author's acceptance notice supplied on September 24. Listed as accepted; no paper URL supplied. The short description follows the manuscript abstract and discusses reporting relationships and misaligned managerial incentives without adding unpublished numerical results.
 - **The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs** — current title and paper URL verified against [arXiv:2609.07731](https://arxiv.org/abs/2609.07731). Supersedes the earlier website/CV title “Emergent Negligence.” COLM 2026 acceptance retained.
 - **Lost in Context: Addressing Context Anxiety in Large Language Models** — [arXiv:2607.21616](https://arxiv.org/abs/2607.21616) verified, including title, author order, and ICML 2026 acceptance. The existing website and CV links already match the supplied URL.
+
+### Author correction — 2026-09-24
+
+- Per Eric’s instruction, omit the NeurIPS presentation designation in public entries while retaining accepted status and Main Track.
+- Eric confirmed that Lost in Context was presented at ICML and supplied this citation for the website and CV: “Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026.” Updated the website status to published and removed accepted wording from all ICML entries. The arXiv link is retained.
