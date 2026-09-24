@@ -57,3 +57,10 @@ The one-sentence descriptions on the Research page were rewritten as concise par
 | Teaching and Learning Economics with AI: A Guide | [W. W. Norton](https://seagull.wwnorton.com/essentialeconomics) |
 | Analysts' Forecasts and Asset Pricing: A Survey | [Annual Review of Financial Economics](https://www.annualreviews.org/content/journals/10.1146/annurev-financial-121415-032930) |
 | Alphanomics: The Informational Underpinnings of Market Efficiency | [Stanford Graduate School of Business](https://gsbpreserve.stanford.edu/view/33177/alphanomics-the-informational-underpinnings-of-market-efficiency) |
+
+
+## Update — 2026-09-24
+
+- **Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models** — accepted at NeurIPS 2026, Main Track, as a poster, per the author's acceptance notice supplied on September 24. Listed as accepted; no paper URL supplied. The short description follows the manuscript abstract and discusses reporting relationships and misaligned managerial incentives without adding unpublished numerical results.
+- **The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs** — current title and paper URL verified against [arXiv:2609.07731](https://arxiv.org/abs/2609.07731). Supersedes the earlier website/CV title “Emergent Negligence.” COLM 2026 acceptance retained.
+- **Lost in Context: Addressing Context Anxiety in Large Language Models** — [arXiv:2607.21616](https://arxiv.org/abs/2607.21616) verified, including title, author order, and ICML 2026 acceptance. The existing website and CV links already match the supplied URL.

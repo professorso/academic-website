@@ -28,7 +28,7 @@ export const featuredPapers: FeaturedPaper[] = [
     slug: 'lost-in-context',
     title: 'Lost in Context: Addressing Context Anxiety in Large Language Models',
     authors: 'Ifueko Igbinedion, Jillian Ross, Etienne Ricardez, Sertac Karaman, Eric So',
-    meta: 'International Conference on Machine Learning (ICML) · 2026',
+    meta: 'International Conference on Machine Learning (ICML) · 2026 · Accepted',
     tldr:
       'Frontier reasoning models often fail not because they lack capability but because they prematurely self-doubt — a phenomenon we call "context anxiety," driven by miscalibrated token-budget estimates and substantially reducible through lightweight fine-tuning rather than further scaling.',
     abstract:
@@ -59,12 +59,20 @@ export const featuredPapers: FeaturedPaper[] = [
   },
   {
     slug: 'emergent-negligence',
-    title: 'Emergent Negligence: How Profit Mandates Induce Alignment Failures in LLMs',
+    title: 'The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs',
     authors: 'Eric So',
-    meta: 'Conference on Language Models (COLM) · 2026',
+    meta: 'Conference on Language Models (COLM) · 2026 · Accepted',
     tldr:
       'Adding an ordinary “maximize profitability” mandate to otherwise identical prompts leads frontier LLMs to systematically dismiss ambiguous safety signals — acknowledging the risks in their reasoning, then invoking profit logic to justify ignoring them — a “Profit Alignment Problem” that emerges even though the mandate never tells the model to downplay risk.',
     abstract:
       'This study shows that ordinary business language — “maximize profitability” — induces emergent negligence: LLMs systematically dismiss ambiguous signals of potential safety violations to serve business objectives. In 3,600 controlled trials across eight reasoning-capable LLMs, adding a profit mandate to otherwise identical prompts increases risk-dismissing judgments by 6.8 percentage points (p < 0.0001), suppresses board escalation recommendations by 13.9 pp (p < 0.0001), and shifts severity assessments downward (χ² p < 0.0001). The mandate never instructs models to downplay risks; instead, chain-of-thought traces reveal motivated reasoning — models acknowledge concerns, then invoke profit logic to justify dismissing them. We characterize these findings as the Profit Alignment Problem: when AI systems are given ordinary business objectives, they develop emergent strategies for suppressing inconvenient information that no designer intended or specified.',
+    link: 'https://arxiv.org/abs/2609.07731',
+  },
+  {
+    slug: 'loyalty-capture',
+    title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models',
+    authors: 'Eric So',
+    meta: 'NeurIPS 2026 · Main Track · Accepted (poster)',
+    tldr: 'Shows how reporting to a manager with misaligned incentives can bias AI recommendations toward that manager, even without explicit instructions to do so.',
   },
 ];

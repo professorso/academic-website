@@ -95,10 +95,11 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-09-23)
+## Build Status (as of 2026-09-24)
+- **AI publications**: Added Loyalty Capture as accepted at NeurIPS 2026 Main Track (poster), with link forthcoming. Updated the COLM paper to The Profit Alignment Problem and linked arXiv; verified the ICML arXiv link. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
 - **Companion workbook**: `/workbook/` is the permanent QR/share page. Replace `site/public/files/designing-your-mind-workbook.pdf` and deploy to update; source Dropbox PDF is not automatically synced. Includes content-hashed download link, book-page link, search entry, and social preview.
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
-- **Phase 2 (Content Pages)**: Complete — research (31 works), working papers (5), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
+- **Phase 2 (Content Pages)**: Complete — research (32 works), working papers (5), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
 - **Phase 4 (Deployment)**: Custom domain `ericso.pro` registered. CNAME file + Astro config updated. Awaiting DNS propagation + GitHub Pages HTTPS cert.
 - **SEO**: Person JSON-LD schema, canonical URL, and Open Graph tags added to BaseLayout for Google Knowledge Graph eligibility.
@@ -107,6 +108,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-09-24 | Added Loyalty Capture as accepted at NeurIPS 2026 Main Track (poster) to research, featured research, search, and CV. Updated COLM title and arXiv link across the site and CV; verified ICML link. Rebuilt a five-page CV with the installed XeLaTeX compiler, kept publication entries together across page breaks, and synchronized the PDF download. |
 | 2026-09-23 | Added the free Designing Your Mind for the AI Era companion workbook at `/workbook/`, with a stable PDF filename, content-hashed download link, book promotion, book-page link, search entry, and OG image. Documented future replacement/deployment and optional Google Forms email collection. |
 | 2026-09-03 | Audited every Research-page entry against primary publication, conference, SSRN, or author records and reconciled the website with the CV. Corrected current titles, author order, status, dates, volume/issues, page ranges/article numbers, and canonical links; updated the AI titles and author ordering; renamed the CV master to `main_20260903.tex`; rebuilt and visually verified a five-page PDF; synchronized it to the site's CV download; and removed a duplicate legacy redirect that caused an Astro route-collision warning. |
 | 2026-09-03 | Replaced generic published-paper takeaways on the Research page with concise descriptions grounded in each paper's abstract or publisher record. Added a source audit in `Notes/research_abstract_sources_20260903.md` and corrected several bibliographic inconsistencies uncovered during verification (author order, the official voluntary/mandatory disclosure title, the Alphanomics title, and publication details for the credit-ratings paper and analyst-forecast survey). |

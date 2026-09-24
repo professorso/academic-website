@@ -237,6 +237,22 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 13 — 2026-09-24 (AI conference acceptances and CV)
+
+**Changes made:**
+- Added Loyalty Capture as accepted at NeurIPS 2026 Main Track (poster), with no paper link, to Research, featured research on the homepage and Research page, site search, and the CV.
+- Updated the COLM paper's title to The Profit Alignment Problem and added its arXiv link to research, working papers, featured details, search, and CV. Verified the existing ICML arXiv link.
+- Renamed the active CV master and PDF to `main_20260924`, synchronized the website download, and recorded source metadata in the existing research audit.
+- The new CV entry initially produced a nearly empty sixth page and split publication entries across pages. Adjusted inter-entry spacing and text height while preserving 11-point type; grouped publication entries to keep titles and details together.
+- Used the installed XeLaTeX compiler because `tectonic` was not available on the command path.
+
+**Verification:**
+- Recompiled the CV, checked PDF text and hyperlinks, and visually reviewed all five final pages.
+- Verified the local Research page and the NeurIPS detail panel, including the accepted status and forthcoming-link display.
+- Production build and live deployment checked as part of publishing.
+
+---
+
 ## Issue Template
 
 ```markdown

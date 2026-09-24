@@ -109,7 +109,7 @@ Edit `site/src/components/ContactModal.astro`.
 Edit `site/src/components/BioSection.astro` and `site/src/components/RolesSection.astro`.
 
 ### Update CV
-Edit the dated LaTeX master under `Files/CV/`, compile it with `tectonic`, visually inspect every rendered page, and then copy the verified PDF to `site/public/files/CV_EricSo.pdf`. The navbar CV button and bio section link will automatically point to the synchronized file. When publication metadata changes, update the website and CV together and record the primary source in `Notes/research_abstract_sources_20260903.md`.
+Edit the dated LaTeX master under `Files/CV/`, compile it with `tectonic` (or the installed `xelatex`), visually inspect every rendered page, and then copy the verified PDF to `site/public/files/CV_EricSo.pdf`. The navbar CV button and bio section link will automatically point to the synchronized file. When publication metadata changes, update the website and CV together and record the primary source in `Notes/research_abstract_sources_20260903.md`.
 
 ### Update the companion workbook
 
