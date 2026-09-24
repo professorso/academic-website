@@ -97,7 +97,7 @@ cd site && npm run build  # Build static output to dist/
 
 ## Build Status (as of 2026-09-24)
 - **Featured-paper order**: ICML (Lost in Context), NeurIPS (Loyalty Capture), COLM (The Profit Alignment Problem), AI Advisors, Breaking Bad Financial Habits. Shared between the Research page and homepage.
-- **AI publications**: Loyalty Capture is listed as accepted at NeurIPS 2026 Main Track, with link forthcoming and no presentation designation. The COLM paper uses The Profit Alignment Problem and its arXiv link; ICML is listed as published in the Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
+- **AI publications**: Loyalty Capture (Eric So, Alex Imas) is listed as accepted at NeurIPS 2026 Main Track, with link forthcoming and no presentation designation. The COLM paper uses The Profit Alignment Problem and its arXiv link; ICML is listed as published in the Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
 - **Companion workbook**: `/workbook/` is the permanent QR/share page. Replace `site/public/files/designing-your-mind-workbook.pdf` and deploy to update; source Dropbox PDF is not automatically synced. Includes content-hashed download link, book-page link, search entry, and social preview.
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
 - **Phase 2 (Content Pages)**: Complete — research (32 works), working papers (5), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
@@ -109,6 +109,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-09-24 | Added Alex Imas as coauthor of Loyalty Capture in the Research list, shared featured-paper cards and detail modal, search index, and CV, per Eric’s correction. |
 | 2026-09-24 | Reordered the five featured papers per Eric: ICML first, NeurIPS second, COLM third, then AI Advisors and Breaking Bad Financial Habits. The shared featured-research list keeps the Research page and homepage consistent. |
 | 2026-09-24 | Removed the NeurIPS poster designation from public website entries and the CV at Eric’s request. Updated ICML from accepted to published, using his supplied proceedings citation throughout research, featured research, search, and CV. |
 | 2026-09-24 | Added Loyalty Capture as accepted at NeurIPS 2026 Main Track (poster) to research, featured research, search, and CV. Updated COLM title and arXiv link across the site and CV; verified ICML link. Rebuilt a five-page CV with the installed XeLaTeX compiler, kept publication entries together across page breaks, and synchronized the PDF download. |

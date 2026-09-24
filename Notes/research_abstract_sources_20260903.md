@@ -69,3 +69,7 @@ The one-sentence descriptions on the Research page were rewritten as concise par
 
 - Per Eric’s instruction, omit the NeurIPS presentation designation in public entries while retaining accepted status and Main Track.
 - Eric confirmed that Lost in Context was presented at ICML and supplied this citation for the website and CV: “Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026.” Updated the website status to published and removed accepted wording from all ICML entries. The arXiv link is retained.
+
+### Coauthor correction — 2026-09-24
+
+Eric confirmed that Loyalty Capture is coauthored with Alex Imas. Added Alex Imas to the website research entry, featured-paper metadata, search index, and CV.

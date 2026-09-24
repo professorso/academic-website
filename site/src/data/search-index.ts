@@ -30,7 +30,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AI in Financial Markets and Decision-Making', description: 'Research group at the MIT Initiative on the Digital Economy', url: 'https://ide.mit.edu/research-group/ai-finance-decisions/', kind: 'group', external: true },
 
   // AI conference papers
-  { title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models', description: 'So — NeurIPS 2026 Main Track (accepted): reporting relationships and structural sycophancy in frontier AI models', url: `${base}/research/`, kind: 'paper' },
+  { title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models', description: 'So, Imas — NeurIPS 2026 Main Track (accepted): reporting relationships and structural sycophancy in frontier AI models', url: `${base}/research/`, kind: 'paper' },
   { title: 'The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs', description: 'So — COLM 2026 (accepted): how profit-maximization mandates induce alignment failures in LLMs', url: 'https://arxiv.org/abs/2609.07731', kind: 'paper', external: true },
   { title: 'Lost in Context: Addressing Context Anxiety in Large Language Models', description: 'Igbinedion, Ross, Ricardez, Karaman, So — Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. ICML research on context anxiety in frontier reasoning models', url: 'https://arxiv.org/abs/2607.21616', kind: 'paper', external: true },
 

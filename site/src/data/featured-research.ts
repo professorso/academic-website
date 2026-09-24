@@ -38,7 +38,7 @@ export const featuredPapers: FeaturedPaper[] = [
   {
     slug: 'loyalty-capture',
     title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models',
-    authors: 'Eric So',
+    authors: 'Eric So, Alex Imas',
     meta: 'NeurIPS 2026 · Main Track · Accepted',
     tldr: 'Shows how reporting to a manager with misaligned incentives can bias AI recommendations toward that manager, even without explicit instructions to do so.',
   },

@@ -274,6 +274,14 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 16 — 2026-09-24 (NeurIPS coauthor correction)
+
+- Added Alex Imas as coauthor of Loyalty Capture in the Research list, shared featured-paper metadata, search index, and CV, per Eric's correction.
+- Retained the featured-paper order, accepted status, and forthcoming paper link.
+- Rebuilt the five-page CV and checked the revised page layouts, production build, website author display, and live PDF as part of publishing.
+
+---
+
 ## Issue Template
 
 ```markdown
