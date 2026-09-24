@@ -96,6 +96,7 @@ cd site && npm run build  # Build static output to dist/
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
 ## Build Status (as of 2026-09-24)
+- **Featured-paper order**: ICML (Lost in Context), NeurIPS (Loyalty Capture), COLM (The Profit Alignment Problem), AI Advisors, Breaking Bad Financial Habits. Shared between the Research page and homepage.
 - **AI publications**: Loyalty Capture is listed as accepted at NeurIPS 2026 Main Track, with link forthcoming and no presentation designation. The COLM paper uses The Profit Alignment Problem and its arXiv link; ICML is listed as published in the Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
 - **Companion workbook**: `/workbook/` is the permanent QR/share page. Replace `site/public/files/designing-your-mind-workbook.pdf` and deploy to update; source Dropbox PDF is not automatically synced. Includes content-hashed download link, book-page link, search entry, and social preview.
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
@@ -108,6 +109,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-09-24 | Reordered the five featured papers per Eric: ICML first, NeurIPS second, COLM third, then AI Advisors and Breaking Bad Financial Habits. The shared featured-research list keeps the Research page and homepage consistent. |
 | 2026-09-24 | Removed the NeurIPS poster designation from public website entries and the CV at Eric’s request. Updated ICML from accepted to published, using his supplied proceedings citation throughout research, featured research, search, and CV. |
 | 2026-09-24 | Added Loyalty Capture as accepted at NeurIPS 2026 Main Track (poster) to research, featured research, search, and CV. Updated COLM title and arXiv link across the site and CV; verified ICML link. Rebuilt a five-page CV with the installed XeLaTeX compiler, kept publication entries together across page breaks, and synchronized the PDF download. |
 | 2026-09-23 | Added the free Designing Your Mind for the AI Era companion workbook at `/workbook/`, with a stable PDF filename, content-hashed download link, book promotion, book-page link, search entry, and OG image. Documented future replacement/deployment and optional Google Forms email collection. |

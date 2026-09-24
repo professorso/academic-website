@@ -36,6 +36,24 @@ export const featuredPapers: FeaturedPaper[] = [
     link: 'https://arxiv.org/abs/2607.21616',
   },
   {
+    slug: 'loyalty-capture',
+    title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models',
+    authors: 'Eric So',
+    meta: 'NeurIPS 2026 · Main Track · Accepted',
+    tldr: 'Shows how reporting to a manager with misaligned incentives can bias AI recommendations toward that manager, even without explicit instructions to do so.',
+  },
+  {
+    slug: 'emergent-negligence',
+    title: 'The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs',
+    authors: 'Eric So',
+    meta: 'Conference on Language Models (COLM) · 2026 · Accepted',
+    tldr:
+      'Adding an ordinary “maximize profitability” mandate to otherwise identical prompts leads frontier LLMs to systematically dismiss ambiguous safety signals — acknowledging the risks in their reasoning, then invoking profit logic to justify ignoring them — a “Profit Alignment Problem” that emerges even though the mandate never tells the model to downplay risk.',
+    abstract:
+      'This study shows that ordinary business language — “maximize profitability” — induces emergent negligence: LLMs systematically dismiss ambiguous signals of potential safety violations to serve business objectives. In 3,600 controlled trials across eight reasoning-capable LLMs, adding a profit mandate to otherwise identical prompts increases risk-dismissing judgments by 6.8 percentage points (p < 0.0001), suppresses board escalation recommendations by 13.9 pp (p < 0.0001), and shifts severity assessments downward (χ² p < 0.0001). The mandate never instructs models to downplay risks; instead, chain-of-thought traces reveal motivated reasoning — models acknowledge concerns, then invoke profit logic to justify dismissing them. We characterize these findings as the Profit Alignment Problem: when AI systems are given ordinary business objectives, they develop emergent strategies for suppressing inconvenient information that no designer intended or specified.',
+    link: 'https://arxiv.org/abs/2609.07731',
+  },
+  {
     slug: 'ai-advisors-competence-judgment',
     title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
     authors: 'Abigail B. Sussman, Eric C. So, Fiona Y. Yang',
@@ -56,23 +74,5 @@ export const featuredPapers: FeaturedPaper[] = [
     abstract:
       'Financial misconceptions carry direct economic costs, from panic selling to equity market avoidance, yet they are notoriously resistant to correction. Traditional financial literacy interventions are constrained by cost, reach, and a persistent gap between knowledge and behavioral change. We find across three pre-registered studies that purposefully designed LLMs can durably correct financial misconceptions. Critically, two factors are necessary for this effect. First, corrective intent: LLMs prompted only to discuss a misconception produce corrections no better than unassisted self-reflection, and undirected LLM conversations can actively entrench misconceptions. Second, recipient receptivity: financial concepts are often foreign to the investors who misapply them, and LLM responses pitched below a participant\'s financial sophistication are judged as less credible and produce substantially weaker corrections. LLMs thus offer a scalable alternative to traditional financial literacy intervention, but only when designed with both factors in mind.',
     link: 'https://arxiv.org/abs/2604.27022',
-  },
-  {
-    slug: 'emergent-negligence',
-    title: 'The Profit Alignment Problem: How Profit Mandates Induce Alignment Failures in LLMs',
-    authors: 'Eric So',
-    meta: 'Conference on Language Models (COLM) · 2026 · Accepted',
-    tldr:
-      'Adding an ordinary “maximize profitability” mandate to otherwise identical prompts leads frontier LLMs to systematically dismiss ambiguous safety signals — acknowledging the risks in their reasoning, then invoking profit logic to justify ignoring them — a “Profit Alignment Problem” that emerges even though the mandate never tells the model to downplay risk.',
-    abstract:
-      'This study shows that ordinary business language — “maximize profitability” — induces emergent negligence: LLMs systematically dismiss ambiguous signals of potential safety violations to serve business objectives. In 3,600 controlled trials across eight reasoning-capable LLMs, adding a profit mandate to otherwise identical prompts increases risk-dismissing judgments by 6.8 percentage points (p < 0.0001), suppresses board escalation recommendations by 13.9 pp (p < 0.0001), and shifts severity assessments downward (χ² p < 0.0001). The mandate never instructs models to downplay risks; instead, chain-of-thought traces reveal motivated reasoning — models acknowledge concerns, then invoke profit logic to justify dismissing them. We characterize these findings as the Profit Alignment Problem: when AI systems are given ordinary business objectives, they develop emergent strategies for suppressing inconvenient information that no designer intended or specified.',
-    link: 'https://arxiv.org/abs/2609.07731',
-  },
-  {
-    slug: 'loyalty-capture',
-    title: 'Loyalty Capture: Reporting Relationships and Structural Sycophancy in Frontier AI Models',
-    authors: 'Eric So',
-    meta: 'NeurIPS 2026 · Main Track · Accepted',
-    tldr: 'Shows how reporting to a manager with misaligned incentives can bias AI recommendations toward that manager, even without explicit instructions to do so.',
   },
 ];

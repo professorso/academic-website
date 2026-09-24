@@ -266,6 +266,14 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 15 — 2026-09-24 (featured-paper order)
+
+- Reordered the shared featured-research list to ICML, NeurIPS, COLM, AI Advisors, and Breaking Bad Financial Habits.
+- Research-page numbering and homepage cards follow the same order; paper content and links are unchanged.
+- Verified the rendered order and production build before publishing.
+
+---
+
 ## Issue Template
 
 ```markdown
