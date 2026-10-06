@@ -282,6 +282,13 @@ Result: white buttons on white background = invisible.
 
 ---
 
+### Session 17: 2026-10-06 (color hero photo)
+
+- Replaced the homepage hero with `Photos/FE_09_18_26_MIT_133.jpg`, copied into `site/src/assets/hero-mit-2026.jpg` for Astro image optimization.
+- Removed the grayscale filter and applied a centered 6:5 CSS crop, reducing side space while retaining the full image height.
+- Production build passed and generated responsive WebP images at 480, 960, and 1600 pixels wide.
+- Browser review was not completed because access to the local preview was denied by the browser permission check.
+
 ## Issue Template
 
 ```markdown

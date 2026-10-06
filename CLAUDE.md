@@ -95,7 +95,8 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-09-24)
+## Build Status (as of 2026-10-06)
+- **Hero photo**: September 2026 MIT presentation photo (`site/src/assets/hero-mit-2026.jpg`), displayed in color with a centered 6:5 CSS crop that trims about 10% from each side. Astro generates responsive WebP assets; original source remains in `Photos/FE_09_18_26_MIT_133.jpg`.
 - **Featured-paper order**: ICML (Lost in Context), NeurIPS (Loyalty Capture), COLM (The Profit Alignment Problem), AI Advisors, Breaking Bad Financial Habits. Shared between the Research page and homepage.
 - **AI publications**: Loyalty Capture (Eric So, Alex Imas) is listed as accepted at NeurIPS 2026 Main Track, with link forthcoming and no presentation designation. The COLM paper uses The Profit Alignment Problem and its arXiv link; ICML is listed as published in the Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
 - **Companion workbook**: `/workbook/` is the permanent QR/share page. Replace `site/public/files/designing-your-mind-workbook.pdf` and deploy to update; source Dropbox PDF is not automatically synced. Includes content-hashed download link, book-page link, search entry, and social preview.
@@ -109,6 +110,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-06 | Replaced the homepage hero with Eric's supplied MIT presentation photo, removed grayscale per his preference, and added a centered 6:5 crop to reduce side space. Added responsive WebP generation. Production build passed; visual browser review was blocked by denied local-preview permission. |
 | 2026-09-24 | Added Alex Imas as coauthor of Loyalty Capture in the Research list, shared featured-paper cards and detail modal, search index, and CV, per Eric’s correction. |
 | 2026-09-24 | Reordered the five featured papers per Eric: ICML first, NeurIPS second, COLM third, then AI Advisors and Breaking Bad Financial Habits. The shared featured-research list keeps the Research page and homepage consistent. |
 | 2026-09-24 | Removed the NeurIPS poster designation from public website entries and the CV at Eric’s request. Updated ICML from accepted to published, using his supplied proceedings citation throughout research, featured research, search, and CV. |

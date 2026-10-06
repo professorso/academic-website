@@ -1,15 +1,21 @@
 ---
 // Hero.astro — Full-width hero: photo left, bold text right
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/hero-mit-2026.jpg';
 ---
 
 <section class="section hero" data-theme="light" id="hero">
   <canvas id="particle-canvas" class="particle-canvas"></canvas>
   <div class="hero-inner">
     <div class="hero-image">
-      <img
-        src={`${base}/images/hero.jpg`}
+      <Image
+        src={heroPhoto}
         alt="Eric So presenting"
+        width={1600}
+        widths={[480, 960, 1600]}
+        sizes="(max-width: 768px) 100vw, 38vw"
+        format="webp"
+        quality={80}
         loading="eager"
       />
     </div>
@@ -107,8 +113,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .hero-image img {
     width: 100%;
     height: auto;
+    aspect-ratio: 6 / 5;
     object-fit: cover;
-    filter: grayscale(100%);
   }
 
   .hero-text {
