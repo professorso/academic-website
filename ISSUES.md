@@ -289,6 +289,13 @@ Result: white buttons on white background = invisible.
 - Production build passed and generated responsive WebP images at 480, 960, and 1600 pixels wide.
 - Browser review was not completed because access to the local preview was denied by the browser permission check.
 
+### Session 18: 2026-10-06 (hero framing and Alumni Forum video)
+
+- Set the hero photo's CSS object position to `35% center`, reducing right-side space while preserving the 6:5 crop and color.
+- Added `waQ4uuCUrJY` first in the Media-page video grid, titled "MIT Alumni Forum: The Collision: What AI Does to Us", verified through YouTube's oEmbed metadata.
+- Production build passed; checked the generated video embed, title, order, and hero CSS. Local browser preview remains unavailable after the earlier permission denial.
+- Publishing requires a user-run commit and push because this session's Git metadata access remains read-only.
+
 ## Issue Template
 
 ```markdown
