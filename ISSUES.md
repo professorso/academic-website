@@ -296,6 +296,12 @@ Result: white buttons on white background = invisible.
 - Production build passed; checked the generated video embed, title, order, and hero CSS. Local browser preview remains unavailable after the earlier permission denial.
 - Publishing requires a user-run commit and push because this session's Git metadata access remains read-only.
 
+### Session 19: 2026-10-06 (book press and review links)
+
+- Added the requested GlobeNewswire release, MIT Sloan release, and Publishers Weekly book review at the top of Press & Features in the user's supplied order.
+- Verified titles against the source pages. Retained both versions of the press release as requested, with distinct source labels.
+- Production build passed; confirmed all three links occur once and lead the 20-card press grid in the generated page. Changes are saved locally; this session still cannot write Git metadata to commit or publish them.
+
 ## Issue Template
 
 ```markdown
