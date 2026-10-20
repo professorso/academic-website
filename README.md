@@ -30,6 +30,7 @@ This project lives in Dropbox and can be edited from any machine with Claude Cod
 
 | File / Folder | Purpose |
 |---|---|
+| `AGENTS.md` | Entry point for Codex and compatible agents; requires the shared website instructions and clean-link policy |
 | `CLAUDE.md` | Instructions automatically loaded by Claude Code — project context, design rules, editing patterns |
 | `EricSo_Website_Spec.md` | Full design and content specification (original build doc) |
 | `ISSUES.md` | Issue log and session notes — log all problems and fixes here |

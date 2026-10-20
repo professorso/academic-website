@@ -22,6 +22,13 @@ Every Claude Code session on this project must follow these steps:
 7. **Git commit** — ALWAYS commit changes at the end of each session (or after each logical chunk of work). Use a descriptive commit message summarizing what changed. Never leave uncommitted work.
 8. **Build** — Run `npm run build` when ready to deploy
 
+## Clean Link Policy
+
+- Never introduce `utm_source=chatgpt.com`, any other `utm_*` parameter, or similar advertising, campaign, referral, or AI-attribution tracking tags into website links, metadata, redirects, scripts, or downloadable documents.
+- Use the clean, direct destination URL. Strip tracking tags from copied or suggested URLs before adding them, including URLs supplied by search results or AI tools. Do not add tracking redirects or affiliate tags.
+- Preserve parameters needed for the destination to work, such as paper IDs, search queries, download options, and content-version hashes (`?v=...`). Do not remove a parameter solely because the URL contains a question mark.
+- Before committing link changes, inspect the final URLs and check for tracking parameters. Do not work around this policy by adding tracking dynamically or encoding it in a URL.
+
 ## Version Control & Deployment
 This project uses git with a GitHub remote: `professorso/academic-website` (public).
 - The repo lives inside Dropbox so history syncs across machines
@@ -96,6 +103,7 @@ cd site && npm run build  # Build static output to dist/
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
 ## Build Status (as of 2026-10-20)
+- **Clean links**: Explicit policy prohibits ChatGPT attribution and similar tracking tags in all website links. The October 20 audit found none in the eight live pages, source files, or downloadable PDF links. Functional URL parameters are preserved.
 - **Hero photo**: September 2026 MIT presentation photo (`site/src/assets/hero-mit-2026.jpg`), displayed in color with a 6:5 CSS crop positioned at `35% center` to balance the space around Eric by trimming more from the right. Astro generates responsive WebP assets; original source remains in `Photos/FE_09_18_26_MIT_133.jpg`.
 - **Media videos**: MIT Alumni Forum: The Collision: What AI Does to Us (`waQ4uuCUrJY`) leads the video grid, which now includes 12 videos.
 - **Press & Features**: Added the GlobeNewswire and MIT Sloan versions of "The Hidden Toll of Frictionless Tech: What AI Does to Our Minds" and the Publishers Weekly review of The Collision at the top of the Media-page press grid.
@@ -112,6 +120,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-20 | Added a clean-link policy prohibiting ChatGPT attribution, campaign, referral, and similar tracking tags while preserving functional URL parameters. Added AGENTS.md so Codex and other compatible agents load the website instructions. Documentation-only change. |
 | 2026-10-20 | Replaced the workbook download with approved v1.1, added the concise plain-text version history beside the free/no-signup note, and aligned the page's time estimate with the workbook. Verified actual downloads, release-note navigation, content hashes, and layouts at desktop, mobile, and 320px widths. |
 | 2026-10-06 | Added three requested book-related links to Press & Features: GlobeNewswire, MIT Sloan, and Publishers Weekly. Verified titles against the source pages. |
 | 2026-10-06 | Shifted the hero crop left to balance the surrounding space and added the MIT Alumni Forum video as the first Media-page video, using its verified YouTube title. Production build and generated HTML/CSS checks passed. |

@@ -6,6 +6,12 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-20 — Clean-link instructions
+
+- Recorded Eric's requirement that future website edits never introduce `utm_source=chatgpt.com`, other `utm_*` parameters, or similar attribution, campaign, referral, or affiliate tracking tags.
+- Added the policy to CLAUDE.md and created AGENTS.md to make it discoverable by Codex and compatible agents. Functional URL parameters remain allowed.
+- This follows the audit of all eight live pages, website source, built output, and 36 embedded links across two downloadable PDFs, which found no UTM or ChatGPT attribution tags. No public page content changed.
+
 ### 2026-10-20 — Workbook v1.1 and public version history
 
 - Replaced the stable workbook PDF with the final approved v1.1 from ABB/Exercises/Worksheets.
