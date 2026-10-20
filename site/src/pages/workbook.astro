@@ -9,17 +9,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const pdf = readFileSync('public/files/designing-your-mind-workbook.pdf');
 const version = createHash('sha256').update(pdf).digest('hex').slice(0, 12);
 const downloadUrl = `${base}/files/designing-your-mind-workbook.pdf?v=${version}`;
+const versionHistory = readFileSync('public/files/designing-your-mind-workbook-versions.txt');
+const versionHistoryHash = createHash('sha256').update(versionHistory).digest('hex').slice(0, 12);
+const versionHistoryUrl = `${base}/files/designing-your-mind-workbook-versions.txt?v=${versionHistoryHash}`;
 ---
 
-<BaseLayout title="Designing Your Mind for the AI Era — Eric So" description="Download the free companion workbook to The Collision: What AI Does to Us by Eric So. Set aside about 45 minutes to make the book’s ideas personal." accent="blue">
+<BaseLayout title="Designing Your Mind for the AI Era — Eric So" description="Download the free companion workbook to The Collision: What AI Does to Us by Eric So. Set aside 50–60 minutes to make the book’s ideas personal." accent="blue">
   <section class="workbook-hero" data-theme="dark">
     <div class="workbook-inner">
       <span class="section-label">The Collision · Free Companion Workbook</span>
       <h1>Designing Your Mind<br />for the AI Era</h1>
       <p class="byline">By Eric So</p>
-      <p class="intro">Make the ideas in <em>The Collision</em> personal. Set aside about 45 minutes to reflect on your relationship with AI and the thinker you want to become.</p>
+      <p class="intro">Make the ideas in <em>The Collision</em> personal. Set aside 50–60 minutes to reflect on your relationship with AI and the thinker you want to become.</p>
       <a class="download-button" href={downloadUrl} download="Designing Your Mind for the AI Era - Workbook.pdf" data-astro-reload>Download the workbook <span aria-hidden="true">↓</span></a>
-      <p class="download-note">Free PDF · No signup required</p>
+      <p class="download-note">Free PDF · No signup required · <a href={versionHistoryUrl} aria-label="Workbook version history (plain text)" data-astro-reload>Version history</a></p>
     </div>
   </section>
 
@@ -48,6 +51,7 @@ const downloadUrl = `${base}/files/designing-your-mind-workbook.pdf?v=${version}
   .download-button { display: inline-flex; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; background: var(--white); color: var(--black); font-weight: 600; border: 1px solid var(--white); }
   .download-button:hover { background: var(--gray-200); opacity: 1; }
   .download-note { margin-top: 1rem; font-size: var(--text-small); color: var(--gray-200); }
+  .download-note a { text-decoration: underline; text-underline-offset: 0.2em; white-space: nowrap; }
   .companion { padding: 4rem var(--section-pad-x); background: var(--pure-white); color: var(--black); }
   .companion-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 3rem; }
   .cover-link img { width: 100%; height: auto; }

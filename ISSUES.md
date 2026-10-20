@@ -6,6 +6,13 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-20 — Workbook v1.1 and public version history
+
+- Replaced the stable workbook PDF with the final approved v1.1 from ABB/Exercises/Worksheets.
+- Added the concise October 2026 release note as `site/public/files/designing-your-mind-workbook-versions.txt`, linked as "Version history" beside "Free PDF · No signup required". Both asset URLs carry content hashes for cache refreshes.
+- Changed the workbook landing page and description from about 45 minutes to 50–60 minutes, matching the PDF.
+- Production build passed. Browser checks verified the actual PDF download, plain-text link navigation, exact asset contents, and layouts at 1440px, 390px, and 320px without horizontal overflow or runtime errors. Desktop and fresh mobile screenshots were inspected.
+
 ### 2026-09-23 — Companion workbook hosting
 
 - Added `/workbook/` as the permanent destination for Norton’s business-card QR code and hosted the user-specified September 3 PDF under a date-free filename.

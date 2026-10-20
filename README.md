@@ -116,8 +116,9 @@ Edit the dated LaTeX master under `Files/CV/`, compile it with `tectonic` (or th
 - **Permanent link for QR codes and sharing:** https://ericso.pro/workbook/
 - **Direct PDF:** https://ericso.pro/files/designing-your-mind-workbook.pdf
 - Replace `site/public/files/designing-your-mind-workbook.pdf` with the revised PDF, keeping that filename. Run `npm run build` from `site/`, then commit and push to `main` to publish.
+- Keep the concise public release notes in `site/public/files/designing-your-mind-workbook-versions.txt` synchronized with the approved version file in the ABB Worksheets folder. The workbook page links to this plain-text file as "Version history" beside "Free PDF · No signup required".
 - The original PDF in the ABB project is not automatically synchronized. Copy each approved revision into the website before publishing it.
-- The workbook page adds a content hash to its download URL at build time so new revisions use a fresh browser cache entry. The printed page URL stays the same.
+- The workbook page adds content hashes to its PDF and version-history URLs at build time so new revisions use fresh browser cache entries. The printed page URL stays the same.
 - The page is linked from The Collision and the site search. Its layout is in `site/src/pages/workbook.astro`.
 - Email collection is not enabled. An optional Google Form linked to a private Google Sheet can be added to this page later without changing the QR code. Keep the download available and use explicit opt-in wording for updates.
 
