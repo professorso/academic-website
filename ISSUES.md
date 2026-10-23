@@ -9,7 +9,7 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 ### 2026-10-23 — Book hero copy refinement
 
 - Removed “New Book” and revised the final paragraph to the requested wording, correcting “The is” to “This is” and “cruch” to “crutch”; retained the Chapter 3 sentence ending.
-- Production build and whitespace checks passed; confirmed the local server serves the new paragraph and omits the removed label.
+- Production build and whitespace checks passed; confirmed the local server serves the new paragraph and omits the removed label after restarting. File polling did not prevent the stale-preview recurrence; explicitly restart and verify served content after edits in this environment.
 
 ### 2026-10-23 — Stale local preview
 
