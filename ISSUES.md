@@ -6,6 +6,12 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — Book-page display photograph
+
+- Replaced the book-page cover with the supplied display photo, framed to focus on the upright copy and books beneath it. Preserved the Amazon link and original photograph.
+- Used responsive Astro WebP images (approximately 55–209 KB) and a shared portrait crop for desktop/mobile. Removed the old cover tilt and hover zoom.
+- Production build and whitespace checks passed. Browser preview of localhost was denied by the origin approval gate; visual verification remains pending. Saved locally for review.
+
 ### 2026-10-20 — Clean-link instructions
 
 - Recorded Eric's requirement that future website edits never introduce `utm_source=chatgpt.com`, other `utm_*` parameters, or similar attribution, campaign, referral, or affiliate tracking tags.

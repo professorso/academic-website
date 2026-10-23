@@ -1,6 +1,8 @@
 ---
 // the-collision.astro — Dramatic book page for The Collision
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import bookPhoto from '../assets/collision-display.jpg';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // Featured promo video. Paste the YouTube video ID here (the part after
@@ -68,14 +70,20 @@ const chapters = [
 ---
 
 <BaseLayout title="The Collision — Eric So" description="The Collision — a new book by Eric So, published by Norton." accent="blue">
-  <!-- Full-bleed dark hero with floating book cover -->
+  <!-- Book display photograph, framed tightly around the upright copy -->
   <section class="book-hero" data-theme="dark">
     <div class="book-hero-inner">
       <a href="https://www.amazon.com/Collision-What-AI-Does-Us/dp/1324124628" class="book-cover-wrap" target="_blank" rel="noopener">
-        <img
-          src={`${base}/images/book-cover.jpg`}
-          alt="The Collision — book cover"
+        <Image
+          src={bookPhoto}
+          alt="The Collision: What AI Does to Us by Eric So, standing above a stack of copies"
+          width={2400}
+          widths={[960, 1600, 2400]}
+          sizes="(max-width: 768px) 850px, 1600px"
+          format="webp"
+          quality={85}
           loading="eager"
+          fetchpriority="high"
           class="book-cover-img"
         />
       </a>
@@ -178,27 +186,21 @@ const chapters = [
   }
 
   .book-cover-wrap {
-    display: flex;
-    justify-content: center;
-    perspective: 800px;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   }
 
   .book-cover-img {
-    max-width: 600px;
+    display: block;
     width: 100%;
-    height: auto;
-    box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.5),
-      0 0 80px rgba(163, 31, 52, 0.08);
-    transform: rotateY(-6deg) rotateX(2deg);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-  }
-
-  .book-cover-wrap:hover .book-cover-img {
-    transform: rotateY(0deg) rotateX(0deg) scale(1.03);
-    box-shadow:
-      0 30px 80px rgba(0, 0, 0, 0.6),
-      0 0 100px rgba(163, 31, 52, 0.12);
+    height: 100%;
+    object-fit: cover;
+    object-position: 52% 47%;
+    /* Crop the original photo in the layout, preserving the source image. */
+    transform: scale(1.28);
   }
 
   .book-hero-text {
@@ -284,9 +286,9 @@ const chapters = [
       text-align: center;
     }
 
-    .book-cover-img {
-      max-width: 260px;
-      transform: none;
+    .book-cover-wrap {
+      max-width: 340px;
+      margin: 0 auto;
     }
 
     .book-hero-text {
