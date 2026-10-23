@@ -6,6 +6,11 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — Book hero copy refinement
+
+- Removed “New Book” and revised the final paragraph to the requested wording, correcting “The is” to “This is” and “cruch” to “crutch”; retained the Chapter 3 sentence ending.
+- Production build and whitespace checks passed; confirmed the local server serves the new paragraph and omits the removed label.
+
 ### 2026-10-23 — Stale local preview
 
 - HTTP inspection confirmed the running Astro development server was serving the old 6rem title and original layout despite updated source files. File-change events had not refreshed its module cache.
