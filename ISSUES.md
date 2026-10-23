@@ -6,6 +6,11 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — Stale local preview
+
+- HTTP inspection confirmed the running Astro development server was serving the old 6rem title and original layout despite updated source files. File-change events had not refreshed its module cache.
+- Restarted the local server on port 4321 with `CHOKIDAR_USEPOLLING=true`. Verified the served CSS now includes the 4rem title maximum, 1320px layout, and 400px mobile photo cap. Use polling when previewing this Dropbox checkout if changes stop appearing.
+
 ### 2026-10-23 — More compact book title
 
 - The adjacent text still looked taller than the photo in Eric’s preview. Reduced the title maximum from 6rem to 4rem and subtitle maximum from 3rem to 2rem, with smaller responsive minimums and tighter title spacing. Body copy and image framing are unchanged.

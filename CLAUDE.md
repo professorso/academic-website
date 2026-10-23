@@ -103,6 +103,7 @@ cd site && npm run build  # Build static output to dist/
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
 ## Build Status (as of 2026-10-23)
+- **Local preview freshness**: Astro served stale CSS after file edits in this checkout. Restarting with `CHOKIDAR_USEPOLLING=true npm run dev -- --host 127.0.0.1 --port 4321` restored the latest styles, confirmed by inspecting the served HTML/CSS. Use this command if filesystem change events are missed.
 - **Book hero typography**: Reduced the title to `clamp(2.5rem, 4.5vw, 4rem)` and subtitle to `clamp(1.4rem, 2.5vw, 2rem)` with tighter title spacing to shorten the text block beside the photograph.
 - **Book-page hero photo**: Replaced the flat cover with `site/src/assets/collision-display.jpg`, sourced from `Book/CH1_7786.JPEG`. A 4:5 CSS frame with a 1.28× crop centers the upright book and retains part of the stack. Astro generates responsive WebP images; the photo retains its Amazon link. Eric approved the crop in local preview. Enlarged the photo by giving it the wider column in a 1320px layout, narrowing the gap, and increasing its mobile cap to 400px. Production build passed; automated visual verification remains unavailable after the local-origin approval gate denied browser access.
 - **Homepage book mentions**: Removed the author/book link below the professor title and the bio sentence describing the book as forthcoming, since it is now published.
@@ -123,6 +124,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-23 | Diagnosed stale local preview CSS, restarted Astro with file polling, and verified the served title size and enlarged image layout match source. |
 | 2026-10-23 | Reduced the book hero title and subtitle by roughly one third at their maximum sizes and tightened title spacing, addressing the text block appearing taller than the photo. |
 | 2026-10-23 | Increased the book hero photo’s prominence after Eric approved the crop: wider image column, 1320px layout, smaller gap, and 400px mobile image cap. Preserved the crop and text sizing. |
 | 2026-10-23 | Book page: replaced the cover with a tightly framed display photograph, removed the old perspective/hover tilt, and generated responsive WebP assets. Production build passed; desktop/mobile visual review pending because browser preview permission was declined. |
