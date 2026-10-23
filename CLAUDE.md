@@ -103,7 +103,7 @@ cd site && npm run build  # Build static output to dist/
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
 ## Build Status (as of 2026-10-23)
-- **Book-page hero photo**: Replaced the flat cover with `site/src/assets/collision-display.jpg`, sourced from `Book/CH1_7786.JPEG`. A 4:5 CSS frame with a 1.28× crop centers the upright book and retains part of the stack. Astro generates responsive WebP images; the photo retains its Amazon link. Production build passed; browser preview was blocked by the local-origin approval gate, so visual review remains pending.
+- **Book-page hero photo**: Replaced the flat cover with `site/src/assets/collision-display.jpg`, sourced from `Book/CH1_7786.JPEG`. A 4:5 CSS frame with a 1.28× crop centers the upright book and retains part of the stack. Astro generates responsive WebP images; the photo retains its Amazon link. Eric approved the crop in local preview. Enlarged the photo by giving it the wider column in a 1320px layout, narrowing the gap, and increasing its mobile cap to 400px. Production build passed; automated visual verification remains unavailable after the local-origin approval gate denied browser access.
 - **Homepage book mentions**: Removed the author/book link below the professor title and the bio sentence describing the book as forthcoming, since it is now published.
 - **Clean links**: Explicit policy prohibits ChatGPT attribution and similar tracking tags in all website links. The October 20 audit found none in the eight live pages, source files, or downloadable PDF links. Functional URL parameters are preserved.
 - **Hero photo**: September 2026 MIT presentation photo (`site/src/assets/hero-mit-2026.jpg`), displayed in color with a 6:5 CSS crop positioned at `35% center` to balance the space around Eric by trimming more from the right. Astro generates responsive WebP assets; original source remains in `Photos/FE_09_18_26_MIT_133.jpg`.
@@ -122,6 +122,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-23 | Increased the book hero photo’s prominence after Eric approved the crop: wider image column, 1320px layout, smaller gap, and 400px mobile image cap. Preserved the crop and text sizing. |
 | 2026-10-23 | Book page: replaced the cover with a tightly framed display photograph, removed the old perspective/hover tilt, and generated responsive WebP assets. Production build passed; desktop/mobile visual review pending because browser preview permission was declined. |
 | 2026-10-23 | Removed the landing-page author/book link and its unused styles, plus the bio sentence describing The Collision as forthcoming. |
 | 2026-10-20 | Added a clean-link policy prohibiting ChatGPT attribution, campaign, referral, and similar tracking tags while preserving functional URL parameters. Added AGENTS.md so Codex and other compatible agents load the website instructions. Documentation-only change. |

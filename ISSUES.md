@@ -6,6 +6,11 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — Larger book-page photograph
+
+- Eric approved the portrait crop but found the photograph small relative to the adjacent text. Widened the hero to 1320px, gave the image the larger column, reduced the gap, and removed unused text padding. Increased the mobile image cap from 340px to 400px. Crop and typography are unchanged.
+- Production build and whitespace checks passed. Automated browser review remains unavailable following the previous local-origin approval denial.
+
 ### 2026-10-23 — Book-page display photograph
 
 - Replaced the book-page cover with the supplied display photo, framed to focus on the upright copy and books beneath it. Preserved the Amazon link and original photograph.
