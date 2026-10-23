@@ -6,6 +6,11 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — More compact book title
+
+- The adjacent text still looked taller than the photo in Eric’s preview. Reduced the title maximum from 6rem to 4rem and subtitle maximum from 3rem to 2rem, with smaller responsive minimums and tighter title spacing. Body copy and image framing are unchanged.
+- Production build and whitespace checks passed; local preview remains available for user review. Automated visual review remains blocked by the earlier browser-origin approval denial.
+
 ### 2026-10-23 — Larger book-page photograph
 
 - Eric approved the portrait crop but found the photograph small relative to the adjacent text. Widened the hero to 1320px, gave the image the larger column, reduced the gap, and removed unused text padding. Increased the mobile image cap from 340px to 400px. Crop and typography are unchanged.
