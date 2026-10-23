@@ -102,7 +102,8 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-10-20)
+## Build Status (as of 2026-10-23)
+- **Homepage book mentions**: Removed the author/book link below the professor title and the bio sentence describing the book as forthcoming, since it is now published.
 - **Clean links**: Explicit policy prohibits ChatGPT attribution and similar tracking tags in all website links. The October 20 audit found none in the eight live pages, source files, or downloadable PDF links. Functional URL parameters are preserved.
 - **Hero photo**: September 2026 MIT presentation photo (`site/src/assets/hero-mit-2026.jpg`), displayed in color with a 6:5 CSS crop positioned at `35% center` to balance the space around Eric by trimming more from the right. Astro generates responsive WebP assets; original source remains in `Photos/FE_09_18_26_MIT_133.jpg`.
 - **Media videos**: MIT Alumni Forum: The Collision: What AI Does to Us (`waQ4uuCUrJY`) leads the video grid, which now includes 12 videos.
@@ -120,6 +121,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-23 | Removed the landing-page author/book link and its unused styles, plus the bio sentence describing The Collision as forthcoming. |
 | 2026-10-20 | Added a clean-link policy prohibiting ChatGPT attribution, campaign, referral, and similar tracking tags while preserving functional URL parameters. Added AGENTS.md so Codex and other compatible agents load the website instructions. Documentation-only change. |
 | 2026-10-20 | Replaced the workbook download with approved v1.1, added the concise plain-text version history beside the free/no-signup note, and aligned the page's time estimate with the workbook. Verified actual downloads, release-note navigation, content hashes, and layouts at desktop, mobile, and 320px widths. |
 | 2026-10-06 | Added three requested book-related links to Press & Features: GlobeNewswire, MIT Sloan, and Publishers Weekly. Verified titles against the source pages. |

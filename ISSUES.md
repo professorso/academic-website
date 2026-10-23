@@ -336,3 +336,9 @@ Result: white buttons on white background = invisible.
 ### Prevention
 [How to avoid this in the future]
 ```
+
+### Session 20: 2026-10-23 (homepage book mentions)
+
+- Removed the hero author/book link and unused styles, plus the bio sentence describing the book as forthcoming.
+- Source assertions and whitespace checks passed; Astro compiled server/client code, but the production build failed fetching the OG-image font from cdn.jsdelivr.net (DNS unavailable).
+- Browser verification was blocked: the dev server could not bind to 127.0.0.1:4321 (EPERM), and the in-app browser was unavailable.
