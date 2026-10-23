@@ -103,6 +103,7 @@ cd site && npm run build  # Build static output to dist/
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
 ## Build Status (as of 2026-10-23)
+- **Homepage name**: Main hero heading now reads “Eric C. So.”
 - **Book hero copy**: Removed the “New Book” label and revised the final paragraph to “This is a book about AI written with some help from AI as an amplifier, not a crutch. Chapter 3 is where I explain how, and where I drew the line.”
 - **Local preview freshness**: Astro served stale CSS after file edits in this checkout. Restarting with `CHOKIDAR_USEPOLLING=true npm run dev -- --host 127.0.0.1 --port 4321` restored the latest styles, confirmed by inspecting the served HTML/CSS. Polling did not prevent a later recurrence; explicitly restart the server and verify served content after subsequent edits in this environment.
 - **Book hero typography**: Reduced the title to `clamp(2.5rem, 4.5vw, 4rem)` and subtitle to `clamp(1.4rem, 2.5vw, 2rem)` with tighter title spacing to shorten the text block beside the photograph.
@@ -125,6 +126,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-23 | Changed the homepage hero name from “Eric So” to “Eric C. So.” |
 | 2026-10-23 | Removed “New Book” above the title and updated the AI-assisted writing paragraph to Eric’s revised wording, correcting typing errors. |
 | 2026-10-23 | Diagnosed stale local preview CSS, restarted Astro with file polling, and verified the served title size and enlarged image layout match source. |
 | 2026-10-23 | Reduced the book hero title and subtitle by roughly one third at their maximum sizes and tightened title spacing, addressing the text block appearing taller than the photo. |

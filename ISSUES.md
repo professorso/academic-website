@@ -6,6 +6,11 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-23 — Homepage name
+
+- Updated the homepage hero heading to “Eric C. So” at Eric’s request.
+- Production build and whitespace checks passed; verified the generated homepage heading.
+
 ### 2026-10-23 — Book hero copy refinement
 
 - Removed “New Book” and revised the final paragraph to the requested wording, correcting “The is” to “This is” and “cruch” to “crutch”; retained the Chapter 3 sentence ending.
