@@ -102,7 +102,7 @@ cd site && npm run build  # Build static output to dist/
 - **Data page**: Datasets section (list layout) with disclaimer underneath. AI & Education section (2-column square card grid). No code resources section.
 - **Media page**: Videos section (responsive grid of YouTube embeds). Press section (3-column card grid, 2 on tablet, 1 on mobile).
 
-## Build Status (as of 2026-10-23)
+## Build Status (as of 2026-10-27)
 - **Homepage name**: Main hero heading now reads “Eric C. So.”
 - **Book hero copy**: Removed the “New Book” label and revised the final paragraph to “This is a book about AI written with some help from AI as an amplifier, not a crutch. Chapter 3 is where I explain how, and where I drew the line.”
 - **Local preview freshness**: Astro served stale CSS after file edits in this checkout. Restarting with `CHOKIDAR_USEPOLLING=true npm run dev -- --host 127.0.0.1 --port 4321` restored the latest styles, confirmed by inspecting the served HTML/CSS. Polling did not prevent a later recurrence; explicitly restart the server and verify served content after subsequent edits in this environment.
@@ -115,7 +115,7 @@ cd site && npm run build  # Build static output to dist/
 - **Press & Features**: Added the GlobeNewswire and MIT Sloan versions of "The Hidden Toll of Frictionless Tech: What AI Does to Our Minds" and the Publishers Weekly review of The Collision at the top of the Media-page press grid.
 - **Featured-paper order**: ICML (Lost in Context), NeurIPS (Loyalty Capture), COLM (The Profit Alignment Problem), AI Advisors, Breaking Bad Financial Habits. Shared between the Research page and homepage.
 - **AI publications**: Loyalty Capture (Eric So, Alex Imas) is listed as accepted at NeurIPS 2026 Main Track, with link forthcoming and no presentation designation. The COLM paper uses The Profit Alignment Problem and its arXiv link; ICML is listed as published in the Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. Active CV: `Files/CV/main_20260924.tex`, synchronized to the website download.
-- **Companion workbook**: `/workbook/` hosts the approved October 2026 v1.1 PDF. Replace `site/public/files/designing-your-mind-workbook.pdf` and synchronize `site/public/files/designing-your-mind-workbook-versions.txt` before deploying; ABB source files are not automatically synced. Includes content-hashed PDF and plain-text version-history links. "Version history" sits beside the free/no-signup note; the page states 50–60 minutes to match the workbook. Production build and desktop/mobile browser checks passed.
+- **Companion workbook**: `/workbook/` hosts the approved October 2026 v1.1 PDF, refreshed October 27 with two author-note wording edits on printed page 14; the public version remains v1.1. Replace `site/public/files/designing-your-mind-workbook.pdf` and synchronize `site/public/files/designing-your-mind-workbook-versions.txt` before deploying; ABB source files are not automatically synced. Includes content-hashed PDF and plain-text version-history links. "Version history" sits beside the free/no-signup note; the page states 50–60 minutes to match the workbook. Production build and desktop/mobile browser checks passed.
 - **Phase 1 (Core + Homepage)**: Complete — nav, hero, bio, contact modal, scroll inversions, responsive, CV links, LinkedIn link
 - **Phase 2 (Content Pages)**: Complete — research (32 works), working papers (5), media (6 videos + 15 press articles), data (4 datasets + 4 AI/education links)
 - **Phase 3 (Polish)**: ~95% — book page with subtitle and Amazon link, particle animation on hero, backdrop headers on subpages
@@ -126,6 +126,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-10-27 | Refreshed the workbook PDF with two approved author-note wording changes on printed page 14. Retained v1.1, the permanent download path, and the existing public version history. |
 | 2026-10-23 | Changed the homepage hero name from “Eric So” to “Eric C. So.” |
 | 2026-10-23 | Removed “New Book” above the title and updated the AI-assisted writing paragraph to Eric’s revised wording, correcting typing errors. |
 | 2026-10-23 | Diagnosed stale local preview CSS, restarted Astro with file polling, and verified the served title size and enlarged image layout match source. |

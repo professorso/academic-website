@@ -6,6 +6,12 @@ Track problems, fixes, and session notes for the Academic Webpage project.
 
 ## Session Log
 
+### 2026-10-27 — Workbook author-note wording
+
+- Replaced the hosted PDF with the approved ABB copy: “developing practical takeaways, and working out how the pieces fit together” and “was never yes or no for me.”
+- Preserved v1.1, all 17 PDF pages, the stable download path, and the public version history. Text comparison confirmed that only printed page 14 changed.
+- Production build passed. Browser preview showed the updated download hash; the served and built PDFs match the approved source byte for byte.
+
 ### 2026-10-23 — Homepage name
 
 - Updated the homepage hero heading to “Eric C. So” at Eric’s request.
