@@ -38,7 +38,7 @@ const pages: Record<string, PageEntry> = {
   },
   'the-collision': {
     title: 'The Collision',
-    subtitle: 'Forthcoming Book',
+    subtitle: 'Published by W. W. Norton',
     description:
       'What AI Does to Us — a book on AI, human judgment, and decision-making.',
   },

@@ -19,12 +19,12 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Research', description: 'Published papers across behavioral finance, measurement, and AI', url: `${base}/research/`, kind: 'page' },
   { title: 'Working Papers', description: 'Current working papers and research in progress', url: `${base}/working-papers/`, kind: 'page' },
   { title: 'Media + Videos', description: 'Talks, interviews, and press coverage', url: `${base}/media/`, kind: 'page' },
-  { title: 'The Collision', description: 'Forthcoming book: What AI Does to Us', url: `${base}/the-collision/`, kind: 'page' },
+  { title: 'The Collision', description: 'Book by Eric So: What AI Does to Us', url: `${base}/the-collision/`, kind: 'page' },
   { title: 'Resources', description: 'Recommended books, research datasets, and AI in education reading', url: `${base}/resources/`, kind: 'page' },
   { title: 'Accessibility', description: 'WCAG 2.1 AA accessibility statement', url: `${base}/accessibility/`, kind: 'page' },
 
   // Book
-  { title: 'The Collision: What AI Does to Us', description: 'Forthcoming book on AI and human judgment', url: `${base}/the-collision/`, kind: 'book' },
+  { title: 'The Collision: What AI Does to Us', description: 'Book on AI and human judgment, published by W. W. Norton', url: `${base}/the-collision/`, kind: 'book' },
 
   // Research group
   { title: 'AI in Financial Markets and Decision-Making', description: 'Research group at the MIT Initiative on the Digital Economy', url: 'https://ide.mit.edu/research-group/ai-finance-decisions/', kind: 'group', external: true },

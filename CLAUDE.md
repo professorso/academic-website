@@ -128,6 +128,7 @@ cd site && npm run build  # Build static output to dist/
 ## Change Log
 | Date | Changes |
 |------|---------|
+| 2026-11-11 | The Collision now appears as published (W. W. Norton, 2026) instead of forthcoming in the CV, both Cmd+K search entries, and the book page's link-preview image subtitle. CV recompiled and synchronized. |
 | 2026-11-11 | Bad News Bearers (Liu, Niessner, So) changed from accepted to published in *Management Science* (Articles in Advance, Sep 2026), with the link changed from SSRN to DOI `10.1287/mnsc.2023.00580` on Research, search, and CV. CV recompiled and synchronized. |
 | 2026-11-11 | Box Jumping accepted at JFE: moved from Working Papers to Research (Behavioral and Financial Economics) and added to the CV. Added two AI working papers (Jacobian Workspace Self-Supervision; Adding AI Advice to Trading Interfaces) to Research, Working Papers, search, CV, and the featured set, replacing AI Advisors and Breaking Bad Financial Habits there. CV renamed `main_20261111.tex`, dated November 2026, recompiled with pdflatex, and synchronized. Production build passed. |
 | 2026-10-27 | Refreshed the workbook PDF with two approved author-note wording changes on printed page 14. Retained v1.1, the permanent download path, and the existing public version history. |
