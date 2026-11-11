@@ -44,7 +44,7 @@ export const searchIndex: SearchEntry[] = [
 
   // Published — behavioral and financial economics
   { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So — Journal of Financial Economics (accepted)', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'paper', external: true },
-  { title: 'Bad News Bearers: The Negative Tilt of the Financial Press', description: 'Liu, Niessner, So — Management Science (accepted)', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3219831', kind: 'paper', external: true },
+  { title: 'Bad News Bearers: The Negative Tilt of the Financial Press', description: 'Liu, Niessner, So — Management Science 2026', url: 'https://doi.org/10.1287/mnsc.2023.00580', kind: 'paper', external: true },
   { title: 'Losing Is Optional: Retail Option Trading and Expected Announcement Volatility', description: 'de Silva, So, Smith — Review of Finance 2026', url: 'https://doi.org/10.1093/rof/rfaf052', kind: 'paper', external: true },
   { title: 'Investor Corporate Visits and Predictable Returns', description: 'Zhang, So, Wang — JFQA 2025', url: 'https://doi.org/10.1017/S0022109024000528', kind: 'paper', external: true },
   { title: 'The Fiscal Frontier: Projecting AI\'s Long-term Impact on the US Fiscal Outlook', description: 'Harris, Mehrotra, So — Brookings 2025', url: 'https://www.brookings.edu/articles/the-fiscal-frontier/', kind: 'paper', external: true },
