@@ -54,25 +54,23 @@ export const featuredPapers: FeaturedPaper[] = [
     link: 'https://arxiv.org/abs/2609.07731',
   },
   {
-    slug: 'ai-advisors-competence-judgment',
-    title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure',
-    authors: 'Abigail B. Sussman, Eric C. So, Fiona Y. Yang',
-    meta: 'Working Paper · January 2026',
+    slug: 'jacobian-workspace-self-supervision',
+    title: 'Mitigating Agentic Misalignment via Jacobian Workspace Self-Supervision',
+    authors: 'Ifueko Igbinedion, Etienne Ricardez, Sertac Karaman, Eric So',
+    meta: 'Working Paper · 2026',
     tldr:
-      'People prefer human advisors for their expertise — until disclosure becomes embarrassing, at which point AI\'s lack of social judgment flips the preference, revealing a competence–judgment tradeoff that will shape AI adoption across professional services.',
+      "Monitoring an AI agent's internal states can catch reasoning that is heading toward a harmful action and prompt the same model to correct itself, cutting agentic misalignment from roughly 45% to as low as 6% without retraining.",
     abstract:
-      'This paper finds that people rely on a competence-judgment tradeoff to choose between human and AI advisors, evaluating whether the benefit of expertise outweighs the cost of social judgment. AI advisors unbundle competence from judgment, offering psychological safety at the cost of expertise. Across three experiments, people preferred human advisors and shared more information with them, reflecting a competence premium that reversed when disclosure required revealing embarrassing information. Experimentally increasing AI competence produced the same reversal, providing evidence that competence and judgment are distinct but complementary inputs into the same tradeoff. People also feel less need to justify their actions to AI when those actions are embarrassing, suggesting they manage anticipated judgment from humans in ways that are unnecessary with AI. These findings reveal that AI adoption in professional services will depend not only on closing the capability gap but on how domains differ in the social costs of disclosure.',
-    link: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326',
+      "We show that using an AI agent's Jacobian workspace can mitigate agentic misalignment even after the agent begins rationalizing harmful behavior, substantially reducing harmful actions without retraining the underlying model. The Jacobian lens measures how changes in internal states propagate toward output representations, providing a basis for detecting when reasoning is heading toward a harmful action. We combine measurements derived from this lens with ordinary internal states in a small trained detector that monitors the agent as it reasons. When the detector's score crosses a calibrated threshold, we interrupt generation, discard the current reasoning, and ask the same model to write a brief corrective reminder. The agent then restarts from the task and reminder. An optional intervention steers the advisor's internal states while it writes the reminder. On a held-out i.i.d. evaluation set, our best interventions reduce agentic misalignment from 47.0% to 5.9% on Qwen3-32B and from 45.2% to 11.1% on Qwen3-14B. These results establish internal monitoring and guided self-correction as a promising complement to training-time safety interventions.",
   },
   {
-    slug: 'breaking-bad-financial-habits',
-    title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions',
-    authors: 'Jillian Ross, Eric So, Andrew W. Lo',
-    meta: 'Working Paper · April 2026',
+    slug: 'ai-advice-overtrading',
+    title: 'Adding AI Advice to Trading Interfaces Induces Overtrading and Reduces Investor Welfare',
+    authors: 'Zoe De Simone, Etienne Ricárdez, Eric So, Andrew W. Lo',
+    meta: 'Working Paper · 2026',
     tldr:
-      'Across three pre-registered studies, LLMs durably correct financial misconceptions only when prompted with corrective intent and calibrated to the user\'s financial sophistication — without both, the same conversations can actively entrench the misconceptions they are meant to fix.',
+      'Adding AI forecasts to a prediction-market interface makes users worse off: they move toward AI predictions that are weaker than market prices, forecast less accurately, and trade more often instead of abstaining.',
     abstract:
-      'Financial misconceptions carry direct economic costs, from panic selling to equity market avoidance, yet they are notoriously resistant to correction. Traditional financial literacy interventions are constrained by cost, reach, and a persistent gap between knowledge and behavioral change. We find across three pre-registered studies that purposefully designed LLMs can durably correct financial misconceptions. Critically, two factors are necessary for this effect. First, corrective intent: LLMs prompted only to discuss a misconception produce corrections no better than unassisted self-reflection, and undirected LLM conversations can actively entrench misconceptions. Second, recipient receptivity: financial concepts are often foreign to the investors who misapply them, and LLM responses pitched below a participant\'s financial sophistication are judged as less credible and produce substantially weaker corrections. LLMs thus offer a scalable alternative to traditional financial literacy intervention, but only when designed with both factors in mind.',
-    link: 'https://arxiv.org/abs/2604.27022',
+      'Adding AI advice to a prediction-market interface can make users worse off: participants move toward AI predictions, forecast less accurately, and trade more often. We built Prediction Market Arena, an interactive trading dashboard, and conducted two incentivized experiments (N = 331) comparing market information alone with individual or aggregated AI forecasts. Participants shifted toward AI advice when it disagreed with the market, worsening accuracy; in Study 1, AI access also worsened portfolio outcomes. When abstention was available, it fell from 15.1% without AI to 6.7% with a single forecast and 2.2% with an AI panel. Across 144 resolved contracts, AI forecasts were weaker than market prices, yet participants moved toward them. Interventions failed to recover no-AI performance. These findings show that users can treat AI advice as an informational edge even when it is weaker than the market benchmark, raising a design question: whether AI advice provides enough value to warrant inclusion.',
   },
 ];

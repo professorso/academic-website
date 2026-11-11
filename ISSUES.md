@@ -379,3 +379,9 @@ Result: white buttons on white background = invisible.
 - Removed the hero author/book link and unused styles, plus the bio sentence describing the book as forthcoming.
 - Source assertions and whitespace checks passed; Astro compiled server/client code, but the production build failed fetching the OG-image font from cdn.jsdelivr.net (DNS unavailable).
 - Browser verification was blocked: the dev server could not bind to 127.0.0.1:4321 (EPERM), and the in-app browser was unavailable.
+
+### Session 21: 2026-11-11 (Box Jumping acceptance and two AI working papers)
+
+- Content update only; no bugs found. Production build passed, and the generated pages contain the new entries.
+- The CV went from five to six pages after three entries were added.
+- zsh gotcha: `rm -f *.aux *.log *.out *.toc` fails as a whole when one glob matches nothing (here, no `.toc` file), leaving the build files behind. Remove the build files by explicit name instead.

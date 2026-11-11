@@ -35,13 +35,15 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Lost in Context: Addressing Context Anxiety in Large Language Models', description: 'Igbinedion, Ross, Ricardez, Karaman, So — Proceedings of the 43rd International Conference on Machine Learning, Seoul, South Korea. PMLR 306, 2026. ICML research on context anxiety in frontier reasoning models', url: 'https://arxiv.org/abs/2607.21616', kind: 'paper', external: true },
 
   // Working papers
+  { title: 'Mitigating Agentic Misalignment via Jacobian Workspace Self-Supervision', description: 'Igbinedion, Ricardez, Karaman, So — internal monitoring and guided self-correction to reduce agentic misalignment', url: `${base}/research/`, kind: 'working' },
+  { title: 'Adding AI Advice to Trading Interfaces Induces Overtrading and Reduces Investor Welfare', description: 'De Simone, Ricárdez, So, Lo — AI forecasts in prediction-market interfaces and overtrading', url: `${base}/research/`, kind: 'working' },
   { title: 'Breaking Bad Financial Habits: How LLM Conversations Correct Financial Misconceptions', description: 'Ross, So, Lo — pre-registered studies on LLMs durably correcting financial misconceptions', url: 'https://arxiv.org/abs/2604.27022', kind: 'working', external: true },
   { title: 'AI Advisors and the Competence-Judgment Tradeoff in Information Disclosure', description: 'Sussman, So, Yang — competence, judgment, and disclosure to human versus AI advisors', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6077326', kind: 'working', external: true },
   { title: 'When AI Speaks, Do We Listen?', description: 'Lo, Ross, So — factors in the uptake of LLM advice', url: `${base}/working-papers/`, kind: 'working' },
-  { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'working', external: true },
   { title: 'Fee the People', description: 'Even-Tov, George, Kogan, So', url: `${base}/working-papers/`, kind: 'working' },
 
   // Published — behavioral and financial economics
+  { title: 'Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings', description: 'Cohen, Kim, So — Journal of Financial Economics (accepted)', url: 'https://doi.org/10.2139/ssrn.4971228', kind: 'paper', external: true },
   { title: 'Bad News Bearers: The Negative Tilt of the Financial Press', description: 'Liu, Niessner, So — Management Science (accepted)', url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3219831', kind: 'paper', external: true },
   { title: 'Losing Is Optional: Retail Option Trading and Expected Announcement Volatility', description: 'de Silva, So, Smith — Review of Finance 2026', url: 'https://doi.org/10.1093/rof/rfaf052', kind: 'paper', external: true },
   { title: 'Investor Corporate Visits and Predictable Returns', description: 'Zhang, So, Wang — JFQA 2025', url: 'https://doi.org/10.1017/S0022109024000528', kind: 'paper', external: true },

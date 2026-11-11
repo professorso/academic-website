@@ -73,3 +73,9 @@ The one-sentence descriptions on the Research page were rewritten as concise par
 ### Coauthor correction — 2026-09-24
 
 Eric confirmed that Loyalty Capture is coauthored with Alex Imas. Added Alex Imas to the website research entry, featured-paper metadata, search index, and CV.
+
+## Update — 2026-11-11
+
+- **Box Jumping: Portfolio Recompositions to Achieve Higher Morningstar Ratings** (Cohen, Kim, So) — accepted at the *Journal of Financial Economics* per Eric. Description paraphrases the accepted manuscript's introduction (`Projects/CKS/CKS_BoxJumping_20261111.pdf`, November 2026), which has no standalone abstract. SSRN link retained.
+- **Mitigating Agentic Misalignment via Jacobian Workspace Self-Supervision** (Igbinedion, Ricardez, Karaman, So) — description and featured abstract taken from the manuscript abstract (`Projects/AIO/JSP/Mitigating_Agentic_J_space.pdf`). The manuscript is a double-blind conference submission; per Eric it is listed only as a working paper, with no venue. Author order was supplied by Eric.
+- **Adding AI Advice to Trading Interfaces Induces Overtrading and Reduces Investor Welfare** (De Simone, Ricárdez, So, Lo) — title, authors, description and featured abstract taken from the manuscript (`Projects/AICN/Correlation_Neglect_Revised (1).pdf`).
